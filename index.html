@@ -1,0 +1,3744 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100天100本书 · AI递归学习计划</title>
+<style>
+/* ============================================
+   CSS变量与全局重置
+   ============================================ */
+:root {
+  --primary-purple: #8b5cf6;
+  --primary-cyan: #06b6d4;
+  --gradient-main: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+  --gradient-soft: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+  --bg-deep: #0a0a1a;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(139, 92, 246, 0.3);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* 背景装饰 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 噪点纹理 */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* ============================================
+   导航栏
+   ============================================ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10, 10, 26, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.nav-logo:hover {
+  transform: translateY(-1px);
+}
+
+.nav-logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--gradient-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-card);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border-glass);
+}
+
+.nav-tab {
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: var(--transition-base);
+  border: none;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-tab:hover {
+  color: var(--text-primary);
+}
+
+.nav-tab.active {
+  background: var(--gradient-main);
+  color: white;
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+}
+
+.nav-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.nav-progress-bar {
+  width: 80px;
+  height: 4px;
+  background: var(--bg-card);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.nav-progress-fill {
+  height: 100%;
+  background: var(--gradient-main);
+  border-radius: 2px;
+  width: 1%;
+  transition: width 0.5s ease;
+}
+
+/* ============================================
+   主内容区
+   ============================================ */
+.main-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 100px 24px 60px;
+}
+
+.view {
+  display: none;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.view.active {
+  display: block;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   视图1：首页总览
+   ============================================ */
+
+/* 头部区域 */
+.hero-section {
+  text-align: center;
+  margin-bottom: 60px;
+  padding: 40px 0;
+}
+
+.hero-title {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+  font-size: clamp(14px, 2vw, 18px);
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--primary-cyan);
+  margin-bottom: 24px;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary-cyan);
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+/* 仪表盘区域 */
+.dashboard-section {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 32px;
+  margin-bottom: 60px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .dashboard-section {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+.progress-ring-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring {
+  position: relative;
+  width: 220px;
+  height: 220px;
+}
+
+.progress-ring svg {
+  transform: rotate(-90deg);
+  filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3));
+}
+
+.progress-ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 12;
+}
+
+.progress-ring-fill {
+  fill: none;
+  stroke: url(#gradientStroke);
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke-dasharray: 628;
+  stroke-dashoffset: 628;
+  transition: stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-ring-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.progress-percent {
+  font-size: 42px;
+  font-weight: 800;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.progress-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+.progress-day {
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* 今日学习卡片 */
+.today-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-base);
+}
+
+.today-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gradient-main);
+  opacity: 0.5;
+}
+
+.today-card:hover {
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+.today-card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--primary-cyan);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.today-book-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.today-book-author {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.today-book-category {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--primary-cyan);
+  margin-bottom: 24px;
+}
+
+.today-card-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: var(--gradient-main);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.btn-secondary:hover {
+  border-color: var(--border-glow);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+/* 分类网格 */
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title::before {
+  content: '';
+  width: 4px;
+  height: 24px;
+  background: var(--gradient-main);
+  border-radius: 2px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 60px;
+}
+
+.category-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  cursor: pointer;
+  transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.category-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-soft);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.category-card:hover {
+  border-color: var(--border-glow);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+}
+
+.category-card:hover::before {
+  opacity: 1;
+}
+
+.category-card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.category-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--gradient-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  border: 1px solid var(--border-glow);
+}
+
+.category-count {
+  font-size: 24px;
+  font-weight: 700;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.category-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.category-progress-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.category-progress-fill {
+  height: 100%;
+  background: var(--gradient-main);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+.category-progress-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ============================================
+   视图2：单本书学习页
+   ============================================ */
+.book-header {
+  display: grid;
+  grid-template-columns: 200px 1fr auto;
+  gap: 32px;
+  margin-bottom: 48px;
+  padding: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+@media (max-width: 1100px) {
+  .book-header {
+    grid-template-columns: 200px 1fr;
+  }
+  .audio-section {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .book-header {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+  }
+}
+
+/* 书籍封面 */
+.book-cover {
+  width: 200px;
+  height: 280px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #1e1b4b 0%, #312e81 30%, #4c1d95 60%, #8b5cf6 100%);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(139, 92, 246, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.book-cover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%),
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+}
+
+.book-cover::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(0, 0, 0, 0.2) 100%);
+}
+
+.book-cover-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 24px;
+}
+
+.book-cover-top {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.book-cover-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.book-cover-author {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.book-cover-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.book-cover-volume {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.book-cover-decoration {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  position: relative;
+}
+
+.book-cover-decoration::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+}
+
+/* 书籍信息 */
+.book-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.book-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.book-author {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.book-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.book-tag {
+  padding: 6px 14px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--primary-cyan);
+}
+
+.book-stats {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.book-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.book-stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.book-stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ===================== AI导读音频区 ===================== */
+.audio-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+  min-width: 280px;
+}
+
+.audio-play-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.audio-play-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--gradient-main);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: var(--transition-base);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+}
+
+.audio-play-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.5);
+}
+
+.audio-play-btn:active {
+  transform: scale(0.98);
+}
+
+.audio-play-btn.playing::before,
+.audio-play-btn.playing::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid var(--primary-purple);
+  opacity: 0;
+}
+
+.audio-play-btn.playing::before {
+  width: 72px;
+  height: 72px;
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+.audio-play-btn.playing::after {
+  width: 72px;
+  height: 72px;
+  animation: pulse-ring 2s ease-out infinite 1s;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.8);
+    opacity: 0;
+  }
+}
+
+.audio-play-btn svg {
+  width: 28px;
+  height: 28px;
+  fill: white;
+  margin-left: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.audio-play-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* 波形动画 */
+.audio-waveform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 24px;
+}
+
+.audio-waveform .wave-bar {
+  width: 3px;
+  height: 6px;
+  background: var(--primary-cyan);
+  border-radius: 2px;
+  opacity: 0.4;
+  transition: height 0.15s ease;
+}
+
+.audio-waveform.playing .wave-bar {
+  opacity: 1;
+  animation: wave-bounce 1.2s ease-in-out infinite;
+}
+
+.audio-waveform.playing .wave-bar:nth-child(1) { animation-delay: 0s; height: 18px; }
+.audio-waveform.playing .wave-bar:nth-child(2) { animation-delay: 0.1s; height: 12px; }
+.audio-waveform.playing .wave-bar:nth-child(3) { animation-delay: 0.2s; height: 20px; }
+.audio-waveform.playing .wave-bar:nth-child(4) { animation-delay: 0.3s; height: 8px; }
+.audio-waveform.playing .wave-bar:nth-child(5) { animation-delay: 0.4s; height: 16px; }
+.audio-waveform.playing .wave-bar:nth-child(6) { animation-delay: 0.3s; height: 10px; }
+.audio-waveform.playing .wave-bar:nth-child(7) { animation-delay: 0.2s; height: 18px; }
+.audio-waveform.playing .wave-bar:nth-child(8) { animation-delay: 0.1s; height: 14px; }
+.audio-waveform.playing .wave-bar:nth-child(9) { animation-delay: 0s; height: 20px; }
+
+@keyframes wave-bounce {
+  0%, 100% { transform: scaleY(0.5); }
+  50% { transform: scaleY(1.2); }
+}
+
+/* 进度条 */
+.audio-progress {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.audio-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.audio-progress-fill {
+  height: 100%;
+  background: var(--gradient-main);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.audio-progress-time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* 语速控制 */
+.audio-speed-control {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.speed-btn {
+  padding: 4px 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: var(--transition-base);
+}
+
+.speed-btn:hover {
+  color: var(--text-primary);
+}
+
+.speed-btn.active {
+  background: var(--gradient-main);
+  color: white;
+}
+
+/* 音源切换 */
+.audio-source-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.audio-source-select {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.audio-source-select:hover {
+  background: var(--bg-card-hover);
+}
+
+.audio-source-select option {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+}
+
+.audio-source-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  border-radius: 10px;
+  font-size: 11px;
+  color: var(--primary-cyan);
+  font-weight: 500;
+}
+
+.audio-source-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary-cyan);
+  animation: pulse-dot 2s infinite;
+}
+
+/* AI导读文字区域 */
+.audio-guide-text {
+  width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
+  background: rgba(139, 92, 246, 0.06);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-purple) transparent;
+}
+
+.audio-guide-text::-webkit-scrollbar {
+  width: 4px;
+}
+
+.audio-guide-text::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.audio-guide-text::-webkit-scrollbar-thumb {
+  background: var(--primary-purple);
+  border-radius: 2px;
+}
+
+.guide-paragraph {
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.guide-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.guide-paragraph.active {
+  background: var(--gradient-soft);
+  color: var(--text-primary);
+  border-left: 3px solid var(--primary-cyan);
+  padding-left: 7px;
+  font-weight: 500;
+}
+
+.guide-paragraph .para-label {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--primary-cyan);
+  font-weight: 600;
+  margin-right: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.guide-text-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.guide-text-header-icon {
+  font-size: 14px;
+}
+
+.guide-text-header-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 内容模块通用样式 */
+.content-section {
+  margin-bottom: 48px;
+}
+
+.content-section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.content-section-title-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--gradient-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border: 1px solid var(--border-glow);
+}
+
+/* 滚动入场动画 */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 核心观点卡片 */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.insight-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.insight-card:hover {
+  border-color: var(--border-glow);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-glow);
+}
+
+.insight-number {
+  font-size: 48px;
+  font-weight: 800;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.3;
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  line-height: 1;
+}
+
+.insight-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.insight-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+/* 知识树 */
+.knowledge-tree-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.knowledge-tree-svg {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  display: block;
+}
+
+.tree-node {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.tree-node.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.tree-line {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  transition: stroke-dashoffset 0.8s ease;
+}
+
+.tree-line.visible {
+  stroke-dashoffset: 0;
+}
+
+/* 金句摘录 */
+.quote-section {
+  padding: 60px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.quote-section::before,
+.quote-section::after {
+  content: '"';
+  font-size: 120px;
+  color: var(--primary-purple);
+  opacity: 0.1;
+  position: absolute;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.quote-section::before {
+  top: 20px;
+  left: 10%;
+}
+
+.quote-section::after {
+  bottom: -20px;
+  right: 10%;
+  transform: rotate(180deg);
+}
+
+.quote-text {
+  font-size: clamp(20px, 3vw, 32px);
+  font-weight: 600;
+  line-height: 1.6;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  max-width: 800px;
+  margin: 0 auto 20px;
+  min-height: 3em;
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.2em;
+  background: var(--primary-cyan);
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.quote-source {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* 案例分析 */
+.cases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 600px) {
+  .cases-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.case-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.case-card:hover {
+  border-color: var(--border-glow);
+  transform: translateY(-3px);
+}
+
+.case-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-main);
+}
+
+.case-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.case-title-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--gradient-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.case-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.case-principle {
+  padding: 10px 14px;
+  background: var(--gradient-soft);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--primary-cyan);
+  border-left: 3px solid var(--primary-cyan);
+}
+
+/* 关联书籍 */
+.related-books {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+
+.related-graph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding: 20px 0;
+}
+
+.related-center {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--gradient-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
+  position: relative;
+}
+
+.related-center::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  border-radius: 50%;
+  border: 1px dashed var(--primary-purple);
+  animation: spin 20s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.related-items {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.related-item {
+  padding: 12px 20px;
+  background: var(--bg-card-hover);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: var(--transition-base);
+  position: relative;
+}
+
+.related-item:hover {
+  border-color: var(--border-glow);
+  color: var(--text-primary);
+  transform: translateX(4px);
+}
+
+.related-item::before {
+  content: '→';
+  position: absolute;
+  left: -20px;
+  color: var(--primary-cyan);
+  opacity: 0;
+  transition: var(--transition-base);
+}
+
+.related-item:hover::before {
+  opacity: 1;
+  left: -16px;
+}
+
+.connector-line {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-purple), var(--primary-cyan));
+  position: relative;
+}
+
+.connector-line::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid var(--primary-cyan);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+}
+
+/* 思考题 */
+.questions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  transition: var(--transition-base);
+  cursor: pointer;
+}
+
+.question-card:hover {
+  border-color: var(--border-glow);
+  background: var(--bg-card-hover);
+}
+
+.question-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--gradient-main);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.question-text {
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* 学习完成按钮 */
+.complete-section {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.btn-complete {
+  padding: 18px 48px;
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--gradient-main);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-base);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+}
+
+.btn-complete:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.5);
+}
+
+.btn-complete:active {
+  transform: translateY(-1px) scale(1);
+}
+
+.btn-complete.completed {
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+  pointer-events: none;
+}
+
+/* 庆祝动画 */
+.celebration-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  display: none;
+}
+
+.celebration-overlay.active {
+  display: block;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+}
+
+/* ============================================
+   视图3：学习方法论
+   ============================================ */
+.methodology-hero {
+  text-align: center;
+  padding: 40px 0 60px;
+}
+
+.methodology-title {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+
+.methodology-subtitle {
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* AI递归学习法简介 */
+.method-intro {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  margin-bottom: 48px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.method-intro::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.method-intro-content {
+  position: relative;
+  z-index: 1;
+}
+
+.method-intro-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.method-intro-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.method-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.method-feature {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-glass);
+}
+
+.method-feature-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.method-feature-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.method-feature-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* 学习循环图 */
+.learning-cycle-section {
+  margin-bottom: 60px;
+}
+
+.cycle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+  position: relative;
+}
+
+.cycle-diagram {
+  position: relative;
+  width: 400px;
+  height: 400px;
+}
+
+@media (max-width: 500px) {
+  .cycle-diagram {
+    width: 320px;
+    height: 320px;
+  }
+}
+
+.cycle-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--gradient-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  z-index: 2;
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.5);
+}
+
+.cycle-node {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--border-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  z-index: 2;
+  transition: var(--transition-base);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.cycle-node:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.5);
+  border-color: var(--primary-purple);
+}
+
+.cycle-node-icon {
+  font-size: 20px;
+}
+
+.cycle-node:nth-child(2) { top: 0; left: 50%; transform: translateX(-50%); }
+.cycle-node:nth-child(3) { top: 25%; right: 5%; }
+.cycle-node:nth-child(4) { bottom: 25%; right: 5%; }
+.cycle-node:nth-child(5) { bottom: 0; left: 50%; transform: translateX(-50%); }
+.cycle-node:nth-child(6) { bottom: 25%; left: 5%; }
+.cycle-node:nth-child(7) { top: 25%; left: 5%; }
+
+.cycle-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.cycle-path {
+  fill: none;
+  stroke: url(#cycleGradient);
+  stroke-width: 2;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 3s ease;
+}
+
+.cycle-path.visible {
+  stroke-dashoffset: 0;
+}
+
+/* 时间轴 */
+.timeline-section {
+  margin-bottom: 60px;
+}
+
+.timeline {
+  position: relative;
+  padding: 20px 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--primary-purple) 0%, 
+    var(--primary-cyan) 50%,
+    var(--primary-purple) 100%);
+  transform: translateY(-50%);
+  border-radius: 2px;
+  opacity: 0.3;
+}
+
+.timeline-items {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 900px) {
+  .timeline::before {
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    right: auto;
+    width: 3px;
+    height: 100%;
+    transform: none;
+  }
+  
+  .timeline-items {
+    flex-direction: column;
+    gap: 32px;
+    padding-left: 50px;
+  }
+}
+
+.timeline-item {
+  flex: 1;
+  padding: 0 12px;
+  position: relative;
+}
+
+.timeline-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--gradient-main);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+  z-index: 2;
+}
+
+@media (max-width: 900px) {
+  .timeline-dot {
+    left: -34px;
+    top: 20px;
+    transform: none;
+  }
+}
+
+.timeline-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+  transition: var(--transition-base);
+  margin-top: 30px;
+}
+
+@media (max-width: 900px) {
+  .timeline-card {
+    margin-top: 0;
+    text-align: left;
+  }
+}
+
+.timeline-card:hover {
+  border-color: var(--border-glow);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-glow);
+}
+
+.timeline-time {
+  font-size: 13px;
+  color: var(--primary-cyan);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.timeline-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.timeline-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.timeline-item:nth-child(even) .timeline-card {
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 900px) {
+  .timeline-item:nth-child(even) .timeline-card {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+}
+
+/* ============================================
+   返回按钮
+   ============================================ */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 10px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition-base);
+  margin-bottom: 24px;
+}
+
+.back-btn:hover {
+  border-color: var(--border-glow);
+  color: var(--text-primary);
+  transform: translateX(-3px);
+}
+
+/* ============================================
+   滚动条样式
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-purple);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-cyan);
+}
+
+/* ============================================
+   响应式适配
+   ============================================ */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+  
+  .nav-logo-text {
+    display: none;
+  }
+  
+  .nav-tab {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+  
+  .nav-progress {
+    display: none;
+  }
+  
+  .main-container {
+    padding: 80px 16px 40px;
+  }
+  
+  .today-card-actions {
+    flex-direction: column;
+  }
+  
+  .btn-primary, .btn-secondary {
+    width: 100%;
+  }
+  
+  .book-header {
+    padding: 24px;
+  }
+  
+  .book-cover {
+    width: 160px;
+    height: 224px;
+  }
+  
+  .book-title {
+    font-size: 24px;
+  }
+
+  .audio-section {
+    min-width: 100%;
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- SVG渐变定义 -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="gradientStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cycleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.6" />
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <div class="nav-logo" onclick="switchView('home')">
+    <div class="nav-logo-icon">📚</div>
+    <span class="nav-logo-text">100天100本书</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchView('home')">总览</button>
+    <button class="nav-tab" onclick="switchView('book')">今日学习</button>
+    <button class="nav-tab" onclick="switchView('method')">方法论</button>
+  </div>
+  <div class="nav-progress">
+    <span>第1天</span>
+    <div class="nav-progress-bar">
+      <div class="nav-progress-fill" id="navProgressFill"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- 主内容区 -->
+<main class="main-container">
+
+  <!-- ============================================
+       视图1：首页总览
+       ============================================ -->
+  <div class="view active" id="view-home">
+    
+    <!-- 头部 -->
+    <section class="hero-section">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span>AI驱动 · 递归学习法</span>
+      </div>
+      <h1 class="hero-title">100天100本书 · AI递归学习计划</h1>
+      <p class="hero-subtitle">每天一小时，构建完整商业知识体系</p>
+    </section>
+
+    <!-- 仪表盘 + 今日学习 -->
+    <section class="dashboard-section">
+      <div class="progress-ring-container">
+        <div class="progress-ring">
+          <svg width="220" height="220" viewBox="0 0 220 220">
+            <circle class="progress-ring-bg" cx="110" cy="110" r="100"/>
+            <circle class="progress-ring-fill" id="progressRing" cx="110" cy="110" r="100"/>
+          </svg>
+          <div class="progress-ring-content">
+            <div class="progress-percent" id="progressPercent">1%</div>
+            <div class="progress-label">整体进度</div>
+            <div class="progress-day">第 1 天 / 100 天</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="today-card">
+        <div class="today-card-label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          今日学习任务
+        </div>
+        <h2 class="today-book-title">第1本 · 《经济学原理》</h2>
+        <p class="today-book-author">作者：[美] 格里高利·曼昆</p>
+        <span class="today-book-category">经济学和大势 · 第 1/14 本</span>
+        <div class="today-card-actions">
+          <button class="btn-primary" onclick="switchView('book')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            开始学习
+          </button>
+          <button class="btn-secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+            加入收藏
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 八大分类 -->
+    <section>
+      <h2 class="section-title">八大知识体系</h2>
+      <div class="category-grid">
+        <div class="category-card reveal">
+          <div class="category-card-content">
+            <div class="category-header">
+              <div class="category-icon">📈</div>
+              <div class="category-count">14</div>
+            </div>
+            <div class="category-name">经济学和大势</div>
+            <div class="category-progress-bar">
+              <div class="category-progress-fill" data-progress="7"></div>
+            </div>
+            <div class="category-progress-text">
+              <span>1 / 14 本</span>
+              <span>7%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-card reveal">
+          <div class="category-card-content">
+            <div class="category-header">
+              <div class="category-icon">💡</div>
+              <div class="category-count">19</div>
+            </div>
+            <div class="category-name">创业思维</div>
+            <div class="category-progress-bar">
+              <div class="category-progress-fill" data-progress="0"></div>
+            </div>
+            <div class="category-progress-text">
+              <span>0 / 19 本</span>
+              <span>0%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-card reveal">
+          <div class="category-card-content">
+            <div class="category-header">
+              <div class="category-icon">📦</div>
+              <div class="category-count">12</div>
+            </div>
+            <div class="category-name">如何做产品</div>
+            <div class="category-progress-bar">
+              <div class="category-progress-fill" data-progress="0"></div>
+            </div>
+            <div class="category-progress-text">
+              <span>0 / 12 本</span>
+              <span>0%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-card reveal">
+          <div class="category-card-content">
+            <div class="category-header">
+              <div class="category-icon">🎯</div>
+              <div class="category-count">14</div>
+            </div>
+            <div class="category-name">营销和定位</div>
+            <div class="category-progress-bar">
+              <div class="category-progress-fill" data-progress="0"></div>
+            </div>
+            <div class="category-progress-text">
+              <span>0 / 14 本</span>
+              <span>0%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-card reveal">
+          <div class="category-card-content">
+            <div class="category-header">
+              <div class="category-icon">🚀</div>
+              <div class="category-count">11</div>
+            </div>
+            <div class="category-name">流量和增长</div>
+            <div class="category-progress-bar">
+              <div class="category-progress-fill" data-progress="0"></div>
+            </div>
+            <div class="category-progress-text">
+              <span>0 / 11 本</span>
+              <span>0%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-card reveal">
+          <div class="category-card-content">
+            <div class="category-header">
+              <div class="category-icon">💰</div>
+              <div class="category-count">11</div>
+            </div>
+            <div class="category-name">财务金融和法律</div>
+            <div class="category-progress-bar">
+              <div class="category-progress-fill" data-progress="0"></div>
+            </div>
+            <div class="category-progress-text">
+              <span>0 / 11 本</span>
+              <span>0%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-card reveal">
+          <div class="category-card-content">
+            <div class="category-header">
+              <div class="category-icon">🏢</div>
+              <div class="category-count">9</div>
+            </div>
+            <div class="category-name">股权分配和融资</div>
+            <div class="category-progress-bar">
+              <div class="category-progress-fill" data-progress="0"></div>
+            </div>
+            <div class="category-progress-text">
+              <span>0 / 9 本</span>
+              <span>0%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-card reveal">
+          <div class="category-card-content">
+            <div class="category-header">
+              <div class="category-icon">👥</div>
+              <div class="category-count">10</div>
+            </div>
+            <div class="category-name">团队建设</div>
+            <div class="category-progress-bar">
+              <div class="category-progress-fill" data-progress="0"></div>
+            </div>
+            <div class="category-progress-text">
+              <span>0 / 10 本</span>
+              <span>0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================
+       视图2：单本书学习页
+       ============================================ -->
+  <div class="view" id="view-book">
+    
+    <button class="back-btn" onclick="switchView('home')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      返回总览
+    </button>
+
+    <!-- 书籍头部 -->
+    <div class="book-header reveal">
+      <div class="book-cover">
+        <div class="book-cover-content">
+          <div>
+            <div class="book-cover-top">ECONOMICS</div>
+          </div>
+          <div>
+            <div class="book-cover-title">经济学原理</div>
+            <div class="book-cover-author">N. Gregory Mankiw</div>
+          </div>
+          <div class="book-cover-bottom">
+            <span class="book-cover-volume">第8版</span>
+            <div class="book-cover-decoration"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="book-info">
+        <h1 class="book-title">经济学原理（第8版）</h1>
+        <p class="book-author">作者：[美] 格里高利·曼昆 (N. Gregory Mankiw)</p>
+        <div class="book-meta">
+          <span class="book-tag">📈 经济学和大势</span>
+          <span class="book-tag">第 1 / 14 本</span>
+        </div>
+        <div class="book-stats">
+          <div class="book-stat">
+            <span class="book-stat-value">10</span>
+            <span class="book-stat-label">核心原理</span>
+          </div>
+          <div class="book-stat">
+            <span class="book-stat-value">2</span>
+            <span class="book-stat-label">经典案例</span>
+          </div>
+          <div class="book-stat">
+            <span class="book-stat-value">60min</span>
+            <span class="book-stat-label">预计时长</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI导读音频区 -->
+      <div class="audio-section">
+        <div class="audio-play-wrapper">
+          <button class="audio-play-btn" id="audioPlayBtn" onclick="toggleAudio()">
+            <svg viewBox="0 0 24 24" id="playIcon">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+          </button>
+          <span class="audio-play-label" id="audioPlayLabel">AI导读 · 4分钟</span>
+          <span class="audio-source-badge" id="audioSourceBadge">
+            <span class="dot"></span>
+            <span id="audioSourceName">百度女声</span>
+          </span>
+        </div>
+
+        <!-- 波形动画 -->
+        <div class="audio-waveform" id="audioWaveform">
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+
+        <!-- 进度条 -->
+        <div class="audio-progress">
+          <div class="audio-progress-bar" id="audioProgressBar" onclick="seekAudio(event)">
+            <div class="audio-progress-fill" id="audioProgressFill"></div>
+          </div>
+          <div class="audio-progress-time">
+            <span id="audioCurrentTime">00:00</span>
+            <span id="audioTotalTime">04:00</span>
+          </div>
+        </div>
+
+        <!-- 语速控制 + 音源切换 -->
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center;">
+          <div class="audio-speed-control">
+            <button class="speed-btn" data-speed="0.8" onclick="setSpeed(0.8)">0.8x</button>
+            <button class="speed-btn active" data-speed="1.0" onclick="setSpeed(1.0)">1.0x</button>
+            <button class="speed-btn" data-speed="1.2" onclick="setSpeed(1.2)">1.2x</button>
+          </div>
+          <div class="audio-source-control">
+            <span>🎙️</span>
+            <select class="audio-source-select" id="audioSourceSelect" onchange="setAudioSource(this.value)">
+              <option value="baidu">百度女声（推荐）</option>
+              <option value="youdao">有道女声</option>
+              <option value="system">系统内置</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- AI导读文字 -->
+        <div class="audio-guide-text" id="audioGuideText">
+          <div class="guide-text-header">
+            <span class="guide-text-header-icon">📝</span>
+            <span class="guide-text-header-title">AI导读文字</span>
+          </div>
+          <div id="guideParagraphs"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 核心观点速览 -->
+    <section class="content-section">
+      <h2 class="content-section-title reveal">
+        <span class="content-section-title-icon">📖</span>
+        核心观点速览
+      </h2>
+      <div class="insights-grid">
+        <div class="insight-card reveal">
+          <span class="insight-number">01</span>
+          <h3 class="insight-title">人们面临权衡取舍</h3>
+          <p class="insight-desc">十大经济学原理之首。认识到生活中人们面临权衡取舍本身并没有告诉我们，他们将会或应该做出什么决策。</p>
+        </div>
+        <div class="insight-card reveal">
+          <span class="insight-number">02</span>
+          <h3 class="insight-title">机会成本</h3>
+          <p class="insight-desc">某种东西的成本是为了得到它所放弃的东西。决策者应该认识到伴随着每一种可能的行动而来的机会成本。</p>
+        </div>
+        <div class="insight-card reveal">
+          <span class="insight-number">03</span>
+          <h3 class="insight-title">边际决策</h3>
+          <p class="insight-desc">理性人考虑边际量。通过比较边际收益与边际成本来做决策，当且仅当边际收益大于边际成本时才行动。</p>
+        </div>
+        <div class="insight-card reveal">
+          <span class="insight-number">04</span>
+          <h3 class="insight-title">激励效应</h3>
+          <p class="insight-desc">人们会对激励做出反应。由于理性人通过比较成本和收益做出决策，所以他们会对激励做出反应。</p>
+        </div>
+        <div class="insight-card reveal">
+          <span class="insight-number">05</span>
+          <h3 class="insight-title">比较优势</h3>
+          <p class="insight-desc">贸易能使每个人状况更好。贸易使得每个人都可以专门从事自己最擅长的活动，从而享有更多的物品与服务。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 知识树 -->
+    <section class="content-section">
+      <h2 class="content-section-title reveal">
+        <span class="content-section-title-icon">🧠</span>
+        本书知识体系
+      </h2>
+      <div class="knowledge-tree-container reveal" id="knowledgeTree">
+        <svg class="knowledge-tree-svg" viewBox="0 0 800 400" id="treeSvg">
+          <!-- 连接线 -->
+          <g stroke="url(#gradientStroke)" stroke-width="2" fill="none" opacity="0.6">
+            <!-- 导言到供需 -->
+            <path class="tree-line" d="M400 60 Q400 100 300 140" id="line1"/>
+            <!-- 导言到市场 -->
+            <path class="tree-line" d="M400 60 Q400 100 400 140" id="line2"/>
+            <!-- 导言到宏观 -->
+            <path class="tree-line" d="M400 60 Q400 100 500 140" id="line3"/>
+            <!-- 供需到市场 -->
+            <path class="tree-line" d="M300 180 Q350 200 380 220" id="line4"/>
+            <!-- 市场到宏观 -->
+            <path class="tree-line" d="M420 220 Q450 200 500 180" id="line5"/>
+            <!-- 宏观到国际 -->
+            <path class="tree-line" d="M500 260 Q500 300 400 340" id="line6"/>
+            <!-- 供需延伸 -->
+            <path class="tree-line" d="M220 180 Q180 200 150 230" id="line7"/>
+            <path class="tree-line" d="M220 180 Q200 220 200 260" id="line8"/>
+          </g>
+          
+          <!-- 节点 -->
+          <g class="tree-node" id="node1">
+            <circle cx="400" cy="40" r="32" fill="rgba(139, 92, 246, 0.2)" stroke="url(#gradientStroke)" stroke-width="2"/>
+            <text x="400" y="45" text-anchor="middle" fill="#f1f5f9" font-size="14" font-weight="600">导言</text>
+          </g>
+          
+          <g class="tree-node" id="node2">
+            <circle cx="280" cy="160" r="36" fill="rgba(139, 92, 246, 0.2)" stroke="url(#gradientStroke)" stroke-width="2"/>
+            <text x="280" y="155" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="600">供需理论</text>
+            <text x="280" y="172" text-anchor="middle" fill="#94a3b8" font-size="10">Supply & Demand</text>
+          </g>
+          
+          <g class="tree-node" id="node3">
+            <circle cx="400" cy="160" r="36" fill="rgba(6, 182, 212, 0.15)" stroke="url(#gradientStroke)" stroke-width="2"/>
+            <text x="400" y="155" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="600">市场与福利</text>
+            <text x="400" y="172" text-anchor="middle" fill="#94a3b8" font-size="10">Market & Welfare</text>
+          </g>
+          
+          <g class="tree-node" id="node4">
+            <circle cx="520" cy="160" r="36" fill="rgba(139, 92, 246, 0.2)" stroke="url(#gradientStroke)" stroke-width="2"/>
+            <text x="520" y="155" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="600">宏观经济学</text>
+            <text x="520" y="172" text-anchor="middle" fill="#94a3b8" font-size="10">Macroeconomics</text>
+          </g>
+          
+          <g class="tree-node" id="node5">
+            <circle cx="400" cy="360" r="32" fill="rgba(6, 182, 212, 0.15)" stroke="url(#gradientStroke)" stroke-width="2"/>
+            <text x="400" y="365" text-anchor="middle" fill="#f1f5f9" font-size="14" font-weight="600">国际经济</text>
+          </g>
+          
+          <!-- 子节点 -->
+          <g class="tree-node" id="node6">
+            <circle cx="140" cy="250" r="24" fill="rgba(255, 255, 255, 0.04)" stroke="rgba(139, 92, 246, 0.5)" stroke-width="1.5"/>
+            <text x="140" y="255" text-anchor="middle" fill="#94a3b8" font-size="11">弹性</text>
+          </g>
+          
+          <g class="tree-node" id="node7">
+            <circle cx="200" cy="280" r="24" fill="rgba(255, 255, 255, 0.04)" stroke="rgba(139, 92, 246, 0.5)" stroke-width="1.5"/>
+            <text x="200" y="285" text-anchor="middle" fill="#94a3b8" font-size="11">均衡</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- 金句摘录 -->
+    <section class="content-section">
+      <h2 class="content-section-title reveal">
+        <span class="content-section-title-icon">🎯</span>
+        金句摘录
+      </h2>
+      <div class="quote-section reveal">
+        <p class="quote-text" id="quoteText"></p>
+        <p class="quote-source">—— 格里高利·曼昆《经济学原理》</p>
+      </div>
+    </section>
+
+    <!-- 案例分析 -->
+    <section class="content-section">
+      <h2 class="content-section-title reveal">
+        <span class="content-section-title-icon">💡</span>
+        案例分析
+      </h2>
+      <div class="cases-grid">
+        <div class="case-card reveal">
+          <h3 class="case-title">
+            <span class="case-title-icon">💎</span>
+            水与钻石悖论
+          </h3>
+          <p class="case-desc">为什么水是生命之源却非常便宜，而钻石几乎没有实际用途却极其昂贵？这个经典悖论困扰了经济学家数百年，直到边际效用理论的出现才得到解答。</p>
+          <div class="case-principle">
+            <strong>原理：</strong>边际效用价值论——价格由边际效用决定，而非总效用。水的总效用巨大，但边际效用低；钻石的总效用小，但边际效用高。
+          </div>
+        </div>
+        
+        <div class="case-card reveal">
+          <h3 class="case-title">
+            <span class="case-title-icon">🌾</span>
+            谷贱伤农
+          </h3>
+          <p class="case-desc">为什么农业丰收反而会让农民的收入减少？这看似违背直觉的现象，实际上蕴含着深刻的经济学原理。丰收增加了供给，但粮食是需求缺乏弹性的商品。</p>
+          <div class="case-principle">
+            <strong>原理：</strong>需求弹性——对于需求缺乏弹性的商品，供给增加导致价格大幅下降，而需求量增加有限，最终总收益反而减少。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 关联书籍 -->
+    <section class="content-section">
+      <h2 class="content-section-title reveal">
+        <span class="content-section-title-icon">🔗</span>
+        关联书籍
+      </h2>
+      <div class="related-books reveal">
+        <div class="related-graph">
+          <div class="related-center">经济学原理</div>
+          <div class="related-items">
+            <div class="related-item">📊 宏观经济学</div>
+            <div class="related-item">📉 金融经济学</div>
+            <div class="related-item">🌍 国际经济学</div>
+            <div class="related-item">🧮 计量经济学</div>
+            <div class="related-item">🏛️ 政治经济学</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 今日思考题 -->
+    <section class="content-section">
+      <h2 class="content-section-title reveal">
+        <span class="content-section-title-icon">📝</span>
+        今日思考题
+      </h2>
+      <div class="questions-grid">
+        <div class="question-card reveal">
+          <div class="question-number">1</div>
+          <p class="question-text">你最近做过的一个重大决策中，机会成本是什么？请具体分析你放弃了什么。</p>
+        </div>
+        <div class="question-card reveal">
+          <div class="question-number">2</div>
+          <p class="question-text">举一个你生活中"边际决策"的例子，说明你如何比较边际收益和边际成本。</p>
+        </div>
+        <div class="question-card reveal">
+          <div class="question-number">3</div>
+          <p class="question-text">贸易如何改善了你生活的某个方面？从比较优势的角度进行分析。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 学习完成按钮 -->
+    <section class="complete-section">
+      <button class="btn-complete" id="completeBtn" onclick="completeLearning()">
+        🎉 完成今日学习
+      </button>
+    </section>
+  </div>
+
+  <!-- ============================================
+       视图3：学习方法论
+       ============================================ -->
+  <div class="view" id="view-method">
+    
+    <section class="methodology-hero">
+      <h1 class="methodology-title">AI递归学习法</h1>
+      <p class="methodology-subtitle">用AI的力量，让每一次学习都站在上一次的肩膀上</p>
+    </section>
+
+    <!-- 方法论简介 -->
+    <section class="method-intro reveal">
+      <div class="method-intro-content">
+        <h2 class="method-intro-title">
+          <span class="content-section-title-icon">⚡</span>
+          什么是AI递归学习法？
+        </h2>
+        <p class="method-intro-text">
+          AI递归学习法是一种基于人工智能辅助的高效学习模式，其核心理念是：每一轮学习都不是孤立的，而是建立在前一轮学习成果的基础之上。
+          通过"输入—理解—输出—反馈—迭代"的闭环循环，让知识在反复的递归中不断深化、内化，最终形成完整的知识体系。
+        </p>
+        <p class="method-intro-text">
+          传统学习是线性的，读完一本是一本；而递归学习是指数级的，每一本新书都与已有知识网络产生连接，产生1+1>2的复利效应。
+          100天读完100本书，收获的不是100个孤立的知识点，而是一个相互关联、能够自我生长的完整知识系统。
+        </p>
+        <div class="method-features">
+          <div class="method-feature">
+            <div class="method-feature-icon">🔄</div>
+            <div class="method-feature-title">闭环循环</div>
+            <div class="method-feature-desc">输入→理解→输出→反馈→迭代</div>
+          </div>
+          <div class="method-feature">
+            <div class="method-feature-icon">📈</div>
+            <div class="method-feature-title">指数增长</div>
+            <div class="method-feature-desc">知识复利效应，越学越快</div>
+          </div>
+          <div class="method-feature">
+            <div class="method-feature-icon">🧩</div>
+            <div class="method-feature-title">体系构建</div>
+            <div class="method-feature-desc">网状知识结构而非孤岛</div>
+          </div>
+          <div class="method-feature">
+            <div class="method-feature-icon">🤖</div>
+            <div class="method-feature-title">AI赋能</div>
+            <div class="method-feature-desc">智能导读、问答、复盘</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 学习循环图 -->
+    <section class="learning-cycle-section">
+      <h2 class="section-title reveal">学习循环</h2>
+      <div class="cycle-container reveal" id="cycleContainer">
+        <div class="cycle-diagram">
+          <svg class="cycle-svg" viewBox="0 0 400 400">
+            <path class="cycle-path" id="cyclePath" 
+                  d="M200 40 
+                     L200 40 
+                     Q340 70 360 130 
+                     L360 270 
+                     Q340 330 200 360 
+                     Q60 330 40 270 
+                     L40 130 
+                     Q60 70 200 40 Z"/>
+          </svg>
+          <div class="cycle-center">递归<br>学习</div>
+          <div class="cycle-node">
+            <span class="cycle-node-icon">📥</span>
+            <span>输入</span>
+          </div>
+          <div class="cycle-node">
+            <span class="cycle-node-icon">🧠</span>
+            <span>理解</span>
+          </div>
+          <div class="cycle-node">
+            <span class="cycle-node-icon">✍️</span>
+            <span>输出</span>
+          </div>
+          <div class="cycle-node">
+            <span class="cycle-node-icon">📊</span>
+            <span>反馈</span>
+          </div>
+          <div class="cycle-node">
+            <span class="cycle-node-icon">🔄</span>
+            <span>迭代</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1小时时间分配 -->
+    <section class="timeline-section">
+      <h2 class="section-title reveal">每日1小时时间分配</h2>
+      <div class="timeline reveal">
+        <div class="timeline-items">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-time">0 - 10 min</div>
+              <div class="timeline-title">AI导读</div>
+              <div class="timeline-desc">AI语音快速浏览全书框架，建立整体认知</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-time">10 - 30 min</div>
+              <div class="timeline-title">核心观点</div>
+              <div class="timeline-desc">深入学习5个核心观点，理解底层逻辑</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-time">30 - 45 min</div>
+              <div class="timeline-title">案例分析</div>
+              <div class="timeline-desc">结合经典案例，深化理解与应用</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-time">45 - 60 min</div>
+              <div class="timeline-title">思考复盘</div>
+              <div class="timeline-desc">回答思考题，输出笔记，完成知识内化</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- 庆祝动画遮罩 -->
+<div class="celebration-overlay" id="celebrationOverlay"></div>
+
+<script>
+/* ============================================
+   AI导读语音文稿
+   ============================================ */
+const guideSegments = [
+  {
+    label: '开场白',
+    text: '你好，欢迎来到一百天一百本书AI导读。今天我们要学习的第一本书，是哈佛大学经济学教授格里高利·曼昆的经典著作《经济学原理》。这本书是全球最流行的经济学入门教材，被哈佛大学、耶鲁大学、斯坦福大学等超过七百所大学采用，被誉为经济学领域的圣经。'
+  },
+  {
+    label: '为什么读',
+    text: '为什么我们要从这本书开始一百天的学习旅程？因为经济学不是一门只关于钱的学问，它是一种思维方式，是理解这个世界运行规律的底层框架。无论你是创业者、管理者还是普通人，经济学原理都能帮助你做出更明智的决策。曼昆的这本书最大的特点就是通俗易懂，它用生活中的例子解释抽象的经济概念，让每一个读者都能感受到经济学的魅力。'
+  },
+  {
+    label: '全书框架',
+    text: '全书分为微观经济学和宏观经济学两大部分，以十大经济学原理贯穿始终。微观部分从供需理论入手，讲解市场如何运行、消费者和生产者如何决策，以及市场效率和福利经济学。宏观部分则拓展到整体经济，涵盖GDP、通货膨胀、失业、经济增长、货币政策和财政政策等核心议题。最后还介绍了国际经济学的基础知识。'
+  },
+  {
+    label: '核心观点一',
+    text: '第一个核心观点是人们面临权衡取舍。这是经济学十大原理之首。经济学研究的是稀缺资源的配置问题，而稀缺就意味着选择。你选择把时间花在学习上，就放弃了娱乐和休息的机会。你选择投资这个项目，就意味着放弃了其他项目的可能。理解权衡取舍，是做出理性决策的第一步。'
+  },
+  {
+    label: '核心观点二',
+    text: '第二个核心观点是机会成本。某种东西的成本，是为了得到它而放弃的东西。这不仅仅是金钱上的成本，更重要的是时间、精力和机会的成本。比如，上大学的成本不仅是学费，更是你这四年如果去工作所能赚到的钱和积累的经验。理解机会成本，能让你更深刻地认识每一个选择的真实代价。'
+  },
+  {
+    label: '核心观点三',
+    text: '第三个核心观点是边际决策。理性人考虑边际量。很多决策不是非此即彼的选择，而是多做一点还是少做一点的调整。比如，考试前你是复习三小时还是四小时，这就是边际决策。当边际收益大于边际成本时，就值得去做。这个原理可以解释为什么钻石比水贵，为什么企业会在亏损时继续经营。'
+  },
+  {
+    label: '核心观点四',
+    text: '第四个核心观点是比较优势与贸易。贸易能让每个人的状况变得更好，因为它允许人们专门从事自己最擅长的活动。即使一个人在所有事情上都比另一个人强，通过分工和贸易，双方仍然能获益。这就是为什么全球化和自由贸易是经济增长的重要引擎。理解比较优势，能帮助我们看清合作的真正价值。'
+  },
+  {
+    label: '学习建议',
+    text: '接下来给你一个一小时高效学习的建议。前十分钟，请听这段AI导读，建立全书的整体认知框架。接下来二十分钟，仔细阅读核心观点速览，理解每个观点的底层逻辑，可以用笔在纸上画一画它们之间的关系。再用十五分钟，结合两个经典案例水与钻石悖论和谷贱伤农，深化对边际效用和需求弹性的理解。最后十五分钟，回答三个思考题，把经济学原理应用到你自己的生活中，完成知识的内化。'
+  },
+  {
+    label: '结束语',
+    text: '经济学不仅仅是一门学科，更是一种看待世界的方式。当你学会用经济学的眼光观察生活，你会发现每一个决策背后都有成本和收益的权衡，每一个市场现象都有供需的力量在驱动。希望今天的学习，能为你打开一扇通往经济学世界的大门。让我们一起，用一百天读完一百本书，构建完整的商业知识体系。加油，我们下一本书见。'
+  }
+];
+
+/* ============================================
+   AI导读语音播放 (多音源 TTS 管理器)
+   ============================================ */
+
+// ========== 文本分段工具 ==========
+function splitTextIntoChunks(text, maxLen) {
+  maxLen = maxLen || 150;
+  const chunks = [];
+  // 按句号、问号、感叹号、分号、逗号等标点切分
+  const sentences = text.match(/[^。！？；，、,.!?;\s]+[。！？；，、,.!?;\s]?/g) || [text];
+  let currentChunk = '';
+  
+  for (let i = 0; i < sentences.length; i++) {
+    const s = sentences[i];
+    if (currentChunk.length + s.length <= maxLen) {
+      currentChunk += s;
+    } else {
+      if (currentChunk) {
+        chunks.push(currentChunk);
+      }
+      // 如果单句超过 maxLen，硬切
+      if (s.length > maxLen) {
+        for (let j = 0; j < s.length; j += maxLen) {
+          chunks.push(s.substr(j, maxLen));
+        }
+        currentChunk = '';
+      } else {
+        currentChunk = s;
+      }
+    }
+  }
+  if (currentChunk) {
+    chunks.push(currentChunk);
+  }
+  return chunks;
+}
+
+// ========== TTS 管理器 ==========
+const TTSManager = {
+  currentSource: 'baidu',
+  speed: 1.0,
+  audioChunks: [],        // 所有音频小段 [{text, segIndex, duration}]
+  currentChunkIndex: 0,   // 当前播放的 chunk 索引
+  isPlaying: false,
+  isPaused: false,
+  currentAudio: null,     // 当前 Audio 对象
+  nextAudio: null,        // 预加载的下一段 Audio
+  totalDuration: 0,       // 总估算时长（秒）
+  elapsedTime: 0,         // 已播放时间（秒）
+  progressTimer: null,
+  chunkStartTimes: [],    // 每个 chunk 的累计开始时间
+  segIndexToChunkMap: [], // guideSegment 索引 -> 起始 chunk 索引
+  chineseVoice: null,
+  systemUtterances: [],   // 系统 TTS 队列
+  currentSystemUtterance: null,
+  sourceFailed: false,    // 当前音源是否已失败（用于降级）
+  
+  // 音源名称映射
+  sourceNames: {
+    baidu: '百度女声',
+    youdao: '有道女声',
+    system: '系统内置'
+  },
+
+  // 初始化：将 guideSegments 拆分为音频小片段
+  initChunks: function() {
+    this.audioChunks = [];
+    this.segIndexToChunkMap = [];
+    const maxLen = (this.currentSource === 'system') ? 9999 : 150;
+    
+    guideSegments.forEach((seg, segIdx) => {
+      this.segIndexToChunkMap.push(this.audioChunks.length);
+      if (this.currentSource === 'system') {
+        // 系统 TTS 不需要切小段
+        this.audioChunks.push({
+          text: seg.text,
+          segIndex: segIdx,
+          duration: seg.text.length / 4 // 估算时长
+        });
+      } else {
+        // 在线 TTS 按 150 字切分
+        const subChunks = splitTextIntoChunks(seg.text, 150);
+        subChunks.forEach(subText => {
+          this.audioChunks.push({
+            text: subText,
+            segIndex: segIdx,
+            duration: subText.length / 4.5 // 在线 TTS 稍快，估算
+          });
+        });
+      }
+    });
+    
+    // 计算累计开始时间
+    this.chunkStartTimes = [];
+    let accumulated = 0;
+    this.audioChunks.forEach(chunk => {
+      this.chunkStartTimes.push(accumulated);
+      accumulated += chunk.duration;
+    });
+    this.totalDuration = accumulated;
+    
+    document.getElementById('audioTotalTime').textContent = this.formatTime(this.totalDuration);
+  },
+
+  // 获取百度 TTS 的 spd 参数 (1-9 对应 0.5x - 2x)
+  getBaiduSpeed: function() {
+    // 线性映射：speed 0.5->1, 1.0->5, 2.0->9
+    const spd = Math.round(1 + (this.speed - 0.5) * (8 / 1.5));
+    return Math.max(1, Math.min(9, spd));
+  },
+
+  // 获取 TTS 音频 URL
+  getAudioUrl: function(text, source) {
+    source = source || this.currentSource;
+    const encoded = encodeURIComponent(text);
+    if (source === 'baidu') {
+      const spd = this.getBaiduSpeed();
+      return `https://fanyi.baidu.com/gettts?lan=zh&text=${encoded}&spd=${spd}&source=web`;
+    } else if (source === 'youdao') {
+      return `https://dict.youdao.com/dictvoice?audio=${encoded}&type=2`;
+    }
+    return '';
+  },
+
+  // 创建 Audio 对象并预加载
+  createAudio: function(text, source) {
+    const url = this.getAudioUrl(text, source);
+    if (!url) return null;
+    const audio = new Audio(url);
+    audio.preload = 'auto';
+    return audio;
+  },
+
+  // 播放指定 chunk 索引开始的内容
+  playFromChunk: function(chunkIndex) {
+    this.stopCurrent();
+    
+    if (chunkIndex >= this.audioChunks.length) {
+      this.onPlaybackEnd();
+      return;
+    }
+    
+    this.currentChunkIndex = chunkIndex;
+    this.elapsedTime = this.chunkStartTimes[chunkIndex] || 0;
+    
+    if (this.currentSource === 'system') {
+      this.playSystemFromChunk(chunkIndex);
+      return;
+    }
+    
+    // 在线 TTS 播放
+    this.playChunk(chunkIndex);
+    
+    // 预加载下一段
+    if (chunkIndex + 1 < this.audioChunks.length) {
+      this.nextAudio = this.createAudio(this.audioChunks[chunkIndex + 1].text);
+      this._nextAudioIndex = chunkIndex + 1;
+    }
+    
+    this.isPlaying = true;
+    this.isPaused = false;
+    this.updatePlayIcon(true);
+    this.startProgressTimer();
+    this.highlightSegment(this.audioChunks[chunkIndex].segIndex);
+  },
+
+  // 播放单个 chunk
+  playChunk: function(index) {
+    if (index >= this.audioChunks.length) {
+      this.onPlaybackEnd();
+      return;
+    }
+    
+    this.currentChunkIndex = index;
+    const chunk = this.audioChunks[index];
+    
+    // 高亮对应的段落
+    const prevSegIndex = index > 0 ? this.audioChunks[index - 1].segIndex : -1;
+    if (chunk.segIndex !== prevSegIndex) {
+      this.highlightSegment(chunk.segIndex);
+    }
+    
+    let audio;
+    // 如果有预加载好的下一段，直接使用
+    if (this.nextAudio && index === this._nextAudioIndex) {
+      audio = this.nextAudio;
+      this.nextAudio = null;
+    } else {
+      audio = this.createAudio(chunk.text);
+    }
+    
+    this.currentAudio = audio;
+    if (!audio) {
+      this.tryFallback(index);
+      return;
+    }
+    
+    audio.onended = () => {
+      // 播放下一段
+      const nextIndex = index + 1;
+      if (nextIndex < this.audioChunks.length) {
+        // 预加载下下段
+        if (nextIndex + 1 < this.audioChunks.length) {
+          this.nextAudio = this.createAudio(this.audioChunks[nextIndex + 1].text);
+          this._nextAudioIndex = nextIndex + 1;
+        }
+        this.playChunk(nextIndex);
+      } else {
+        this.onPlaybackEnd();
+      }
+    };
+    
+    audio.onerror = () => {
+      console.warn(`音源 ${this.currentSource} 播放失败，chunk ${index}`);
+      this.tryFallback(index);
+    };
+    
+    const playPromise = audio.play();
+    if (playPromise && playPromise.catch) {
+      playPromise.catch(err => {
+        console.warn('播放出错:', err);
+        this.tryFallback(index);
+      });
+    }
+  },
+
+  // 尝试降级到下一个音源
+  tryFallback: function(chunkIndex) {
+    if (this.sourceFailed) return; // 已经在降级流程中
+    
+    const sourceOrder = ['baidu', 'youdao', 'system'];
+    const currentIdx = sourceOrder.indexOf(this.currentSource);
+    
+    if (currentIdx < sourceOrder.length - 1) {
+      const nextSource = sourceOrder[currentIdx + 1];
+      console.log(`音源 ${this.currentSource} 失败，自动降级到 ${nextSource}`);
+      this.sourceFailed = true;
+      this.switchSource(nextSource, chunkIndex);
+      this.sourceFailed = false;
+    } else {
+      // 已经是最后一个音源（系统TTS），彻底失败
+      console.error('所有音源均播放失败');
+      this.isPlaying = false;
+      this.isPaused = false;
+      this.updatePlayIcon(false);
+      this.stopProgressTimer();
+    }
+  },
+
+  // 切换音源
+  switchSource: function(source, resumeChunkIndex) {
+    const wasPlaying = this.isPlaying || this.isPaused;
+    const oldSource = this.currentSource;
+    const oldChunks = this.audioChunks.slice();
+    const oldChunkIndex = resumeChunkIndex != null ? resumeChunkIndex : this.currentChunkIndex;
+    // 记录当前段落索引，用于跨音源映射
+    const currentSegIndex = oldChunks[oldChunkIndex] ? oldChunks[oldChunkIndex].segIndex : 0;
+    
+    this.stopCurrent();
+    
+    this.currentSource = source;
+    this.sourceFailed = false;
+    
+    // 更新 UI
+    const select = document.getElementById('audioSourceSelect');
+    if (select) select.value = source;
+    document.getElementById('audioSourceName').textContent = this.sourceNames[source];
+    
+    // 重新分段
+    this.initChunks();
+    
+    // 如果之前在播放，从对应的位置继续
+    if (wasPlaying) {
+      // 找到新音源中对应 segIndex 的第一个 chunk
+      let newChunkIndex = 0;
+      for (let i = 0; i < this.audioChunks.length; i++) {
+        if (this.audioChunks[i].segIndex === currentSegIndex) {
+          newChunkIndex = i;
+          break;
+        }
+        if (this.audioChunks[i].segIndex > currentSegIndex) {
+          newChunkIndex = Math.max(0, i - 1);
+          break;
+        }
+      }
+      this.playFromChunk(newChunkIndex);
+    }
+  },
+
+  // ========== 系统 TTS 播放 ==========
+  playSystemFromChunk: function(chunkIndex) {
+    if (!window.speechSynthesis) {
+      this.tryFallback(chunkIndex);
+      return;
+    }
+    
+    window.speechSynthesis.cancel();
+    this.systemUtterances = [];
+    
+    for (let i = chunkIndex; i < this.audioChunks.length; i++) {
+      const utterance = new SpeechSynthesisUtterance(this.audioChunks[i].text);
+      utterance.lang = 'zh-CN';
+      utterance.rate = this.speed;
+      if (this.chineseVoice) {
+        utterance.voice = this.chineseVoice;
+      }
+      
+      utterance.onstart = () => {
+        this.currentChunkIndex = i;
+        this.highlightSegment(this.audioChunks[i].segIndex);
+      };
+      
+      utterance.onend = () => {
+        if (i === this.audioChunks.length - 1) {
+          this.onPlaybackEnd();
+        }
+      };
+      
+      utterance.onerror = (e) => {
+        if (e.error !== 'canceled' && e.error !== 'interrupted') {
+          console.error('系统TTS错误:', e);
+          this.tryFallback(i);
+        }
+      };
+      
+      this.systemUtterances.push(utterance);
+      window.speechSynthesis.speak(utterance);
+    }
+    
+    this.isPlaying = true;
+    this.isPaused = false;
+    this.updatePlayIcon(true);
+    this.startProgressTimer();
+    this.highlightSegment(this.audioChunks[chunkIndex].segIndex);
+  },
+
+  // 停止当前播放
+  stopCurrent: function() {
+    if (this.currentAudio) {
+      try { this.currentAudio.pause(); } catch(e) {}
+      this.currentAudio = null;
+    }
+    if (this.nextAudio) {
+      try { this.nextAudio.pause(); } catch(e) {}
+      this.nextAudio = null;
+    }
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    this.systemUtterances = [];
+    this.currentSystemUtterance = null;
+  },
+
+  // 播放结束
+  onPlaybackEnd: function() {
+    this.isPlaying = false;
+    this.isPaused = false;
+    this.currentChunkIndex = 0;
+    this.elapsedTime = this.totalDuration;
+    this.updateProgress();
+    this.updatePlayIcon(false);
+    this.stopProgressTimer();
+    // 清除高亮
+    document.querySelectorAll('.guide-paragraph').forEach(p => {
+      p.classList.remove('active');
+    });
+    // 重置到开头
+    setTimeout(() => {
+      this.elapsedTime = 0;
+      this.currentChunkIndex = 0;
+      this.updateProgress();
+    }, 1500);
+  },
+
+  // 暂停/恢复
+  toggle: function() {
+    if (!this.isPlaying) {
+      if (this.isPaused && this.currentSource === 'system') {
+        window.speechSynthesis.resume();
+        this.isPaused = false;
+        this.isPlaying = true;
+        this.updatePlayIcon(true);
+        this.startProgressTimer();
+      } else if (this.isPaused && this.currentAudio) {
+        // 恢复在线TTS播放
+        this.currentAudio.play();
+        this.isPaused = false;
+        this.isPlaying = true;
+        this.updatePlayIcon(true);
+        this.startProgressTimer();
+      } else {
+        // 从头开始
+        this.playFromChunk(0);
+      }
+    } else {
+      // 暂停
+      if (this.currentSource === 'system') {
+        window.speechSynthesis.pause();
+      } else if (this.currentAudio) {
+        this.currentAudio.pause();
+      }
+      this.isPaused = true;
+      this.isPlaying = false;
+      this.updatePlayIcon(false);
+      this.stopProgressTimer();
+    }
+  },
+
+  // 设置语速
+  setSpeed: function(speed) {
+    this.speed = speed;
+    
+    // 更新按钮状态
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (parseFloat(btn.dataset.speed) === speed) {
+        btn.classList.add('active');
+      }
+    });
+    
+    // 如果正在播放，需要重新开始当前 chunk 以应用新速度
+    if (this.isPlaying || this.isPaused) {
+      const currentIdx = this.currentChunkIndex;
+      this.playFromChunk(currentIdx);
+    }
+  },
+
+  // 进度跳转
+  seek: function(event) {
+    const bar = document.getElementById('audioProgressBar');
+    const rect = bar.getBoundingClientRect();
+    const percent = (event.clientX - rect.left) / rect.width;
+    const targetTime = percent * this.totalDuration;
+    
+    // 找到对应的 chunk
+    let targetChunk = 0;
+    for (let i = this.chunkStartTimes.length - 1; i >= 0; i--) {
+      if (targetTime >= this.chunkStartTimes[i]) {
+        targetChunk = i;
+        break;
+      }
+    }
+    
+    this.elapsedTime = this.chunkStartTimes[targetChunk];
+    this.updateProgress();
+    
+    if (this.isPlaying || this.isPaused) {
+      this.playFromChunk(targetChunk);
+    }
+  },
+
+  // 重置
+  reset: function() {
+    this.stopCurrent();
+    this.isPlaying = false;
+    this.isPaused = false;
+    this.currentChunkIndex = 0;
+    this.elapsedTime = 0;
+    this.stopProgressTimer();
+    this.updatePlayIcon(false);
+    this.updateProgress();
+    document.querySelectorAll('.guide-paragraph').forEach(p => {
+      p.classList.remove('active');
+    });
+  },
+
+  // ========== UI 更新辅助 ==========
+  formatTime: function(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  },
+
+  updatePlayIcon: function(playing) {
+    const btn = document.getElementById('audioPlayBtn');
+    const icon = document.getElementById('playIcon');
+    const waveform = document.getElementById('audioWaveform');
+    
+    if (playing) {
+      icon.innerHTML = '<rect x="6" y="4" width="4" height="16" fill="white"/><rect x="14" y="4" width="4" height="16" fill="white"/>';
+      btn.classList.add('playing');
+      waveform.classList.add('playing');
+    } else {
+      icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+      btn.classList.remove('playing');
+      waveform.classList.remove('playing');
+    }
+  },
+
+  highlightSegment: function(segIndex) {
+    document.querySelectorAll('.guide-paragraph').forEach(p => {
+      p.classList.remove('active');
+    });
+    const currentPara = document.getElementById('guide-para-' + segIndex);
+    if (currentPara) {
+      currentPara.classList.add('active');
+      const container = document.getElementById('audioGuideText');
+      const paraRect = currentPara.offsetTop;
+      container.scrollTop = paraRect - 50;
+    }
+  },
+
+  updateProgress: function() {
+    const progressFill = document.getElementById('audioProgressFill');
+    const currentTimeEl = document.getElementById('audioCurrentTime');
+    const percent = Math.min((this.elapsedTime / this.totalDuration) * 100, 100);
+    progressFill.style.width = percent + '%';
+    currentTimeEl.textContent = this.formatTime(this.elapsedTime);
+  },
+
+  startProgressTimer: function() {
+    if (this.progressTimer) {
+      clearInterval(this.progressTimer);
+    }
+    this.progressTimer = setInterval(() => {
+      if (this.isPlaying && !this.isPaused) {
+        const speedFactor = (this.currentSource === 'youdao') ? 1 : this.speed;
+        this.elapsedTime += 0.1 * speedFactor;
+        if (this.elapsedTime > this.totalDuration) {
+          this.elapsedTime = this.totalDuration;
+        }
+        this.updateProgress();
+      }
+    }, 100);
+  },
+
+  stopProgressTimer: function() {
+    if (this.progressTimer) {
+      clearInterval(this.progressTimer);
+      this.progressTimer = null;
+    }
+  },
+
+  loadChineseVoice: function() {
+    if (!window.speechSynthesis) return;
+    const voices = window.speechSynthesis.getVoices();
+    const zhVoice = voices.find(v => v.lang.startsWith('zh') && v.name.includes('Chinese')) ||
+                    voices.find(v => v.lang.startsWith('zh-CN')) ||
+                    voices.find(v => v.lang.startsWith('zh'));
+    this.chineseVoice = zhVoice || null;
+  }
+};
+
+// ========== 对外接口（保持原函数名兼容）==========
+function toggleAudio() {
+  TTSManager.toggle();
+}
+
+function setSpeed(speed) {
+  TTSManager.setSpeed(speed);
+}
+
+function seekAudio(event) {
+  TTSManager.seek(event);
+}
+
+function resetAudio() {
+  TTSManager.reset();
+}
+
+function setAudioSource(source) {
+  const wasPlaying = TTSManager.isPlaying || TTSManager.isPaused;
+  if (wasPlaying) {
+    TTSManager.switchSource(source);
+  } else {
+    TTSManager.currentSource = source;
+    document.getElementById('audioSourceName').textContent = TTSManager.sourceNames[source];
+    TTSManager.initChunks();
+  }
+}
+
+// 初始化导读文字显示
+function initGuideText() {
+  const container = document.getElementById('guideParagraphs');
+  container.innerHTML = '';
+  
+  guideSegments.forEach((seg, index) => {
+    const para = document.createElement('div');
+    para.className = 'guide-paragraph';
+    para.id = 'guide-para-' + index;
+    para.innerHTML = `<span class="para-label">${seg.label}</span>${seg.text}`;
+    container.appendChild(para);
+  });
+  
+  // 初始化 TTS 分段
+  TTSManager.initChunks();
+}
+
+/* ============================================
+   视图切换
+   ============================================ */
+function switchView(viewName) {
+  // 隐藏所有视图
+  document.querySelectorAll('.view').forEach(view => {
+    view.classList.remove('active');
+  });
+  
+  // 显示目标视图
+  const targetView = document.getElementById('view-' + viewName);
+  if (targetView) {
+    targetView.classList.add('active');
+  }
+  
+  // 更新导航标签
+  document.querySelectorAll('.nav-tab').forEach((tab, index) => {
+    tab.classList.remove('active');
+  });
+  
+  const tabMap = { 'home': 0, 'book': 1, 'method': 2 };
+  if (tabMap[viewName] !== undefined) {
+    document.querySelectorAll('.nav-tab')[tabMap[viewName]].classList.add('active');
+  }
+  
+  // 滚动到顶部
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  // 离开书籍页面时停止语音
+  if (viewName !== 'book') {
+    resetAudio();
+  }
+  
+  // 重新初始化滚动动画
+  setTimeout(() => {
+    initScrollReveal();
+    
+    // 特殊视图的动画初始化
+    if (viewName === 'book') {
+      initTypewriter();
+      initKnowledgeTree();
+      initGuideText();
+    }
+    if (viewName === 'method') {
+      initCycleAnimation();
+    }
+    if (viewName === 'home') {
+      initProgressAnimations();
+    }
+  }, 100);
+}
+
+/* ============================================
+   滚动入场动画 (Intersection Observer)
+   ============================================ */
+let observer = null;
+
+function initScrollReveal() {
+  // 清除之前的observer
+  if (observer) {
+    observer.disconnect();
+  }
+  
+  const reveals = document.querySelectorAll('.reveal');
+  
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+  
+  reveals.forEach(el => {
+    observer.observe(el);
+  });
+}
+
+/* ============================================
+   环形进度条动画
+   ============================================ */
+function animateProgressRing(percent) {
+  const ring = document.getElementById('progressRing');
+  const percentText = document.getElementById('progressPercent');
+  const circumference = 2 * Math.PI * 100; // 2πr, r=100
+  
+  setTimeout(() => {
+    ring.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+  }, 300);
+  
+  // 数字滚动动画
+  let current = 0;
+  const target = percent;
+  const duration = 1500;
+  const startTime = performance.now();
+  
+  function updateNumber(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // easeOutExpo
+    const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+    current = Math.floor(easeProgress * target);
+    percentText.textContent = current + '%';
+    
+    if (progress < 1) {
+      requestAnimationFrame(updateNumber);
+    }
+  }
+  
+  requestAnimationFrame(updateNumber);
+  
+  // 导航栏进度条
+  document.getElementById('navProgressFill').style.width = percent + '%';
+}
+
+/* ============================================
+   分类进度条动画
+   ============================================ */
+function initProgressAnimations() {
+  const progressFills = document.querySelectorAll('.category-progress-fill');
+  progressFills.forEach(fill => {
+    const progress = fill.dataset.progress || 0;
+    setTimeout(() => {
+      fill.style.width = progress + '%';
+    }, 300);
+  });
+}
+
+/* ============================================
+   金句打字机效果
+   ============================================ */
+let typewriterInterval = null;
+
+function initTypewriter() {
+  if (typewriterInterval) {
+    clearInterval(typewriterInterval);
+  }
+  
+  const quoteElement = document.getElementById('quoteText');
+  const text = '经济学研究的是社会如何管理自己的稀缺资源。';
+  
+  quoteElement.innerHTML = '';
+  let index = 0;
+  
+  // 添加光标
+  const cursor = document.createElement('span');
+  cursor.className = 'typewriter-cursor';
+  quoteElement.appendChild(cursor);
+  
+  // 检查元素是否可见
+  const checkVisible = () => {
+    const rect = quoteElement.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.8) {
+      startTyping();
+      return true;
+    }
+    return false;
+  };
+  
+  const startTyping = () => {
+    if (typewriterInterval) return;
+    
+    typewriterInterval = setInterval(() => {
+      if (index < text.length) {
+        quoteElement.insertBefore(document.createTextNode(text[index]), cursor);
+        index++;
+      } else {
+        clearInterval(typewriterInterval);
+        typewriterInterval = null;
+      }
+    }, 80);
+  };
+  
+  // 先尝试立即启动，如果元素在可视区
+  if (!checkVisible()) {
+    // 否则监听滚动
+    const scrollHandler = () => {
+      if (checkVisible()) {
+        window.removeEventListener('scroll', scrollHandler);
+      }
+    };
+    window.addEventListener('scroll', scrollHandler);
+  }
+}
+
+/* ============================================
+   知识树节点依次展开
+   ============================================ */
+function initKnowledgeTree() {
+  const treeContainer = document.getElementById('knowledgeTree');
+  
+  const expandTree = () => {
+    const rect = treeContainer.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.7) {
+      // 依次显示节点和线条
+      const nodes = document.querySelectorAll('.tree-node');
+      const lines = document.querySelectorAll('.tree-line');
+      
+      nodes.forEach((node, i) => {
+        setTimeout(() => {
+          node.classList.add('visible');
+        }, 200 + i * 150);
+      });
+      
+      lines.forEach((line, i) => {
+        setTimeout(() => {
+          line.classList.add('visible');
+        }, 300 + i * 200);
+      });
+      
+      window.removeEventListener('scroll', scrollHandler);
+      return true;
+    }
+    return false;
+  };
+  
+  const scrollHandler = () => {
+    expandTree();
+  };
+  
+  // 先尝试立即启动
+  if (!expandTree()) {
+    window.addEventListener('scroll', scrollHandler);
+  }
+}
+
+/* ============================================
+   学习循环动画
+   ============================================ */
+function initCycleAnimation() {
+  const cycleContainer = document.getElementById('cycleContainer');
+  
+  const animateCycle = () => {
+    const rect = cycleContainer.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.7) {
+      const path = document.getElementById('cyclePath');
+      path.classList.add('visible');
+      window.removeEventListener('scroll', scrollHandler);
+      return true;
+    }
+    return false;
+  };
+  
+  const scrollHandler = () => {
+    animateCycle();
+  };
+  
+  if (!animateCycle()) {
+    window.addEventListener('scroll', scrollHandler);
+  }
+}
+
+/* ============================================
+   学习完成与庆祝动画
+   ============================================ */
+function completeLearning() {
+  const btn = document.getElementById('completeBtn');
+  
+  if (btn.classList.contains('completed')) {
+    return;
+  }
+  
+  btn.classList.add('completed');
+  btn.innerHTML = '✅ 已完成今日学习';
+  
+  // 触发庆祝动画
+  createConfetti();
+  
+  // 更新进度
+  setTimeout(() => {
+    // 模拟进度更新
+  }, 500);
+}
+
+function createConfetti() {
+  const overlay = document.getElementById('celebrationOverlay');
+  overlay.classList.add('active');
+  
+  const colors = ['#8b5cf6', '#06b6d4', '#f472b6', '#fbbf24', '#34d399', '#60a5fa'];
+  const confettiCount = 80;
+  
+  for (let i = 0; i < confettiCount; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    confetti.style.width = (Math.random() * 8 + 6) + 'px';
+    confetti.style.height = (Math.random() * 8 + 6) + 'px';
+    
+    overlay.appendChild(confetti);
+    
+    // 动画
+    const duration = Math.random() * 2 + 2;
+    const delay = Math.random() * 0.5;
+    const rotation = Math.random() * 720 - 360;
+    
+    confetti.animate([
+      { 
+        transform: 'translateY(0) rotate(0deg)', 
+        opacity: 1,
+        top: '-10px'
+      },
+      { 
+        transform: `translateY(${window.innerHeight + 50}px) rotate(${rotation}deg)`, 
+        opacity: 0,
+        top: 'auto',
+        bottom: '-50px'
+      }
+    ], {
+      duration: duration * 1000,
+      delay: delay * 1000,
+      easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      fill: 'forwards'
+    });
+  }
+  
+  // 3秒后移除
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    overlay.innerHTML = '';
+  }, 4000);
+}
+
+/* ============================================
+   页面初始化
+   ============================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  // 初始化滚动动画
+  initScrollReveal();
+  
+  // 启动环形进度条动画
+  animateProgressRing(1);
+  
+  // 初始化分类进度条
+  setTimeout(() => {
+    initProgressAnimations();
+  }, 500);
+
+  // 初始化导读文字
+  initGuideText();
+  
+  // 预加载系统TTS语音列表（兜底音源用）
+  if (window.speechSynthesis) {
+    if (window.speechSynthesis.getVoices().length > 0) {
+      TTSManager.loadChineseVoice();
+    }
+    window.speechSynthesis.onvoiceschanged = () => TTSManager.loadChineseVoice();
+  }
+});
+
+// 页面离开时停止播放
+window.addEventListener('beforeunload', () => {
+  resetAudio();
+});
+</script>
+</body>
+</html>
