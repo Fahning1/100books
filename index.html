@@ -1706,8 +1706,765 @@ body::before {
 }
 
 /* ============================================
-   响应式适配
+   深度内容组件
    ============================================ */
+
+/* 一句话钩子 */
+.hook-banner {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-md);
+  padding: 28px 32px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hook-banner::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--gradient-main);
+}
+
+.hook-label {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--primary-cyan);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.hook-text {
+  font-size: 19px;
+  line-height: 1.7;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* 章节地图 */
+.chapter-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.chapter-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-left: 3px solid var(--primary-purple);
+  border-radius: var(--radius-sm);
+  padding: 20px 22px;
+  transition: var(--transition-base);
+}
+
+.chapter-item:hover {
+  border-left-color: var(--primary-cyan);
+  background: var(--bg-card-hover);
+}
+
+.chapter-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.chapter-part {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary-purple);
+  letter-spacing: 0.5px;
+}
+
+.chapter-chapters {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.chapter-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.chapter-essence {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 10px;
+}
+
+.chapter-question {
+  font-size: 13px;
+  color: var(--primary-cyan);
+  line-height: 1.6;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-glass);
+}
+
+.chapter-question::before {
+  content: '💭 ';
+}
+
+/* 深度精读手风琴 */
+.insights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.insight-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition-base);
+}
+
+.insight-item.open {
+  border-color: var(--border-glow);
+  background: rgba(139, 92, 246, 0.04);
+}
+
+.insight-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 26px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.insight-head:hover {
+  background: var(--bg-card-hover);
+}
+
+.insight-badge {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary-purple);
+}
+
+.insight-head-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.insight-head-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.insight-head-sub {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+}
+
+.insight-arrow {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+}
+
+.insight-item.open .insight-arrow {
+  transform: rotate(180deg);
+  color: var(--primary-cyan);
+}
+
+.insight-body {
+  display: none;
+  padding: 0 26px 26px;
+}
+
+.insight-item.open .insight-body {
+  display: block;
+  animation: fadeInUp 0.35s ease;
+}
+
+.insight-paragraph {
+  font-size: 15px;
+  line-height: 1.95;
+  color: #cbd5e1;
+  margin-bottom: 16px;
+  text-align: justify;
+}
+
+.insight-paragraph:first-child::first-letter {
+  font-size: 1.05em;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.insight-sub-block {
+  margin-top: 22px;
+}
+
+.insight-sub-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--primary-cyan);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.example-box {
+  background: rgba(6, 182, 212, 0.05);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+
+.example-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.example-text {
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.term-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.term-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 100px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  max-width: 100%;
+}
+
+.term-chip-name {
+  font-weight: 700;
+  color: var(--primary-purple);
+  flex-shrink: 0;
+}
+
+.term-chip-def {
+  color: var(--text-secondary);
+}
+
+.takeaway-box {
+  margin-top: 22px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(6, 182, 212, 0.06) 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.takeaway-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.takeaway-text {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* 金句列表 */
+.quotes-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 18px;
+}
+
+.quote-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 26px;
+  position: relative;
+  transition: var(--transition-base);
+}
+
+.quote-card:hover {
+  border-color: var(--border-glow);
+}
+
+.quote-card::before {
+  content: '"';
+  position: absolute;
+  top: 8px;
+  left: 18px;
+  font-size: 56px;
+  line-height: 1;
+  color: rgba(139, 92, 246, 0.15);
+  font-family: Georgia, serif;
+}
+
+.quote-card-text {
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-card-source {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.quote-card-note {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  padding-top: 12px;
+  border-top: 1px dashed var(--border-glass);
+}
+
+.quote-card-note::before {
+  content: '解读 · ';
+  color: var(--primary-cyan);
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.5px;
+}
+
+/* 深度案例 */
+.case-detail {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  margin-bottom: 20px;
+  transition: var(--transition-base);
+}
+
+.case-detail:hover {
+  border-color: var(--border-glow);
+}
+
+.case-detail-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.case-detail-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.case-detail-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.case-steps {
+  display: grid;
+  gap: 14px;
+}
+
+.case-step {
+  display: grid;
+  grid-template-columns: 68px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.case-step-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--primary-cyan);
+  background: rgba(6, 182, 212, 0.1);
+  border-radius: 6px;
+  padding: 5px 0;
+  text-align: center;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.case-step-text {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  text-align: justify;
+}
+
+.case-takeaway {
+  margin-top: 18px;
+  background: rgba(139, 92, 246, 0.07);
+  border-left: 3px solid var(--primary-purple);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 14px 18px;
+}
+
+.case-takeaway-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--primary-purple);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.case-takeaway-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #cbd5e1;
+}
+
+.case-principle-line {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border-glass);
+}
+
+.case-principle-line::before {
+  content: '原理 · ';
+  color: var(--primary-cyan);
+  font-weight: 600;
+}
+
+/* 概念闪卡 */
+.flashcard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.flashcard {
+  perspective: 1000px;
+  height: 150px;
+  cursor: pointer;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid var(--border-glass);
+  background: var(--bg-card);
+}
+
+.flashcard-front {
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.flashcard-term {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.flashcard-hint {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border-color: var(--border-glow);
+  justify-content: center;
+  gap: 8px;
+}
+
+.flashcard-def {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+
+.flashcard-example {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--primary-cyan);
+}
+
+/* 自测题 */
+.quiz-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.quiz-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 24px 26px;
+}
+
+.quiz-question {
+  font-size: 15.5px;
+  line-height: 1.7;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.quiz-qnum {
+  color: var(--primary-cyan);
+  flex-shrink: 0;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-base);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.quiz-option:hover {
+  border-color: var(--border-glow);
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.quiz-option.correct {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  color: #a7f3d0;
+}
+
+.quiz-option.wrong {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  color: #fecaca;
+}
+
+.quiz-option.disabled {
+  pointer-events: none;
+}
+
+.quiz-option-key {
+  font-weight: 700;
+  color: var(--primary-purple);
+  flex-shrink: 0;
+}
+
+.quiz-option.correct .quiz-option-key {
+  color: #10b981;
+}
+
+.quiz-option.wrong .quiz-option-key {
+  color: #ef4444;
+}
+
+.quiz-explanation {
+  display: none;
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: rgba(6, 182, 212, 0.06);
+  border-left: 3px solid var(--primary-cyan);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.quiz-explanation.show {
+  display: block;
+  animation: fadeInUp 0.3s ease;
+}
+
+/* 思考题 + 笔记 */
+.think-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 24px 26px;
+  margin-bottom: 16px;
+}
+
+.think-question {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.think-num {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--gradient-main);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.think-text {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.think-hint {
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-left: 44px;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--border-glow);
+}
+
+.think-hint::before {
+  content: '思路 · ';
+  color: var(--primary-cyan);
+  font-weight: 600;
+}
+
+.note-area {
+  margin-left: 44px;
+}
+
+.note-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.note-input {
+  width: 100%;
+  min-height: 88px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  color: var(--text-primary);
+  font-size: 13.5px;
+  line-height: 1.7;
+  font-family: inherit;
+  resize: vertical;
+  transition: var(--transition-base);
+}
+
+.note-input:focus {
+  outline: none;
+  border-color: var(--border-glow);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.note-input::placeholder {
+  color: var(--text-muted);
+}
+
+.note-status {
+  font-size: 11.5px;
+  color: #10b981;
+  margin-top: 6px;
+  height: 16px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.note-status.show {
+  opacity: 1;
+}
+
+.quiz-score {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 20px;
+}
+
+.quiz-score strong {
+  color: var(--primary-cyan);
+  font-size: 18px;
+}
+
 @media (max-width: 768px) {
   .navbar {
     padding: 12px 16px;
@@ -2053,47 +2810,86 @@ body::before {
       </div>
     </div>
 
-    <!-- 核心观点速览 -->
+    <!-- 一句话钩子 -->
+    <div class="hook-banner reveal" id="hookBanner">
+      <div class="hook-label">本书一句话</div>
+      <div class="hook-text" id="hookText"></div>
+    </div>
+
+    <!-- 章节地图 -->
+    <section class="content-section">
+      <h2 class="content-section-title reveal">
+        <span class="content-section-title-icon">🗺️</span>
+        章节地图 · 全书结构一览
+      </h2>
+      <div class="chapter-map" id="chapterMap">
+        <!-- 动态生成 -->
+      </div>
+    </section>
+
+    <!-- 核心观点深度精读 -->
     <section class="content-section">
       <h2 class="content-section-title reveal">
         <span class="content-section-title-icon">📖</span>
-        核心观点速览
+        核心观点 · 深度精读
       </h2>
-      <div class="insights-grid" id="insightsGrid">
+      <div class="insights-list" id="insightsList">
         <!-- 动态生成 -->
       </div>
     </section>
 
-    <!-- 金句摘录 -->
+    <!-- 金句与解读 -->
     <section class="content-section">
       <h2 class="content-section-title reveal">
         <span class="content-section-title-icon">🎯</span>
-        金句摘录
+        金句与解读
       </h2>
-      <div class="quote-section reveal">
-        <p class="quote-text" id="quoteText"></p>
-        <p class="quote-source" id="quoteSource"></p>
-      </div>
-    </section>
-
-    <!-- 案例分析 -->
-    <section class="content-section">
-      <h2 class="content-section-title reveal">
-        <span class="content-section-title-icon">💡</span>
-        案例分析
-      </h2>
-      <div class="cases-grid" id="casesGrid">
+      <div class="quotes-list" id="quotesList">
         <!-- 动态生成 -->
       </div>
     </section>
 
-    <!-- 今日思考题 -->
+    <!-- 深度案例 -->
+    <section class="content-section">
+      <h2 class="content-section-title reveal">
+        <span class="content-section-title-icon">💡</span>
+        深度案例 · 背景·过程·结果·启示
+      </h2>
+      <div id="casesList">
+        <!-- 动态生成 -->
+      </div>
+    </section>
+
+    <!-- 概念词典 -->
+    <section class="content-section">
+      <h2 class="content-section-title reveal">
+        <span class="content-section-title-icon">🃏</span>
+        概念词典 · 点击翻卡自测
+      </h2>
+      <div class="flashcard-grid" id="flashcardGrid">
+        <!-- 动态生成 -->
+      </div>
+    </section>
+
+    <!-- 自测题 -->
+    <section class="content-section">
+      <h2 class="content-section-title reveal">
+        <span class="content-section-title-icon">✅</span>
+        自测 · 检验理解程度
+      </h2>
+      <div class="quiz-list" id="quizList">
+        <!-- 动态生成 -->
+      </div>
+      <div class="quiz-score" id="quizScore"></div>
+    </section>
+
+    <!-- 今日思考题 + 笔记 -->
     <section class="content-section">
       <h2 class="content-section-title reveal">
         <span class="content-section-title-icon">📝</span>
-        今日思考题
+        今日思考题 · 写下来才算学会
       </h2>
-      <div class="questions-grid" id="questionsGrid">
+      <div id="thinkList">
         <!-- 动态生成 -->
       </div>
     </section>
@@ -2263,6 +3059,7 @@ body::before {
   </div>
 </div>
 
+<script src="content.js"></script>
 <script>
 /* ============================================
    100本书结构化数据
@@ -2631,207 +3428,298 @@ function navigateBook(offset) {
    加载书籍详细内容
    ============================================ */
 function loadBookContent(day) {
-  // 第1本书的完整内容
-  if (day === 1) {
-    loadBook1Content();
-  } else if (day === 2) {
-    loadBook2Content();
-  } else {
-    // 其他书籍使用模板/占位内容
+  const content = window.CONTENT_DB ? window.CONTENT_DB[day] : null;
+  if (!content) {
     loadPlaceholderContent(day);
+    return;
+  }
+  renderBookContent(content, day);
+}
+
+function renderBookContent(content, day) {
+  // 头部统计
+  document.getElementById('bookInsightCount').textContent = (content.insights || []).length;
+  document.getElementById('bookCaseCount').textContent = (content.cases || []).length;
+
+  // 一句话钩子
+  document.getElementById('hookText').textContent = content.hook || '';
+
+  // 章节地图
+  const chapterMap = document.getElementById('chapterMap');
+  chapterMap.innerHTML = (content.chapterMap || []).map(ch => `
+    <div class="chapter-item reveal">
+      <div class="chapter-item-head">
+        <span class="chapter-part">${ch.part}</span>
+        <span class="chapter-chapters">${ch.chapters}</span>
+      </div>
+      <div class="chapter-name">${ch.name}</div>
+      <div class="chapter-essence">${ch.essence}</div>
+      <div class="chapter-question">${ch.question}</div>
+    </div>
+  `).join('');
+
+  // 深度精读
+  const insightsList = document.getElementById('insightsList');
+  insightsList.innerHTML = (content.insights || []).map((ins, idx) => `
+    <div class="insight-item reveal ${idx === 0 ? 'open' : ''}" data-index="${idx}">
+      <div class="insight-head" onclick="toggleInsight(${idx})">
+        <div class="insight-badge">${ins.num}</div>
+        <div class="insight-head-main">
+          <div class="insight-head-title">${ins.title}</div>
+          <div class="insight-head-sub">${ins.subtitle || ''}</div>
+        </div>
+        <svg class="insight-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div class="insight-body">
+        ${(ins.paragraphs || []).map(p => `<p class="insight-paragraph">${p}</p>`).join('')}
+        ${(ins.examples && ins.examples.length) ? `
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📌 具体例子</div>
+            ${ins.examples.map(ex => `
+              <div class="example-box">
+                <div class="example-title">${ex.title}</div>
+                <div class="example-text">${ex.text}</div>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+        ${(ins.terms && ins.terms.length) ? `
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">🔑 关键概念</div>
+            <div class="term-chip-row">
+              ${ins.terms.map(t => `<span class="term-chip"><span class="term-chip-name">${t.term}</span><span class="term-chip-def">${t.def}</span></span>`).join('')}
+            </div>
+          </div>
+        ` : ''}
+        ${ins.takeaway ? `
+          <div class="takeaway-box">
+            <span class="takeaway-icon">💡</span>
+            <span class="takeaway-text">${ins.takeaway}</span>
+          </div>
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  // 金句
+  const quotesList = document.getElementById('quotesList');
+  quotesList.innerHTML = (content.quotes || []).map(q => `
+    <div class="quote-card reveal">
+      <div class="quote-card-text">${q.text}</div>
+      <div class="quote-card-source">—— ${q.source}</div>
+      ${q.note ? `<div class="quote-card-note">${q.note}</div>` : ''}
+    </div>
+  `).join('');
+
+  // 深度案例
+  const casesList = document.getElementById('casesList');
+  casesList.innerHTML = (content.cases || []).map(c => `
+    <div class="case-detail reveal">
+      <div class="case-detail-head">
+        <div class="case-detail-icon">${c.icon || '📌'}</div>
+        <div class="case-detail-title">${c.title}</div>
+      </div>
+      <div class="case-steps">
+        <div class="case-step">
+          <div class="case-step-label">背景</div>
+          <div class="case-step-text">${c.background}</div>
+        </div>
+        <div class="case-step">
+          <div class="case-step-label">过程</div>
+          <div class="case-step-text">${c.process}</div>
+        </div>
+        <div class="case-step">
+          <div class="case-step-label">结果</div>
+          <div class="case-step-text">${c.result}</div>
+        </div>
+        <div class="case-step">
+          <div class="case-step-label">启示</div>
+          <div class="case-step-text">${c.takeaway}</div>
+        </div>
+      </div>
+      ${c.principle ? `<div class="case-principle-line">${c.principle}</div>` : ''}
+    </div>
+  `).join('');
+
+  // 概念闪卡
+  const flashcardGrid = document.getElementById('flashcardGrid');
+  flashcardGrid.innerHTML = (content.glossary || []).map((g, i) => `
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-face flashcard-front">
+          <div class="flashcard-term">${g.term}</div>
+          <div class="flashcard-hint">点击翻面看释义</div>
+        </div>
+        <div class="flashcard-face flashcard-back">
+          <div class="flashcard-def">${g.def}</div>
+          <div class="flashcard-example">例：${g.example}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // 自测题
+  renderQuiz(content.quiz || []);
+
+  // 思考题 + 笔记
+  const thinkList = document.getElementById('thinkList');
+  thinkList.innerHTML = (content.questions || []).map((q, i) => `
+    <div class="think-card reveal">
+      <div class="think-question">
+        <div class="think-num">${i + 1}</div>
+        <div class="think-text">${q.q}</div>
+      </div>
+      ${q.hint ? `<div class="think-hint">${q.hint}</div>` : ''}
+      <div class="note-area">
+        <div class="note-label">✍️ 我的思考</div>
+        <textarea class="note-input" data-day="${day}" data-q="${i}"
+                  placeholder="用自己的话写下来，不要复制原文……"
+                  oninput="saveNote(this)"></textarea>
+        <div class="note-status" id="noteStatus-${i}">已保存</div>
+      </div>
+    </div>
+  `).join('');
+
+  // 回填已保存笔记
+  restoreNotes(day);
+
+  // AI导读
+  window.currentGuideSegments = content.guide || [];
+  renderGuideText(window.currentGuideSegments);
+}
+
+/* ============================================
+   深度内容交互
+   ============================================ */
+function toggleInsight(index) {
+  const items = document.querySelectorAll('.insight-item');
+  items.forEach((item, i) => {
+    if (i === index) {
+      item.classList.toggle('open');
+    }
+  });
+}
+
+function renderQuiz(quiz) {
+  const quizList = document.getElementById('quizList');
+  const scoreEl = document.getElementById('quizScore');
+  window.quizState = { total: quiz.length, answered: 0, correct: 0 };
+
+  quizList.innerHTML = quiz.map((q, qi) => `
+    <div class="quiz-item">
+      <div class="quiz-question">
+        <span class="quiz-qnum">Q${qi + 1}.</span>
+        <span>${q.q}</span>
+      </div>
+      <div class="quiz-options">
+        ${q.options.map((opt, oi) => `
+          <div class="quiz-option" onclick="answerQuiz(${qi}, ${oi}, ${q.answer})">
+            <span class="quiz-option-key">${String.fromCharCode(65 + oi)}</span>
+            <span>${opt}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="quiz-explanation" id="quizExp-${qi}">
+        <strong>解析：</strong>${q.explanation}
+      </div>
+    </div>
+  `).join('');
+
+  scoreEl.innerHTML = '';
+}
+
+function answerQuiz(qi, oi, answer) {
+  const item = document.querySelectorAll('.quiz-item')[qi];
+  if (item.dataset.answered === '1') return;
+  item.dataset.answered = '1';
+
+  const options = item.querySelectorAll('.quiz-option');
+  options.forEach((opt, i) => {
+    opt.classList.add('disabled');
+    if (i === answer) opt.classList.add('correct');
+    if (i === oi && oi !== answer) opt.classList.add('wrong');
+  });
+
+  document.getElementById('quizExp-' + qi).classList.add('show');
+
+  window.quizState.answered++;
+  if (oi === answer) window.quizState.correct++;
+
+  const { answered, correct, total } = window.quizState;
+  const el = document.getElementById('quizScore');
+  if (answered === total) {
+    let comment = '基础理解已经建立，建议回头再看一遍错题涉及的原理。';
+    if (correct === total) comment = '全部答对，说明你已经把这些原理真正内化了。';
+    else if (correct >= total * 0.8) comment = '掌握得不错，把错的那一题彻底想通就完整了。';
+    el.innerHTML = `本次自测得分 <strong>${correct} / ${total}</strong> · ${comment}`;
+  } else {
+    el.innerHTML = `已作答 <strong>${answered} / ${total}</strong> 题`;
   }
 }
 
-function loadBook1Content() {
-  // 核心观点
-  const insights = [
-    { num: '01', title: '人们面临权衡取舍', desc: '十大经济学原理之首。认识到生活中人们面临权衡取舍本身并没有告诉我们，他们将会或应该做出什么决策。' },
-    { num: '02', title: '机会成本', desc: '某种东西的成本是为了得到它所放弃的东西。决策者应该认识到伴随着每一种可能的行动而来的机会成本。' },
-    { num: '03', title: '边际决策', desc: '理性人考虑边际量。通过比较边际收益与边际成本来做决策，当且仅当边际收益大于边际成本时才行动。' },
-    { num: '04', title: '激励效应', desc: '人们会对激励做出反应。由于理性人通过比较成本和收益做出决策，所以他们会对激励做出反应。' },
-    { num: '05', title: '比较优势', desc: '贸易能使每个人状况更好。贸易使得每个人都可以专门从事自己最擅长的活动，从而享有更多的物品与服务。' }
-  ];
-  
-  renderInsights(insights);
-  
-  // 金句
-  document.getElementById('quoteText').textContent = '"经济学研究的是一个社会如何管理自己的稀缺资源。在大多数社会中，资源并不是由一个单一的中央计划者来配置，而是通过千百万家庭和企业的共同行动来配置的。"';
-  document.getElementById('quoteSource').textContent = '—— 格里高利·曼昆《经济学原理》';
-  
-  // 案例
-  const cases = [
-    { icon: '💎', title: '水与钻石悖论', desc: '为什么水是生命之源却非常便宜，而钻石几乎没有实际用途却极其昂贵？这个经典悖论困扰了经济学家数百年，直到边际效用理论的出现才得到解答。', principle: '边际效用价值论——价格由边际效用决定，而非总效用。水的总效用巨大，但边际效用低；钻石的总效用小，但边际效用高。' },
-    { icon: '🌾', title: '谷贱伤农', desc: '为什么农业丰收反而会让农民的收入减少？这看似违背直觉的现象，实际上蕴含着深刻的经济学原理。丰收增加了供给，但粮食是需求缺乏弹性的商品。', principle: '需求弹性——对于需求缺乏弹性的商品，供给增加导致价格大幅下降，而需求量增加有限，最终总收益反而减少。' }
-  ];
-  
-  renderCases(cases);
-  
-  // 思考题
-  const questions = [
-    '你最近做过的一个重大决策中，机会成本是什么？请具体分析你放弃了什么。',
-    '举一个你生活中"边际决策"的例子，说明你如何比较边际收益和边际成本。',
-    '贸易如何改善了你生活的某个方面？从比较优势的角度进行分析。'
-  ];
-  
-  renderQuestions(questions);
-  
-  // AI导读
-  const guideSegments = [
-    { label: '开场白', text: '你好，欢迎来到一百天一百本书AI导读。今天我们要学习的第一本书，是哈佛大学经济学教授格里高利·曼昆的经典著作《经济学原理》。这本书是全球最流行的经济学入门教材，被哈佛大学、耶鲁大学、斯坦福大学等超过七百所大学采用，被誉为经济学领域的圣经。' },
-    { label: '为什么读', text: '为什么我们要从这本书开始一百天的学习旅程？因为经济学不是一门只关于钱的学问，它是一种思维方式，是理解这个世界运行规律的底层框架。无论你是创业者、管理者还是普通人，经济学原理都能帮助你做出更明智的决策。曼昆的这本书最大的特点就是通俗易懂，它用生活中的例子解释抽象的经济概念，让每一个读者都能感受到经济学的魅力。' },
-    { label: '全书框架', text: '全书分为微观经济学和宏观经济学两大部分，以十大经济学原理贯穿始终。微观部分从供需理论入手，讲解市场如何运行、消费者和生产者如何决策，以及市场效率和福利经济学。宏观部分则拓展到整体经济，涵盖GDP、通货膨胀、失业、经济增长、货币政策和财政政策等核心议题。最后还介绍了国际经济学的基础知识。' },
-    { label: '核心观点一', text: '第一个核心观点是人们面临权衡取舍。这是经济学十大原理之首。经济学研究的是稀缺资源的配置问题，而稀缺就意味着选择。你选择把时间花在学习上，就放弃了娱乐和休息的机会。你选择投资这个项目，就意味着放弃了其他项目的可能。理解权衡取舍，是做出理性决策的第一步。' },
-    { label: '核心观点二', text: '第二个核心观点是机会成本。某种东西的成本，是为了得到它而放弃的东西。这不仅仅是金钱上的成本，更重要的是时间、精力和机会的成本。比如，上大学的成本不仅是学费，更是你这四年如果去工作所能赚到的钱和积累的经验。理解机会成本，能让你更深刻地认识每一个选择的真实代价。' },
-    { label: '核心观点三', text: '第三个核心观点是边际决策。理性人考虑边际量。很多决策不是非此即彼的选择，而是多做一点还是少做一点的调整。比如，考试前你是复习三小时还是四小时，这就是边际决策。当边际收益大于边际成本时，就值得去做。这个原理可以解释为什么钻石比水贵，为什么企业会在亏损时继续经营。' },
-    { label: '核心观点四', text: '第四个核心观点是比较优势与贸易。贸易能让每个人的状况变得更好，因为它允许人们专门从事自己最擅长的活动。即使一个人在所有事情上都比另一个人强，通过分工和贸易，双方仍然能获益。这就是为什么全球化和自由贸易是经济增长的重要引擎。理解比较优势，能帮助我们看清合作的真正价值。' },
-    { label: '学习建议', text: '接下来给你一个一小时高效学习的建议。前十分钟，请听这段AI导读，建立全书的整体认知框架。接下来二十分钟，仔细阅读核心观点速览，理解每个观点的底层逻辑，可以用笔在纸上画一画它们之间的关系。再用十五分钟，结合两个经典案例水与钻石悖论和谷贱伤农，深化对边际效用和需求弹性的理解。最后十五分钟，回答三个思考题，把经济学原理应用到你自己的生活中，完成知识的内化。' },
-    { label: '结束语', text: '经济学不仅仅是一门学科，更是一种看待世界的方式。当你学会用经济学的眼光观察生活，你会发现每一个决策背后都有成本和收益的权衡，每一个市场现象都有供需的力量在驱动。希望今天的学习，能为你打开一扇通往经济学世界的大门。让我们一起，用一百天读完一百本书，构建完整的商业知识体系。加油，我们下一本书见。' }
-  ];
-  
-  window.currentGuideSegments = guideSegments;
-  renderGuideText(guideSegments);
+function saveNote(el) {
+  const day = el.dataset.day;
+  const q = el.dataset.q;
+  const key = `note_${day}_${q}`;
+  localStorage.setItem(key, el.value);
+
+  const status = document.getElementById('noteStatus-' + q);
+  if (status) {
+    status.classList.add('show');
+    clearTimeout(status._timer);
+    status._timer = setTimeout(() => status.classList.remove('show'), 1200);
+  }
 }
 
-function loadBook2Content() {
-  // 宏观经济学（第十一版）- 曼昆
-  const insights = [
-    { num: '01', title: 'GDP与国民收入', desc: '国内生产总值是衡量经济总体表现的核心指标，理解GDP的构成、计算方法和局限性，是宏观经济分析的起点。' },
-    { num: '02', title: '经济增长理论', desc: '索洛模型揭示了资本积累、劳动力增长和技术进步如何决定长期经济增长，以及为什么有些国家富裕而有些国家贫穷。' },
-    { num: '03', title: '失业与通货膨胀', desc: '菲利普斯曲线描述了失业与通胀之间的短期权衡关系，但长期来看这种关系并不稳定，政策制定者面临复杂抉择。' },
-    { num: '04', title: '货币政策与财政政策', desc: '中央银行的货币政策和政府的财政政策是调控宏观经济的两大工具，理解它们的传导机制和效果至关重要。' },
-    { num: '05', title: '开放经济宏观', desc: '在全球化时代，汇率、国际贸易和资本流动深刻影响着国内经济，开放经济模型帮助我们理解这些复杂互动。' }
-  ];
-  
-  renderInsights(insights);
-  
-  document.getElementById('quoteText').textContent = '"长期中，我们每个人都死了。但长期是由无数个短期构成的，我们不能只关注短期而忽视长期。宏观经济学的艺术在于平衡短期波动与长期增长。"';
-  document.getElementById('quoteSource').textContent = '—— 格里高利·曼昆《宏观经济学》';
-  
-  const cases = [
-    { icon: '📉', title: '大萧条与凯恩斯革命', desc: '1929年大萧条摧毁了古典经济学的自信，凯恩斯革命应运而生。政府干预、有效需求、乘数效应等概念彻底改变了宏观经济政策。', principle: '有效需求原理——经济衰退时，私人部门需求不足，政府应通过财政政策刺激总需求，弥补需求缺口。' },
-    { icon: '💵', title: '2008年金融危机', desc: '雷曼兄弟倒闭引发全球金融海啸，各国央行祭出量化宽松等非常规货币政策。这场危机暴露了金融体系的脆弱性，也检验了宏观经济理论。', principle: '金融加速器理论——金融市场的摩擦会放大经济冲击，导致衰退深化。货币政策需要关注金融稳定，而不仅是物价稳定。' }
-  ];
-  
-  renderCases(cases);
-  
-  const questions = [
-    '用索洛模型分析：为什么中国过去40年能实现高速增长？未来增长的瓶颈在哪里？',
-    '比较2008年金融危机和2020年疫情冲击的异同，政策应对有何不同？',
-    '在通货膨胀和失业之间，你认为政策制定者应该优先关注哪一个？为什么？'
-  ];
-  
-  renderQuestions(questions);
-  
-  const guideSegments = [
-    { label: '开场白', text: '你好，欢迎来到一百天一百本书AI导读。今天我们要学习的第二本书，依然是曼昆的经典著作——《宏观经济学》。如果说《经济学原理》是经济学的入门地图，那么《宏观经济学》就是深入探索整体经济运行规律的导航仪。这本书被全球众多顶尖大学采用，是理解国家经济政策、把握经济大势的必读经典。' },
-    { label: '承上启下', text: '昨天我们学习了微观经济学的基础，理解了个人和企业如何做决策。今天我们要把视角拉高，从个体行为上升到整体经济现象。为什么有的国家富裕而有的国家贫穷？为什么经济会周期性地繁荣和衰退？通货膨胀和失业之间有什么关系？这些大问题，正是宏观经济学要回答的。' },
-    { label: '全书框架', text: '全书分为四大部分。第一部分介绍宏观经济学的数据，包括GDP、CPI等核心指标。第二部分是长期理论，讲解经济增长、储蓄投资、失业等长期问题。第三部分是短期理论，分析经济波动、总需求总供给模型，以及货币政策和财政政策。第四部分拓展到开放经济，讨论汇率、国际贸易和资本流动。' },
-    { label: '核心观点一', text: '第一个核心观点是GDP与国民收入核算。GDP是衡量一国经济总量的指标，但它并不完美。它不包括家务劳动、地下经济，也不能衡量生活质量和环境成本。理解GDP的构成——消费、投资、政府购买和净出口，是分析经济的基本功。' },
-    { label: '核心观点二', text: '第二个核心观点是经济增长的源泉。索洛模型告诉我们，资本积累只能带来暂时的高增长，持续的增长必须依靠技术进步。这就是为什么创新如此重要。人力资本、制度质量、开放程度，都是影响长期增长的关键因素。' },
-    { label: '核心观点三', text: '第三个核心观点是经济波动的根源。短期中，经济会偏离长期趋势，出现繁荣或衰退。总需求冲击、总供给冲击、预期变化，都可能引发波动。理解这些冲击的传导机制，是制定应对政策的前提。' },
-    { label: '核心观点四', text: '第四个核心观点是政策的两难。货币政策和财政政策可以稳定经济，但也面临时滞、可信度和政治约束。规则还是相机抉择？这是宏观政策永恒的辩论。2008年金融危机后，量化宽松等非常规政策又带来了新的问题和挑战。' },
-    { label: '学习建议', text: '接下来给你一个一小时高效学习的建议。前十分钟，请听这段AI导读，建立全书的整体认知。接下来二十分钟，深入学习五个核心观点，特别关注GDP核算和经济增长理论，这是理解宏观经济的基础。再用十五分钟，分析两个经典案例——大萧条和2008年金融危机，理解理论如何应用于现实。最后十五分钟，回答三个思考题，把宏观经济学原理与中国经济现实联系起来，形成自己的分析框架。' },
-    { label: '结束语', text: '宏观经济学是一门与每个人息息相关的学问。利率变化影响你的房贷，通胀侵蚀你的储蓄，经济周期决定你的就业机会。掌握宏观经济思维，能让你在复杂的经济环境中做出更明智的决策。希望今天的学习，能帮助你建立分析经济大势的框架。明天我们将继续深入宏观经济学的世界，学习徐高的《宏观经济学二十五讲》。加油！' }
-  ];
-  
-  window.currentGuideSegments = guideSegments;
-  renderGuideText(guideSegments);
+function restoreNotes(day) {
+  document.querySelectorAll('.note-input').forEach(el => {
+    if (el.dataset.day !== String(day)) return;
+    const saved = localStorage.getItem(`note_${day}_${el.dataset.q}`);
+    if (saved) el.value = saved;
+  });
 }
 
 function loadPlaceholderContent(day) {
   const book = BOOKS_DATA.find(b => b.day === day);
   if (!book) return;
   
-  // 占位核心观点
-  const insights = [
-    { num: '01', title: '核心观点待补充', desc: '《' + book.title + '》的核心观点内容正在准备中，敬请期待。' },
-    { num: '02', title: '核心观点待补充', desc: '本书的核心观点、案例分析和思考题将在内容更新后呈现。' },
-    { num: '03', title: '核心观点待补充', desc: '如果您需要提前学习本书，请参考纸质书或电子书进行阅读。' }
-  ];
-  
-  renderInsights(insights);
-  
-  document.getElementById('quoteText').textContent = '"' + book.title + ' 的精彩内容即将更新，敬请期待。"';
-  document.getElementById('quoteSource').textContent = '—— ' + book.author;
-  
-  const cases = [
-    { icon: '📚', title: '案例待补充', desc: '本书的经典案例分析正在准备中。', principle: '案例原理将在内容更新后呈现。' }
-  ];
-  
-  renderCases(cases);
-  
-  const questions = [
-    '本书的思考题内容正在准备中，敬请期待。',
-    '建议您先阅读纸质书或电子书，结合已有知识进行思考。',
-    '明天同一时间，我们将为您带来本书的完整学习内容。'
-  ];
-  
-  renderQuestions(questions);
-  
-  const guideSegments = [
-    { label: '开场白', text: '你好，欢迎来到一百天一百本书AI导读。今天我们要学习的第' + day + '本书是《' + book.title + '》，作者' + book.author + '，属于' + book.category + '分类。' },
-    { label: '提示', text: '本书的完整AI导读内容正在准备中。建议您先通过纸质书或电子书进行阅读，明天我们将为您带来完整的学习内容。' },
-    { label: '学习建议', text: '在等待内容更新的同时，建议您：先浏览本书的目录和前言，建立整体认知；然后选择最感兴趣的章节深入阅读；最后思考本书与您已学知识的关联。' },
-    { label: '结束语', text: '感谢您使用100天100本书学习计划。我们正在为您精心准备每一本书的学习内容，敬请期待明天的更新。加油！' }
-  ];
-  
-  window.currentGuideSegments = guideSegments;
-  renderGuideText(guideSegments);
-}
+  // 未收录书籍：给出结构完整但标注制作中的占位内容
+  const placeholder = {
+    hook: '《' + book.title + '》的深度学习内容正在制作中，每日更新。',
+    chapterMap: [
+      { part: '提示', name: '本书内容制作中', chapters: '—', essence: '该书的结构地图、深度精读、案例与自测将随进度上线。', question: '你可以先浏览目录，建立整体印象。' }
+    ],
+    insights: [
+      {
+        num: '01',
+        title: '深度内容制作中',
+        subtitle: 'Content in progress',
+        paragraphs: [
+          '这本《' + book.title + '》（' + (book.author || '作者待补充') + '）属于「' + book.category + '」体系。为保证每一本都有足够的深度，内容按日逐本制作上线，不在一天内批量填充浅层摘要。',
+          '在等待期间，建议采用主动阅读法：先读目录与序言，回答「作者想解决什么问题」；再挑两三个最感兴趣的章节精读，做笔记；最后合上书，用自己的话复述核心论点。'
+        ],
+        terms: [],
+        takeaway: '宁可慢一点、深一点，也不要用一句话摘要假装读完。'
+      }
+    ],
+    quotes: [],
+    cases: [],
+    glossary: [],
+    quiz: [],
+    questions: [
+      { q: '在本书正式内容上线前，你最想从这本书里解决自己的哪一个具体问题？', hint: '带着问题读书，比抱着「读完」的目标读书，效率高得多。' }
+    ],
+    guide: [
+      { label: '开场', text: '你好，欢迎来到一百天一百本书。今天要学习的第' + day + '本书是《' + book.title + '》，作者' + (book.author || '待补充') + '，属于' + book.category + '分类。' },
+      { label: '提示', text: '这本书的深度导读正在制作中。为保证学习质量，每本书的深度内容会在当天上线，而不是提前用摘要填充。' },
+      { label: '建议', text: '在内容上线前，建议你先浏览目录和前言，建立整体认知，并写下你想通过这本书解决的三个具体问题。' },
+      { label: '收尾', text: '感谢使用一百天一百本书。我们明天见。' }
+    ]
+  };
 
-/* ============================================
-   渲染函数
-   ============================================ */
-function renderInsights(insights) {
-  const grid = document.getElementById('insightsGrid');
-  grid.innerHTML = '';
-  
-  insights.forEach(insight => {
-    const card = document.createElement('div');
-    card.className = 'insight-card reveal';
-    card.innerHTML = `
-      <span class="insight-number">${insight.num}</span>
-      <h3 class="insight-title">${insight.title}</h3>
-      <p class="insight-desc">${insight.desc}</p>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-function renderCases(cases) {
-  const grid = document.getElementById('casesGrid');
-  grid.innerHTML = '';
-  
-  cases.forEach(caseItem => {
-    const card = document.createElement('div');
-    card.className = 'case-card reveal';
-    card.innerHTML = `
-      <h3 class="case-title">
-        <span class="case-title-icon">${caseItem.icon}</span>
-        ${caseItem.title}
-      </h3>
-      <p class="case-desc">${caseItem.desc}</p>
-      <div class="case-principle">
-        <strong>原理：</strong>${caseItem.principle}
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-function renderQuestions(questions) {
-  const grid = document.getElementById('questionsGrid');
-  grid.innerHTML = '';
-  
-  questions.forEach((q, index) => {
-    const card = document.createElement('div');
-    card.className = 'question-card reveal';
-    card.innerHTML = `
-      <div class="question-number">${index + 1}</div>
-      <p class="question-text">${q}</p>
-    `;
-    grid.appendChild(card);
-  });
+  renderBookContent(placeholder, day);
 }
 
 function renderGuideText(segments) {
