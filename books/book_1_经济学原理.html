@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第1天 · 经济学原理 - 100天100本书</title>
+<style>
+/* ============================================
+   CSS变量与全局重置
+   ============================================ */
+:root {
+  --primary-purple: #8b5cf6;
+  --primary-cyan: #06b6d4;
+  --gradient-main: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+  --gradient-soft: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+  --bg-deep: #0a0a1a;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(139, 92, 246, 0.3);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+body::before {
+  content: '';
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+/* 导航栏 */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 14px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(10, 10, 26, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-glass);
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.nav-logo-icon { font-size: 24px; }
+.nav-logo-text {
+  font-size: 16px; font-weight: 700;
+  background: var(--gradient-main);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.nav-day {
+  font-size: 13px; color: var(--text-secondary);
+  display: flex; align-items: center; gap: 10px;
+}
+
+/* 主内容区 */
+.main-container {
+  position: relative; z-index: 1;
+  max-width: 960px; margin: 0 auto;
+  padding: 80px 24px 60px;
+}
+
+/* 返回按钮 */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; margin-bottom: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 13px; cursor: pointer;
+  transition: var(--transition-base);
+}
+.back-btn:hover { border-color: var(--border-glow); color: var(--text-primary); }
+
+/* 书籍头部 */
+.book-header {
+  display: grid; grid-template-columns: 180px 1fr;
+  gap: 36px; margin-bottom: 40px; align-items: start;
+}
+.book-cover {
+  width: 180px; height: 252px;
+  background: var(--gradient-soft);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glow);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.book-cover::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+}
+.book-cover-content { text-align: center; position: relative; z-index: 1; padding: 16px; }
+.book-cover-title { font-size: 20px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+.book-cover-author { font-size: 12px; color: var(--text-secondary); font-style: italic; }
+
+.book-info { padding-top: 16px; }
+.book-title { font-size: 32px; font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
+.book-author { font-size: 15px; color: var(--text-secondary); margin-bottom: 14px; }
+.book-meta { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.book-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 100px;
+  font-size: 12px; color: var(--text-secondary);
+}
+
+/* 章节导航 */
+.section-nav {
+  display: flex; gap: 6px; margin-bottom: 32px;
+  overflow-x: auto; padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+.section-nav-btn {
+  padding: 8px 16px; flex-shrink: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 100px;
+  color: var(--text-secondary);
+  font-size: 13px; cursor: pointer;
+  transition: var(--transition-base);
+  white-space: nowrap;
+}
+.section-nav-btn:hover { border-color: var(--border-glow); color: var(--text-primary); }
+.section-nav-btn.active { background: var(--gradient-main); color: white; border-color: transparent; }
+
+/* 内容区块 */
+.content-section { margin-bottom: 48px; }
+.content-section-title {
+  font-size: 22px; font-weight: 700;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.content-section-title-icon { font-size: 24px; }
+
+/* 钩子 */
+.hook-banner {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  margin-bottom: 28px;
+  position: relative; overflow: hidden;
+}
+.hook-banner::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--gradient-main);
+}
+.hook-label {
+  font-size: 11px; letter-spacing: 1px;
+  color: var(--primary-cyan);
+  margin-bottom: 8px; font-weight: 600;
+}
+.hook-text { font-size: 17px; line-height: 1.7; font-weight: 500; }
+
+/* 概览 */
+.overview-text {
+  font-size: 15px; line-height: 1.9;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+/* 知识图谱 */
+.knowledge-tree-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  overflow-x: auto;
+}
+.knowledge-tree-svg { width: 100%; min-width: 600px; height: auto; }
+
+/* 章节地图 */
+.chapter-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+.chapter-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-left: 3px solid var(--primary-purple);
+  border-radius: var(--radius-sm);
+  padding: 18px 20px;
+  transition: var(--transition-base);
+}
+.chapter-item:hover {
+  border-left-color: var(--primary-cyan);
+  background: var(--bg-card-hover);
+}
+.chapter-item-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 6px; gap: 8px;
+}
+.chapter-part { font-size: 11px; font-weight: 700; color: var(--primary-purple); letter-spacing: 0.5px; }
+.chapter-chapters { font-size: 11px; color: var(--text-muted); }
+.chapter-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.chapter-essence { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.chapter-question {
+  font-size: 12.5px; color: var(--primary-cyan);
+  line-height: 1.6;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border-glass);
+}
+.chapter-question::before { content: '💭 '; }
+
+/* 深度精读手风琴 */
+.insights-list { display: flex; flex-direction: column; gap: 12px; }
+.insight-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition-base);
+}
+.insight-item.open {
+  border-color: var(--border-glow);
+  background: rgba(139, 92, 246, 0.04);
+}
+.insight-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 22px;
+  cursor: pointer; user-select: none;
+}
+.insight-head:hover { background: var(--bg-card-hover); }
+.insight-badge {
+  flex-shrink: 0; width: 38px; height: 38px;
+  border-radius: 10px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: var(--primary-purple);
+}
+.insight-head-main { flex: 1; min-width: 0; }
+.insight-head-title { font-size: 16px; font-weight: 700; margin-bottom: 3px; line-height: 1.4; }
+.insight-head-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 0.3px; }
+.insight-arrow { flex-shrink: 0; color: var(--text-muted); transition: transform 0.3s ease; font-size: 10px; }
+.insight-item.open .insight-arrow { transform: rotate(180deg); color: var(--primary-cyan); }
+.insight-body { display: none; padding: 0 22px 22px; }
+.insight-item.open .insight-body { display: block; animation: fadeInUp 0.35s ease; }
+.insight-paragraph {
+  font-size: 14.5px; line-height: 1.95;
+  color: #cbd5e1;
+  margin-bottom: 14px;
+  text-align: justify;
+}
+.insight-sub-block { margin-top: 18px; }
+.insight-sub-label {
+  font-size: 11.5px; font-weight: 700; letter-spacing: 1px;
+  color: var(--primary-cyan);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.example-box {
+  background: rgba(6, 182, 212, 0.05);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+.example-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+.example-text { font-size: 13px; line-height: 1.8; color: var(--text-secondary); }
+.term-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.term-chip {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 100px;
+  padding: 6px 12px;
+  font-size: 12px; line-height: 1.5;
+}
+.term-chip-name { font-weight: 700; color: var(--primary-purple); flex-shrink: 0; }
+.term-chip-def { color: var(--text-secondary); }
+.takeaway-box {
+  margin-top: 18px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(6, 182, 212, 0.06) 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.takeaway-icon { font-size: 16px; flex-shrink: 0; }
+.takeaway-text { font-size: 14px; line-height: 1.7; color: var(--text-primary); font-weight: 500; }
+
+/* 金句 */
+.quotes-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+.quote-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  position: relative;
+  transition: var(--transition-base);
+}
+.quote-card:hover { border-color: var(--border-glow); }
+.quote-card::before {
+  content: '"'; position: absolute; top: 4px; left: 14px;
+  font-size: 48px; line-height: 1;
+  color: rgba(139, 92, 246, 0.15);
+  font-family: Georgia, serif;
+}
+.quote-card-text {
+  font-size: 14.5px; line-height: 1.85;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  position: relative; z-index: 1;
+}
+.quote-card-source { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+.quote-card-note {
+  font-size: 12.5px; line-height: 1.7;
+  color: var(--text-secondary);
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-glass);
+}
+.quote-card-note::before {
+  content: '解读 · '; color: var(--primary-cyan);
+  font-weight: 600; font-size: 11px; letter-spacing: 0.5px;
+}
+
+/* 深度案例 */
+.case-detail {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 18px;
+  transition: var(--transition-base);
+}
+.case-detail:hover { border-color: var(--border-glow); }
+.case-detail-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+}
+.case-detail-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.case-detail-title { font-size: 17px; font-weight: 700; line-height: 1.4; }
+.case-steps { display: grid; gap: 12px; }
+.case-step {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.case-step-label {
+  font-size: 11px; font-weight: 700;
+  color: var(--primary-cyan);
+  background: rgba(6, 182, 212, 0.1);
+  border-radius: 6px;
+  padding: 4px 0; text-align: center;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+.case-step-text {
+  font-size: 13.5px; line-height: 1.85;
+  color: var(--text-secondary);
+  text-align: justify;
+}
+.case-takeaway {
+  margin-top: 16px;
+  background: rgba(139, 92, 246, 0.07);
+  border-left: 3px solid var(--primary-purple);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 12px 16px;
+}
+.case-takeaway-label {
+  font-size: 11px; font-weight: 700;
+  color: var(--primary-purple);
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+.case-takeaway-text { font-size: 13.5px; line-height: 1.8; color: #cbd5e1; }
+.case-principle-line {
+  margin-top: 10px; font-size: 12px;
+  color: var(--text-muted); line-height: 1.7;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-glass);
+}
+.case-principle-line::before {
+  content: '原理 · '; color: var(--primary-cyan);
+  font-weight: 600;
+}
+
+/* 闪卡 */
+.flashcard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+.flashcard { perspective: 1000px; height: 140px; cursor: pointer; }
+.flashcard-inner {
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flashcard-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  border: 1px solid var(--border-glass);
+  background: var(--bg-card);
+}
+.flashcard-front { align-items: center; text-align: center; gap: 6px; }
+.flashcard-term { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+.flashcard-hint { font-size: 11px; color: var(--text-muted); }
+.flashcard-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border-color: var(--border-glow);
+  justify-content: center; gap: 6px;
+}
+.flashcard-def { font-size: 12.5px; line-height: 1.65; color: var(--text-primary); }
+.flashcard-example { font-size: 11.5px; line-height: 1.6; color: var(--primary-cyan); }
+
+/* 自测题 */
+.quiz-list { display: flex; flex-direction: column; gap: 16px; }
+.quiz-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+}
+.quiz-question {
+  font-size: 14.5px; line-height: 1.7;
+  font-weight: 600; margin-bottom: 14px;
+  display: flex; gap: 8px;
+}
+.quiz-qnum { color: var(--primary-cyan); flex-shrink: 0; }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-option {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-base);
+  font-size: 13px; line-height: 1.6;
+  color: var(--text-secondary);
+}
+.quiz-option:hover {
+  border-color: var(--border-glow);
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+.quiz-option.correct {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  color: #a7f3d0;
+}
+.quiz-option.wrong {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  color: #fecaca;
+}
+.quiz-option.disabled { pointer-events: none; }
+.quiz-option-key { font-weight: 700; color: var(--primary-purple); flex-shrink: 0; }
+.quiz-option.correct .quiz-option-key { color: #10b981; }
+.quiz-option.wrong .quiz-option-key { color: #ef4444; }
+.quiz-explanation {
+  display: none; margin-top: 12px;
+  padding: 12px 14px;
+  background: rgba(6, 182, 212, 0.06);
+  border-left: 3px solid var(--primary-cyan);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 12.5px; line-height: 1.8;
+  color: var(--text-secondary);
+}
+.quiz-explanation.show { display: block; animation: fadeInUp 0.3s ease; }
+.quiz-score { text-align: center; font-size: 13px; color: var(--text-secondary); margin-top: 18px; }
+.quiz-score strong { color: var(--primary-cyan); font-size: 16px; }
+
+/* 思考题 */
+.think-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  margin-bottom: 14px;
+}
+.think-question {
+  display: flex; gap: 12px; align-items: flex-start;
+  margin-bottom: 10px;
+}
+.think-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--gradient-main);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.think-text { font-size: 14.5px; line-height: 1.75; color: var(--text-primary); font-weight: 500; }
+.think-hint {
+  font-size: 12px; line-height: 1.7;
+  color: var(--text-muted);
+  margin-left: 40px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--border-glow);
+}
+.think-hint::before { content: '思路 · '; color: var(--primary-cyan); font-weight: 600; }
+.note-area { margin-left: 40px; }
+.note-label { font-size: 11.5px; color: var(--text-muted); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.note-input {
+  width: 100%; min-height: 70px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-size: 13px; line-height: 1.7;
+  font-family: inherit;
+  resize: vertical;
+  transition: var(--transition-base);
+}
+.note-input:focus { outline: none; border-color: var(--border-glow); background: rgba(255, 255, 255, 0.05); }
+.note-input::placeholder { color: var(--text-muted); }
+.note-status { font-size: 11px; color: #10b981; margin-top: 4px; height: 14px; opacity: 0; transition: opacity 0.3s; }
+.note-status.show { opacity: 1; }
+
+/* 音频导读 */
+.audio-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 14px;
+}
+.audio-play-wrapper { display: flex; align-items: center; gap: 14px; }
+.audio-play-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--gradient-main);
+  border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+.audio-play-btn:hover { transform: scale(1.05); box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4); }
+.audio-play-btn svg { width: 22px; height: 22px; fill: white; margin-left: 2px; }
+.audio-play-label { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.audio-source-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  border-radius: 100px;
+  font-size: 11px; color: var(--primary-cyan);
+}
+.audio-waveform { display: flex; align-items: center; gap: 3px; height: 28px; }
+.wave-bar { width: 3px; height: 6px; background: var(--primary-purple); border-radius: 2px; opacity: 0.3; transition: opacity 0.3s; }
+.wave-bar.playing { animation: wave 0.8s ease-in-out infinite; opacity: 1; }
+.wave-bar:nth-child(2n).playing { animation-delay: 0.1s; }
+.wave-bar:nth-child(3n).playing { animation-delay: 0.2s; }
+.wave-bar:nth-child(4n).playing { animation-delay: 0.3s; }
+@keyframes wave {
+  0%, 100% { height: 6px; }
+  50% { height: 22px; }
+}
+.audio-progress { width: 100%; display: flex; flex-direction: column; gap: 5px; }
+.audio-progress-bar {
+  width: 100%; height: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  cursor: pointer;
+  overflow: hidden;
+}
+.audio-progress-fill {
+  height: 100%;
+  background: var(--gradient-main);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+.audio-progress-time { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
+.audio-guide-text {
+  width: 100%; max-height: 200px;
+  overflow-y: auto;
+  background: rgba(139, 92, 246, 0.06);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-purple) transparent;
+}
+.audio-guide-text::-webkit-scrollbar { width: 4px; }
+.audio-guide-text::-webkit-scrollbar-track { background: transparent; }
+.audio-guide-text::-webkit-scrollbar-thumb { background: var(--primary-purple); border-radius: 2px; }
+.guide-text-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-glass);
+}
+.guide-text-header-icon { font-size: 14px; }
+.guide-text-header-title { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.guide-paragraph {
+  margin-bottom: 8px; padding: 5px 8px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+.guide-paragraph.active { background: rgba(139, 92, 246, 0.12); }
+.guide-paragraph-label {
+  display: inline-block;
+  font-size: 10.5px; font-weight: 600;
+  color: var(--primary-cyan);
+  background: rgba(6, 182, 212, 0.1);
+  padding: 1px 6px; border-radius: 4px;
+  margin-bottom: 3px;
+}
+
+/* 思维工具卡片 */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.tool-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  transition: var(--transition-base);
+}
+.tool-card:hover { border-color: var(--border-glow); transform: translateY(-2px); }
+.tool-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+.tool-name { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.tool-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+/* 行动指南 */
+.action-steps { display: grid; gap: 12px; }
+.action-step {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 14px;
+  align-items: start;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+}
+.action-step-label {
+  font-size: 12px; font-weight: 700;
+  color: var(--primary-cyan);
+  background: rgba(6, 182, 212, 0.1);
+  border-radius: 8px;
+  padding: 5px 0; text-align: center;
+}
+.action-step-text {
+  font-size: 14px; line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+/* 底部导航 */
+.book-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 48px;
+  padding: 18px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+}
+.book-nav-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 13px; cursor: pointer;
+  transition: var(--transition-base);
+}
+.book-nav-btn:hover { border-color: var(--border-glow); color: var(--text-primary); }
+.book-nav-btn.disabled { opacity: 0.4; cursor: not-allowed; }
+.book-nav-info { text-align: center; color: var(--text-muted); font-size: 12px; }
+
+/* 动画 */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .navbar { padding: 10px 16px; }
+  .nav-logo-text { display: none; }
+  .main-container { padding: 70px 16px 40px; }
+  .book-header { grid-template-columns: 1fr; text-align: center; gap: 24px; }
+  .book-cover { width: 140px; height: 196px; margin: 0 auto; }
+  .book-title { font-size: 24px; }
+  .book-meta { justify-content: center; }
+  .case-step { grid-template-columns: 50px 1fr; }
+  .action-step { grid-template-columns: 60px 1fr; }
+  .flashcard-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .book-nav { flex-direction: column; gap: 14px; }
+  .book-nav-btn { width: 100%; justify-content: center; }
+  .think-hint, .note-area { margin-left: 30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <div class="nav-logo" onclick="window.location.href='../index.html'">
+    <div class="nav-logo-icon">📚</div>
+    <span class="nav-logo-text">100天100本书</span>
+  </div>
+  <div class="nav-day">
+    <span>第 1 天 / 100 天</span>
+  </div>
+</nav>
+
+<!-- 主内容区 -->
+<main class="main-container">
+  
+  <button class="back-btn" onclick="window.location.href='../index.html'">
+    ← 返回总览
+  </button>
+
+  <!-- 书籍头部 -->
+  <header class="book-header">
+    <div class="book-cover">
+      <div class="book-cover-content">
+        <div class="book-cover-title">经济学原理</div>
+        <div class="book-cover-author">曼昆</div>
+      </div>
+    </div>
+    <div class="book-info">
+      <h1 class="book-title">经济学原理（第8版）</h1>
+      <div class="book-author">✍️ 曼昆</div>
+      <div class="book-meta">
+        <span class="book-tag">📈 经济学和大势</span>
+        <span class="book-tag">📖 第 1 天</span>
+        <span class="book-tag">⏱️ 建议 60 分钟</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 章节导航 -->
+  <div class="section-nav">
+    <button class="section-nav-btn active" onclick="scrollToSection('overview')">概览</button>
+    <button class="section-nav-btn" onclick="scrollToSection('audio')">语音导读</button>
+    <button class="section-nav-btn" onclick="scrollToSection('chapters')">章节地图</button>
+    <button class="section-nav-btn" onclick="scrollToSection('insights')">核心精读</button>
+    <button class="section-nav-btn" onclick="scrollToSection('cases')">深度案例</button>
+    <button class="section-nav-btn" onclick="scrollToSection('tools')">思维工具</button>
+    <button class="section-nav-btn" onclick="scrollToSection('glossary')">概念闪卡</button>
+    <button class="section-nav-btn" onclick="scrollToSection('quiz')">自测</button>
+    <button class="section-nav-btn" onclick="scrollToSection('questions')">思考</button>
+  </div>
+
+  <!-- 钩子 -->
+  <div class="hook-banner reveal">
+    <div class="hook-label">💎 一句话钩子</div>
+    <div class="hook-text">经济学不是关于钱，而是关于选择。当资源有限而欲望无限，每一次决定都是一次放弃。</div>
+  </div>
+
+  <!-- 全书概览 -->
+  <section class="content-section reveal" id="overview">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">📋</span>
+      全书概览
+    </h2>
+    <p class="overview-text">《经济学原理》是哈佛大学教授曼昆的经济学入门经典，被全球超过七百所大学采用。本书建立在十大经济学原理之上，从微观到宏观构建完整的经济学思维框架。微观部分探讨个体如何决策、市场如何运行；宏观部分将视角拉高，研究GDP、增长、货币、通胀与经济波动。理解这本书，是理解后面所有商业书籍的基础——因为它提供的不是某个领域的结论，而是一套所有领域通用的分析工具。</p>
+    
+    <!-- 知识图谱 -->
+    <div class="knowledge-tree-container">
+      <div class="guide-text-header">
+        <span class="guide-text-header-icon">🌳</span>
+        <span class="guide-text-header-title">知识图谱 · 核心概念关联</span>
+      </div>
+      
+    <svg class="knowledge-tree-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="centerGrad">
+          <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.1"/>
+        </radialGradient>
+      </defs>
+      <line x1="350" y1="180" x2="349.99948575128553" y2="40.00000000094448" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="448.99452006343574" y2="81.00462133306418" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="489.99999999825" y2="179.9993" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="448.99551001227275" y2="278.9943887167854" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="350.0008857512855" y2="319.999999997198" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="251.00574263003918" y2="278.9956413574353" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="210.00000000410043" y2="180.00107150257116" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="251.00422729757628" y2="81.0058739770381" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/>
+      
+    <g class="tree-node">
+      <circle cx="349.99948575128553" cy="40.00000000094448" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="349.99948575128553" y="44.00000000094448" text-anchor="middle" fill="#cbd5e1" font-size="11">稀缺性</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="448.99452006343574" cy="81.00462133306418" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="448.99452006343574" y="85.00462133306418" text-anchor="middle" fill="#cbd5e1" font-size="11">机会成本</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="489.99999999825" cy="179.9993" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="489.99999999825" y="183.9993" text-anchor="middle" fill="#cbd5e1" font-size="11">沉没成本</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="448.99551001227275" cy="278.9943887167854" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="448.99551001227275" y="282.9943887167854" text-anchor="middle" fill="#cbd5e1" font-size="11">边际效用递减</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="350.0008857512855" cy="319.999999997198" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="350.0008857512855" y="323.999999997198" text-anchor="middle" fill="#cbd5e1" font-size="11">需求定律</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="251.00574263003918" cy="278.9956413574353" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="251.00574263003918" y="282.9956413574353" text-anchor="middle" fill="#cbd5e1" font-size="11">供给定律</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="210.00000000410043" cy="180.00107150257116" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="210.00000000410043" y="184.00107150257116" text-anchor="middle" fill="#cbd5e1" font-size="11">均衡价格</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="251.00422729757628" cy="81.0058739770381" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="251.00422729757628" y="85.0058739770381" text-anchor="middle" fill="#cbd5e1" font-size="11">需求价格弹性</text>
+    </g>
+      
+    <circle cx="350" cy="180" r="50" fill="url(#centerGrad)" stroke="#8b5cf6" stroke-width="2"/>
+    <text x="350" y="175" text-anchor="middle" fill="white" font-size="13" font-weight="700">经济学原理</text>
+    <text x="350" y="192" text-anchor="middle" fill="#94a3b8" font-size="10">核心概念</text>
+    </svg>
+    </div>
+  </section>
+
+  <!-- AI语音导读 -->
+  <section class="content-section reveal" id="audio">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🎧</span>
+      AI 语音导读
+    </h2>
+    <div class="audio-section">
+      <div class="audio-play-wrapper">
+        <button class="audio-play-btn" id="audioPlayBtn" onclick="toggleAudio()">
+          <svg viewBox="0 0 24 24" id="playIcon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+        <div>
+          <div class="audio-play-label">AI 导读 · 约 8 分钟</div>
+          <div class="audio-source-badge">
+            <span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--primary-cyan);animation:pulse-dot 2s infinite;display:inline-block"></span>
+            TTS 智能语音
+          </div>
+        </div>
+      </div>
+      <div class="audio-waveform" id="waveform">
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+      </div>
+      <div class="audio-progress">
+        <div class="audio-progress-bar" id="audioProgressBar">
+          <div class="audio-progress-fill" id="audioProgressFill"></div>
+        </div>
+        <div class="audio-progress-time">
+          <span id="audioCurrentTime">0:00</span>
+          <span id="audioTotalTime">8:00</span>
+        </div>
+      </div>
+      <div class="audio-guide-text">
+        <div class="guide-text-header">
+          <span class="guide-text-header-icon">📝</span>
+          <span class="guide-text-header-title">导读文字版</span>
+        </div>
+        
+          <div class="guide-paragraph" data-index="0">
+            <div class="guide-paragraph-label">开场</div>
+            <p>你好，欢迎来到一百天一百本书。今天是我们旅程的第一天，要读的是哈佛大学教授格里高利·曼昆的《经济学原理》。这本书被全球超过七百所大学采用，是过去三十年最流行的经济学入门教材。但它的价值不在于流行，而在于它提供了一套可以立刻用在生活里的思维工具。</p>
+          </div>
+          <div class="guide-paragraph" data-index="1">
+            <div class="guide-paragraph-label">为什么从这本开始</div>
+            <p>一百天读一百本书，最怕的是读完一百个孤立的知识点，脑子里还是一团散沙。所以第一本必须是一本「元书」——它不提供某个领域的结论，而是提供一套所有领域通用的分析框架。经济学正是这样一套框架：稀缺、成本、边际、激励、比较优势。这五个概念，后面九十本书里会反复出现。读懂它，后面九十本都会变快。</p>
+          </div>
+          <div class="guide-paragraph" data-index="2">
+            <div class="guide-paragraph-label">全书地图</div>
+            <p>这本书分两大块。微观部分讲个体如何决策、市场如何运行：供给与需求、弹性、消费者与生产者剩余、外部性与公共品、成本与市场结构、劳动市场。宏观部分把视角拉高到整个国家：GDP怎么算、长期增长从哪里来、货币与通胀、开放经济、短期波动与政策。七大模块，三十多章。今天我们不追求覆盖全部，只抓住五个最底层的原理。</p>
+          </div>
+          <div class="guide-paragraph" data-index="3">
+            <div class="guide-paragraph-label">第一原理</div>
+            <p>第一个原理，人们面临权衡取舍。它的根源是稀缺性：资源有限，欲望无限，所以每一次选择都是一次放弃。这句话的真正用途，是逼你在决策前问一句「我拿什么换」。大多数糟糕决策的成因，是假装不需要付代价，而非不知道想要什么。</p>
+          </div>
+          <div class="guide-paragraph" data-index="4">
+            <div class="guide-paragraph-label">第二原理</div>
+            <p>第二个原理，机会成本才是真实成本。成本不是账面支出，而是你为此放弃的东西。所以要区分显性成本与隐性成本，更要和沉没成本划清界限。已花的钱不该左右未来的决定，这一点说起来简单，做起来极难，因为人天生不愿承认损失。</p>
+          </div>
+          <div class="guide-paragraph" data-index="5">
+            <div class="guide-paragraph-label">第三原理</div>
+            <p>第三个原理，理性人在边际上思考。真正要回答的往往不是「全做还是不做」，而是「再一点值不值」。边际收益大于边际成本才行动。这一条能解开经济学史上最著名的谜题：水很重要却便宜，钻石没什么用却昂贵——因为价格由最后一单位的边际效用决定，而非由总体重要性决定。</p>
+          </div>
+          <div class="guide-paragraph" data-index="6">
+            <div class="guide-paragraph-label">第四原理</div>
+            <p>第四个原理，人们会对激励做出反应。价格是最直接的激励，但真正的难点是非预期后果。安全带降低了死亡概率，司机因此开得更快，事故总量反而上升。这在提醒我们：制度设计不能只问意图，必须问「如果我是被激励的一方，我会怎么钻空子」。</p>
+          </div>
+          <div class="guide-paragraph" data-index="7">
+            <div class="guide-paragraph-label">第五原理</div>
+            <p>第五个原理，比较优势让贸易双赢。决定分工的不是谁更强，而是谁做这件事机会成本更低。所以时薪两千的律师该雇助理打字，尽管他打字更快。这个逻辑支撑了全球供应链、专业外包和企业内部分工，也解释了一件事：贸易整体上让蛋糕变大，但确实会让部分群体受损，这两件事同时为真。</p>
+          </div>
+          <div class="guide-paragraph" data-index="8">
+            <div class="guide-paragraph-label">怎么读这本</div>
+            <p>建议你这样安排这一小时。前十来分钟，把这本导读和章节地图过一遍，建立整体结构感。接下来半小时，逐个打开五个核心观点的深度精读，每个读完停一下，用一句话写下你自己的理解，不要复制原文。然后十五分钟，读四个案例，重点看「谷贱伤农」和「最低工资」这两个，它们最能训练你把模型用到现实。最后十分钟，做六道自测题，再回答三个思考题，写进笔记区。</p>
+          </div>
+          <div class="guide-paragraph" data-index="9">
+            <div class="guide-paragraph-label">一个提醒</div>
+            <p>读经济学最容易犯的错误，是把模型当成真理。供给需求曲线是有前提的：完全竞争、信息充分、没有外部性。现实中这些前提经常不成立，所以才需要后面的公共部门经济学和产业组织理论。学经济学不是为了背结论，而是为了知道结论在什么条件下成立。</p>
+          </div>
+          <div class="guide-paragraph" data-index="10">
+            <div class="guide-paragraph-label">收尾</div>
+            <p>今天这五个原理，会是你后面九十九本书的底层操作系统。稀缺决定必须选择，机会成本决定选择的代价，边际决定选择的最优解，激励决定别人如何回应你的选择，比较优势决定你该和谁合作。把这五句话记住，比记住书里任何一张图都值钱。明天我们读曼昆的另一本，《宏观经济学》，把视角从个人抬到国家。我们明天见。</p>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 章节地图 -->
+  <section class="content-section reveal" id="chapters">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🗺️</span>
+      章节地图
+    </h2>
+    <div class="chapter-map">
+      
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第一篇</span>
+            <span class="chapter-chapters">第1—2章</span>
+          </div>
+          <h3 class="chapter-name">导言</h3>
+          <p class="chapter-essence">十大原理与经济学家的思维方式</p>
+          <div class="chapter-question">为什么稀缺性是一切经济问题的起点？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第二篇</span>
+            <span class="chapter-chapters">第4—6章</span>
+          </div>
+          <h3 class="chapter-name">市场如何运行</h3>
+          <p class="chapter-essence">供给、需求与市场均衡的形成</p>
+          <div class="chapter-question">价格到底是由谁决定的？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第三篇</span>
+            <span class="chapter-chapters">第7—9章</span>
+          </div>
+          <h3 class="chapter-name">市场与福利</h3>
+          <p class="chapter-essence">消费者剩余、生产者剩余与贸易收益</p>
+          <div class="chapter-question">市场效率该如何衡量？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第四篇</span>
+            <span class="chapter-chapters">第10—12章</span>
+          </div>
+          <h3 class="chapter-name">公共部门经济学</h3>
+          <p class="chapter-essence">外部性、公共物品与税收</p>
+          <div class="chapter-question">市场失灵时政府该做什么？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第五篇</span>
+            <span class="chapter-chapters">第13—17章</span>
+          </div>
+          <h3 class="chapter-name">企业行为与产业组织</h3>
+          <p class="chapter-essence">成本、竞争、垄断与寡头</p>
+          <div class="chapter-question">企业为什么能获得超额利润？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第六篇</span>
+            <span class="chapter-chapters">第18—20章</span>
+          </div>
+          <h3 class="chapter-name">劳动市场</h3>
+          <p class="chapter-essence">要素价格、工资差异与收入分配</p>
+          <div class="chapter-question">为什么同样的工作工资不同？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第七篇</span>
+            <span class="chapter-chapters">第23—36章</span>
+          </div>
+          <h3 class="chapter-name">宏观经济学</h3>
+          <p class="chapter-essence">GDP、货币、通胀、增长与短期波动</p>
+          <div class="chapter-question">一个国家为什么会繁荣或衰退？</div>
+        </div>
+    </div>
+  </section>
+
+  <!-- 核心精读 -->
+  <section class="content-section reveal" id="insights">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🔍</span>
+      核心概念深度精读
+    </h2>
+    <div class="insights-list">
+      
+      <div class="insight-item">
+        <div class="insight-head" onclick="toggleInsight(this)">
+          <div class="insight-badge">01</div>
+          <div class="insight-head-main">
+            <div class="insight-head-title">人们面临权衡取舍</div>
+            <div class="insight-head-sub">Everything is a trade-off</div>
+          </div>
+          <div class="insight-arrow">▼</div>
+        </div>
+        <div class="insight-body">
+          <p class="insight-paragraph">经济学之所以存在，根本原因是稀缺性——社会拥有的资源总是有限的，而人类的欲望是无限的。稀缺性意味着必须做出选择，而「选择」这个词的另一面，就是「放弃」。当你决定把一小时用来读这本书，你就放弃了这一小时本可以做其他所有事情的可能性。</p><p class="insight-paragraph">曼昆把这一逻辑概括成一句话：人们面临权衡取舍。这句话听上去像废话，但它的力量在于，它强迫你在任何决策面前先问一句：我打算拿什么来换？大多数糟糕的决策，原因在于假装不需要付出代价，而不在于不知道自己要什么。</p><p class="insight-paragraph">最著名的一组权衡是效率与平等。效率指社会能从稀缺资源中获得最大利益，平等指把这些成果较为平均地分配给社会成员。当政府想要更平等——例如向高收入者征税补贴低收入者——这会削弱工作与投资的激励，社会生产的总蛋糕可能缩小。反过来，一个完全按贡献分配的社会效率很高，但贫富差距会扩大。这是结构性矛盾，与政策执行的水平无关：任何试图同时最大化两者的努力，都会在另一端留下妥协。</p><p class="insight-paragraph">在个人层面，权衡取舍体现为时间、注意力与资金的分配。你的一天只有24小时，投入到A项目的每一分钟，都是从B项目借来的。真正稀缺的往往不是钱，而是注意力——钱可以再赚，注意力一旦被切碎就无法复原。</p><p class="insight-paragraph">在组织层面，战略的本质就是取舍。迈克尔·波特有一个著名判断：战略的核心在于选择不做什么，而不在于选择做什么。一家企业若想同时讨好所有人——高端又要低价，快速又要精致，宽产品线又要极致单品——最终会在每一个维度上都变得平庸。取舍之所以难，是因为它要求你公开承认自己不要什么。</p>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📌 案例</div>
+            
+            <div class="example-box">
+              <div class="example-title">▸ 初创公司的产品线扩张</div>
+              <div class="example-text">某SaaS公司成立第二年，客户提出了十几个新功能需求。团队一一满足，产品线从3个模块膨胀到11个，结果每个模块都做到60分。同期一家竞争对手只做2个模块，做到95分，拿下了大客户。这不是执行力差距，而是取舍失效：资源被平均分配，就等于没有分配。</div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">▸ 大学生的暑假选择</div>
+              <div class="example-text">一个暑假可以用来实习、备考、旅行或陪家人。选择实习意味着放弃备考的时间，而备考又意味着放弃实习的履历。做决定的正确方式，是明确这一个暑假你最想获得哪一种「不可替代的资产」，其余选项就要被有意识地放弃，而不是拖延到最后什么都没做。</div>
+            </div>
+          </div>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📖 关键术语</div>
+            <div class="term-chip-row">
+              <div class="term-chip">
+                <span class="term-chip-name">稀缺性</span>
+                <span class="term-chip-def">社会拥有的资源是有限的，因此不能生产人们希望拥有的所有物品与服务。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">效率</span>
+                <span class="term-chip-def">社会能从其稀缺资源中得到最大利益的特性。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">平等</span>
+                <span class="term-chip-def">经济成果在社会成员中平均分配的特性。</span>
+              </div></div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-icon">💡</div>
+            <div class="takeaway-text">做任何决定前先问一句：我为此放弃了什么？如果答不出来，说明你还没想清楚。</div>
+          </div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-head" onclick="toggleInsight(this)">
+          <div class="insight-badge">02</div>
+          <div class="insight-head-main">
+            <div class="insight-head-title">机会成本才是真实成本</div>
+            <div class="insight-head-sub">The cost of something is what you give up to get it</div>
+          </div>
+          <div class="insight-arrow">▼</div>
+        </div>
+        <div class="insight-body">
+          <p class="insight-paragraph">教科书对成本的定义与现实中的直觉差别很大：某种东西的成本，是为了得到它所放弃的东西。这个定义把「成本」从会计账簿上的支出，扩展到了所有被放弃的可能性。</p><p class="insight-paragraph">因此要区分两类成本。显性成本是你实际掏出去的钱，比如学费、房租、原材料。隐性成本是你没有掏钱、但真实损失掉的价值，比如你创业时放弃的年薪、你读书时放弃的四年工作经验。决策时只看显性成本，是最常见的系统性错误。</p><p class="insight-paragraph">机会成本还必须与沉没成本严格区分。沉没成本是已经发生且无法收回的支出，它不应该影响任何未来决策。电影票已经买了、发现难看，理性决策的依据是「接下来这两小时怎么用更好」，而不是「票钱不能白花」。人之所以常常被沉没成本绑架，是因为把「避免承认损失」当成了收益。</p><p class="insight-paragraph">机会成本思维在商业上最具杀伤力的应用，是判断一件事该不该自己做。如果一项工作的机会成本高于外包价格，就应该外包。很多创业者把所有事情都自己扛，账面上省了钱，实际上把最贵的那部分资源——创始人的时间——投入到了最低价值的环节。</p><p class="insight-paragraph">在个人层面，机会成本解释了为什么「免费」常常是最贵的。免费的公开课、免费的咨询、免费的社交，代价是你的时间与注意力。判断一件事值不值得做，标准应当是「同样的时间投入别处，能否产生更大价值」，而不是它本身是否收费。</p>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📌 案例</div>
+            
+            <div class="example-box">
+              <div class="example-title">▸ 读大学的真实成本</div>
+              <div class="example-text">四年学费与生活费假设共20万元，这是显性成本。但如果这四年直接工作，年收入10万元、四年40万元，这40万元就是隐性成本。真实的求学成本接近60万元，而不是20万元。这不意味着读大学不划算——大学带来的人力资本增值可能远超60万元——但它意味着，判断划算与否必须用60万元做分母。</div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">▸ 开餐厅的机会成本</div>
+              <div class="example-text">一位年薪50万元的产品总监辞职开餐厅，第一年餐厅净赚30万元。账面看是盈利的，但以机会成本衡量，他实际亏损20万元，加上投入的精力与本金风险，这笔账更不划算。很多「赚钱的创业」在机会成本视角下是亏的。</div>
+            </div>
+          </div>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📖 关键术语</div>
+            <div class="term-chip-row">
+              <div class="term-chip">
+                <span class="term-chip-name">机会成本</span>
+                <span class="term-chip-def">为了得到某种东西所必须放弃的东西的价值。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">显性成本</span>
+                <span class="term-chip-def">需要企业支付货币的投入成本，如工资、租金、原材料。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">隐性成本</span>
+                <span class="term-chip-def">不需要货币支付、但真实存在的成本，如自有资金利息、所有者时间价值。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">沉没成本</span>
+                <span class="term-chip-def">已经发生且无法收回的成本，理性决策时应被忽略。</span>
+              </div></div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-icon">💡</div>
+            <div class="takeaway-text">看到一个价格时，别只问「多少钱」，要问「我还要为此放弃什么」。</div>
+          </div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-head" onclick="toggleInsight(this)">
+          <div class="insight-badge">03</div>
+          <div class="insight-head-main">
+            <div class="insight-head-title">理性人思考边际量</div>
+            <div class="insight-head-sub">Think at the margin</div>
+          </div>
+          <div class="insight-arrow">▼</div>
+        </div>
+        <div class="insight-body">
+          <p class="insight-paragraph">大多数决策真正要回答的问题是「要不要再多做一点」，而非「全做还是全不做」。这种在既有基础上做出的微小增量调整，就是边际变动。理性人做决策时比较的是边际收益与边际成本，当且仅当边际收益大于边际成本时才行动。</p><p class="insight-paragraph">为什么必须看边际而不是平均？因为平均量掩盖了下一步的真实得失。一家餐厅的平均成本是每客50元，某天有位客人愿意付40元吃一顿空座位的晚餐，按平均成本算应当拒绝；但多接待这一位客人真正增加的成本（食材、少量人工）可能只有25元，边际收益40元大于边际成本25元，就应该接。决策发生在边缘，而非在平均。</p><p class="insight-paragraph">边际收益递减是这个世界最普遍的规律之一。第一块巧克力带来的满足最大，第二块次之，第五块可能变成负担。它解释了两件事：为什么需求曲线向下倾斜，以及为什么「越多越好」是错的。</p><p class="insight-paragraph">理解边际，才能真正解开「水与钻石悖论」。水的总效用极高，但因为它太充裕，最后一杯水的边际效用极低，价格由边际效用决定，所以水便宜。钻石相反，总效用很低，但极其稀缺，边际效用极高，所以昂贵。价格反映的是边际上的评价，而非总体的重要性。</p><p class="insight-paragraph">在时间管理上，边际思维同样有效。学习到第四个小时，专注度急剧下降，此时第四小时的边际收益可能已经是负的。继续硬撑不如去睡觉——这是边际分析给出的结论，而不是意志力的失败。</p>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📌 案例</div>
+            
+            <div class="example-box">
+              <div class="example-title">▸ 飞机起飞前的最后一张票</div>
+              <div class="example-text">航班即将起飞，还有空座。一张票价正常是800元，此时有人愿出300元。航空公司的平均成本可能高达500元，按平均成本应该拒绝。但多载一位乘客的边际成本仅是一份餐食和少量燃油，约50元。300元大于50元，卖票是理性的。这就是边际定价，也是航空公司收益管理的核心逻辑。</div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">▸ 自助餐为什么能赚钱</div>
+              <div class="example-text">自助餐定价固定，顾客会吃到「边际效用为零」为止——即再吃一口带来的满足抵不过撑胀的痛苦。餐厅的成本主要由固定投入决定，边际成本很低。双方都在按边际决策，交易因此成立。</div>
+            </div>
+          </div>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📖 关键术语</div>
+            <div class="term-chip-row">
+              <div class="term-chip">
+                <span class="term-chip-name">边际变动</span>
+                <span class="term-chip-def">在现有行动方案上进行的微小增量调整。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">边际收益</span>
+                <span class="term-chip-def">多做一单位所增加的额外收益。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">边际成本</span>
+                <span class="term-chip-def">多做一单位所增加的额外成本。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">边际效用递减</span>
+                <span class="term-chip-def">随着消费量增加，每增加一单位带来的额外满足感递减。</span>
+              </div></div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-icon">💡</div>
+            <div class="takeaway-text">别问「总共值不值」，要问「再多做这一点，值不值」。</div>
+          </div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-head" onclick="toggleInsight(this)">
+          <div class="insight-badge">04</div>
+          <div class="insight-head-main">
+            <div class="insight-head-title">激励会改变行为，包括你没预料到的行为</div>
+            <div class="insight-head-sub">People respond to incentives</div>
+          </div>
+          <div class="insight-arrow">▼</div>
+        </div>
+        <div class="insight-body">
+          <p class="insight-paragraph">激励是引起一个人做出某种行为的某种东西，可以是奖励，也可以是惩罚。由于理性人在边际上比较成本与收益，所以他们对激励的反应是可预测的——这正是经济学能够解释人类行为的原因。</p><p class="insight-paragraph">价格是最直接的激励。苹果涨价，消费者少买、果农多种；油价上涨，大排量车销量下滑、混动车畅销。整条供给与需求曲线，本质上都是对激励的反应函数。</p><p class="insight-paragraph">但激励的真正难点在于非预期后果。政策或制度改变了成本收益结构，人们会调整行为，而这种调整常常不是设计者想要的。安全带的例子最经典：安全带降低了事故中死亡的概率，于是人们在开车时更敢冒险、开得更快，结果是事故次数上升，行人死亡增加。单看「安全带减少了驾驶员死亡」是对的，作为整体政策评估，效果被抵消了一部分。</p><p class="insight-paragraph">在组织管理中，激励设计几乎决定了一切。你考核什么，就得到什么，而且往往得到的是「考核指标的扭曲版本」。销售只考核销售额，就会出现压货与虚假订单；客服只考核通话时长，就会出现草草挂断。这不是员工品行问题，而是激励结构问题——想要正确的行为，必须让正确的行为有利可图。</p><p class="insight-paragraph">因此在设计任何制度时，最重要的动作不是问「大家会不会照做」，而是问「如果我是被激励的一方，我会怎么钻这个规则的空子」。能通过这个测试的制度，才是可用制度。</p>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📌 案例</div>
+            
+            <div class="example-box">
+              <div class="example-title">▸ 安全带法案的意外结果</div>
+              <div class="example-text">美国1960年代推行强制安全带立法后，驾驶员死亡人数下降，但交通事故总量上升，行人死亡也有所增加。经济学家的解释是：安全带降低了死亡成本，理性司机因此在边际上提高了车速与冒险程度。激励被改变了，行为随之改变，部分政策效果被行为反应吃掉。</div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">▸ 销售提成的扭曲</div>
+              <div class="example-text">某公司按签约额给销售提成，结果销售拼命签下质量差、回款难的客户，年末大量坏账。改为按「回款额」提成后，销售开始主动筛客户。指标没变严，行为却变健康了——因为激励的方向变了。</div>
+            </div>
+          </div>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📖 关键术语</div>
+            <div class="term-chip-row">
+              <div class="term-chip">
+                <span class="term-chip-name">激励</span>
+                <span class="term-chip-def">引起一个人做出某种行为的东西，如奖励或惩罚。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">非预期后果</span>
+                <span class="term-chip-def">制度或政策引发的人们行为调整，其结果与设计初衷不符。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">道德风险</span>
+                <span class="term-chip-def">一方在受到保护或不必承担全部后果时，倾向于采取更高风险的行为。</span>
+              </div></div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-icon">💡</div>
+            <div class="takeaway-text">设计规则时，先站到「想钻空子的人」那一侧看一遍。</div>
+          </div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-head" onclick="toggleInsight(this)">
+          <div class="insight-badge">05</div>
+          <div class="insight-head-main">
+            <div class="insight-head-title">比较优势让贸易成为双赢</div>
+            <div class="insight-head-sub">Trade can make everyone better off</div>
+          </div>
+          <div class="insight-arrow">▼</div>
+        </div>
+        <div class="insight-body">
+          <p class="insight-paragraph">很多人对贸易的理解是零和的：一方赚钱，另一方必然吃亏。经济学给出的结论恰恰相反——在自愿交易的前提下，贸易让双方都变好。原因在于比较优势，而非绝对优势。</p><p class="insight-paragraph">绝对优势指用更少的投入生产同样的东西。比较优势指以更低的机会成本生产某种东西。关键洞察是：即使一方在所有产品上都有绝对优势，双方仍然可以通过专业化与交换获益，因为真正决定分工的是机会成本，而非绝对能力。</p><p class="insight-paragraph">设想一位律师打字速度是助理的两倍。看起来律师应该自己打字。但律师打一小时字，就放弃了一小时本可以创造数千元价值的工作；助理打一小时字，放弃的价值很小。因此律师打字的机会成本极高，助理的机会成本很低。律师应该专注于法律工作，把打字交给助理——尽管他在打字上更强。这就是比较优势反直觉的地方：强者应该做自己最擅长且机会成本最高的事，弱者应该做自己机会成本最低的事。</p><p class="insight-paragraph">这个逻辑支撑了整个现代经济：分工提高熟练度、减少切换成本、扩大市场规模。全球供应链、专业服务外包、企业内部的职能划分，本质上都是比较优势的应用。</p><p class="insight-paragraph">但贸易也有真实的代价：分配效应。贸易让整体蛋糕变大，但某些群体确实受损，例如受进口冲击的行业工人。承认这一点，才能理解为什么自由贸易在政治上总是充满张力。正确的应对是帮助受损者转型，而不是否认损失存在。</p>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📌 案例</div>
+            
+            <div class="example-box">
+              <div class="example-title">▸ 律师与助理</div>
+              <div class="example-text">律师每小时创收2000元，打字速度是助理的2倍。假设打字一小时助理产出价值100元。律师打字的机会成本是2000元，助理是100元。即便律师打字更快，让助理打字、律师专注办案，总产出更高。这就是比较优势压倒绝对优势。</div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">▸ 中国的制造业分工</div>
+              <div class="example-text">过去四十年，中国在劳动密集型制造环节具备明显的比较优势，逐步嵌入全球供应链。这并非因为中国在每个环节都最强，而是因为在组装制造环节的机会成本最低。随着要素价格上升，比较优势开始向研发、供应链组织等高附加值环节迁移，产业升级本质上就是比较优势的动态变化。</div>
+            </div>
+          </div>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📖 关键术语</div>
+            <div class="term-chip-row">
+              <div class="term-chip">
+                <span class="term-chip-name">绝对优势</span>
+                <span class="term-chip-def">用比另一个生产者更少的投入生产某种物品的能力。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">比较优势</span>
+                <span class="term-chip-def">以低于另一个生产者的机会成本生产某种物品的能力。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">专业化</span>
+                <span class="term-chip-def">将资源集中投入到机会成本最低的环节。</span>
+              </div></div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-icon">💡</div>
+            <div class="takeaway-text">不要问「谁更强」，要问「谁做这件事放弃得更少」。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 金句 -->
+  <section class="content-section reveal" id="quotes">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">✨</span>
+      精华金句
+    </h2>
+    <div class="quotes-list">
+      
+      <div class="quote-card">
+        <div class="quote-card-text">经济学研究的是一个社会如何管理自己的稀缺资源。在大多数社会中，资源并不是由一个唯一的中央计划者来配置，而是通过千百万家庭和企业的共同行动来配置的。</div>
+        <div class="quote-card-source">— 曼昆《经济学原理》第1章</div>
+        <div class="quote-card-note">这句话给出了经济学的定义，也隐含了它的政治哲学：分散决策优于集中决策，因为信息是分散的。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-card-text">市场通常是组织经济活动的一种好方法。</div>
+        <div class="quote-card-source">— 十大原理之六</div>
+        <div class="quote-card-note">注意「通常」二字。曼昆并没有说市场永远有效，这为后面讲外部性、公共物品、市场势力留下了空间。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-card-text">政府有时可以改善市场结果。</div>
+        <div class="quote-card-source">— 十大原理之七</div>
+        <div class="quote-card-note">与上一条并列，构成一对张力。真正的经济学素养，是判断在具体情境下该偏向哪一边。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-card-text">一国的生活水平取决于它生产物品与服务的能力。</div>
+        <div class="quote-card-source">— 十大原理之八</div>
+        <div class="quote-card-note">生产率是长期繁荣的唯一来源。这一点解释了为什么产业政策、教育、技术投资比短期刺激更重要。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-card-text">当政府发行了过多货币时，物价上升。</div>
+        <div class="quote-card-source">— 十大原理之九</div>
+        <div class="quote-card-note">通胀是一种货币现象，长期看几乎总是如此。这条原理在后面的货币政策部分会被反复使用。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 深度案例 -->
+  <section class="content-section reveal" id="cases">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">📊</span>
+      经典案例分析
+    </h2>
+    
+      <div class="case-detail">
+        <div class="case-detail-head">
+          <div class="case-detail-icon">💎</div>
+          <h3 class="case-detail-title">水与钻石悖论：价格为什么由边际决定</h3>
+        </div>
+        <div class="case-steps">
+          <div class="case-step">
+            <div class="case-step-label">背景</div>
+            <div class="case-step-text">亚当·斯密在《国富论》中提出一个困扰经济学界百余年的问题：水是生命必需，几乎无替代品，价格却极低；钻石几乎无实际用途，价格却极高。如果价格反映价值，这个现象完全说不通。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">过程</div>
+            <div class="case-step-text">早期劳动价值论试图用「投入的劳动量」解释价格，但无法解释水的价格。19世纪70年代，门格尔、杰文斯、瓦尔拉斯几乎同时提出边际效用理论：价值不是由物品的总效用决定，而是由最后一单位带来的效用决定。因为水极其充裕，最后一杯水的效用很低；钻石极其稀缺，最后一颗钻石的效用极高。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">结果</div>
+            <div class="case-step-text">边际效用价值论彻底重塑了经济学，成为现代微观经济学价格理论的基石。它同时解释了「为什么丰裕会让东西变便宜」这一普遍现象。</div>
+          </div>
+        </div>
+        <div class="case-takeaway">
+          <div class="case-takeaway-label">核心启示</div>
+          <div class="case-takeaway-text">价格反映的是边际上的稀缺程度，而非总体的重要性。这对商业的启示是：决定你价格的因素，在于你在边际上有多难被替代，而不在于你做了多少工作。</div>
+        </div>
+        <div class="case-principle-line">边际效用决定价格。总效用决定「值不值得拥有」，边际效用决定「值多少钱」。</div>
+      </div>
+      <div class="case-detail">
+        <div class="case-detail-head">
+          <div class="case-detail-icon">🌾</div>
+          <h3 class="case-detail-title">谷贱伤农：丰收为什么让农民更穷</h3>
+        </div>
+        <div class="case-steps">
+          <div class="case-step">
+            <div class="case-step-label">背景</div>
+            <div class="case-step-text">农业社会反复出现一个悖论：风调雨顺、粮食大丰收的年份，农民收入反而下降，甚至出现「丰年饥荒」。这看似违背常识——东西多了怎么会更穷？</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">过程</div>
+            <div class="case-step-text">粮食是需求缺乏弹性的商品：人一天只能吃那么多，价格再低也很难多吃一倍。当供给大幅增加时，均衡价格必须大幅下降才能出清市场；但需求量增加有限。价格跌幅大于销量增幅，总收入（价格×数量）因此下降。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">结果</div>
+            <div class="case-step-text">这一现象推动了农业政策的设计：最低收购价、储备制度、农业保险，本质都是试图切断「增产—降价—减收」的链条。同时也解释了为什么单纯提高产量并不必然提高农民收入。</div>
+          </div>
+        </div>
+        <div class="case-takeaway">
+          <div class="case-takeaway-label">核心启示</div>
+          <div class="case-takeaway-text">判断一个生意，不能只看产量或销量，必须看「价格弹性」。需求弹性低的行业，扩产是危险动作；需求弹性高的行业，降价能换来更大市场。</div>
+        </div>
+        <div class="case-principle-line">需求价格弹性小于1时，供给增加导致总收益下降。</div>
+      </div>
+      <div class="case-detail">
+        <div class="case-detail-head">
+          <div class="case-detail-icon">⚖️</div>
+          <h3 class="case-detail-title">最低工资法：善意的价格下限</h3>
+        </div>
+        <div class="case-steps">
+          <div class="case-step">
+            <div class="case-step-label">背景</div>
+            <div class="case-step-text">为了保护低技能劳动者，政府设定最低工资标准，禁止企业以更低工资雇佣工人。政策目标清晰且道德上无可指摘。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">过程</div>
+            <div class="case-step-text">从供需模型看，最低工资是对劳动市场设定了一个价格下限，且该下限高于市场均衡工资。价格下限导致供给量（愿意工作的人）增加、需求量（企业愿意雇佣的人）减少，出现过剩——在劳动市场上，过剩的表现就是失业。受影响最大的是最缺乏技能的人，也就是政策原本想保护的人。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">结果</div>
+            <div class="case-step-text">实证研究结论并不统一：当最低工资小幅高于均衡时，影响可能很小；当大幅高于均衡、或经济下行时，失业效应明显。这使最低工资成为经济学中最具争议的政策之一。</div>
+          </div>
+        </div>
+        <div class="case-takeaway">
+          <div class="case-takeaway-label">核心启示</div>
+          <div class="case-takeaway-text">理解一个政策，要看它的价格机制后果，而不只是它的道德意图。善意与好结果之间，隔着一个激励结构。</div>
+        </div>
+        <div class="case-principle-line">价格下限高于均衡价格，会造成过剩（劳动市场上即失业）。</div>
+      </div>
+      <div class="case-detail">
+        <div class="case-detail-head">
+          <div class="case-detail-icon">🌍</div>
+          <h3 class="case-detail-title">碳排放权交易：给外部性定价</h3>
+        </div>
+        <div class="case-steps">
+          <div class="case-step">
+            <div class="case-step-label">背景</div>
+            <div class="case-step-text">企业排放二氧化碳，成本由全社会承担，企业自己几乎不付代价——这是典型的负外部性。结果是市场自发产生的排放量远高于社会最优水平。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">过程</div>
+            <div class="case-step-text">解决方案有两条路径。庇古税：政府按排放量征税，把外部成本内部化。科斯方案：界定产权，允许交易。碳交易属于后者——政府设定排放总量上限，把配额分配给企业，企业之间可以买卖。排放效率高的企业卖出富余配额获利，效率低的企业必须购买，成本上升。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">结果</div>
+            <div class="case-step-text">欧盟碳排放交易体系（EU ETS）运行多年，成为全球最大的碳市场。中国也于2021年启动全国碳市场。经验显示：总量上限的设定、配额的初始分配方式（免费还是拍卖）、以及监测核查的严格程度，决定制度成败。</div>
+          </div>
+        </div>
+        <div class="case-takeaway">
+          <div class="case-takeaway-label">核心启示</div>
+          <div class="case-takeaway-text">面对外部性，最有效的工具往往是把外部成本变成内部价格，而不只是道德劝说。改变激励结构，比呼吁责任感更可靠。</div>
+        </div>
+        <div class="case-principle-line">外部性导致市场失灵；矫正方式是庇古税或可交易许可证，本质都是给外部成本定价。</div>
+      </div>
+  </section>
+
+  <!-- 思维工具 -->
+  <section class="content-section reveal" id="tools">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🛠️</span>
+      思维工具与行动指南
+    </h2>
+    <h3 style="font-size:17px;font-weight:600;margin-bottom:16px;color:var(--text-primary)">五大思维工具</h3>
+    <div class="tools-grid">
+      <div class="tool-card"><div class="tool-icon">🔧</div><div class="tool-name">供需模型</div><div class="tool-desc">用供给曲线和需求曲线分析市场价格与数量的决定，适用于任何存在买卖关系的场景。</div></div><div class="tool-card"><div class="tool-icon">🔧</div><div class="tool-name">成本收益分析</div><div class="tool-desc">列出一个决策的所有成本与收益，包括显性与隐性、当期与未来，再比较净收益。</div></div><div class="tool-card"><div class="tool-icon">🔧</div><div class="tool-name">边际分析法</div><div class="tool-desc">判断「再多做一点值不值」，比较边际收益与边际成本，而非看平均量。</div></div><div class="tool-card"><div class="tool-icon">🔧</div><div class="tool-name">激励分析框架</div><div class="tool-desc">分析一项制度或政策会如何改变人们的成本收益结构，进而预测行为变化。</div></div><div class="tool-card"><div class="tool-icon">🔧</div><div class="tool-name">机会成本清单</div><div class="tool-desc">做决策前，列出你将放弃的Top 3替代方案，评估它们的价值。</div></div>
+    </div>
+    
+    <h3 style="font-size:17px;font-weight:600;margin:32px 0 16px;color:var(--text-primary)">本周行动指南</h3>
+    <div class="action-steps">
+      <div class="action-step"><div class="action-step-label">行动1</div><div class="action-step-text">本周做一个决策时，先用1分钟列出它的机会成本清单。</div></div><div class="action-step"><div class="action-step-label">行动2</div><div class="action-step-text">观察你所在团队的考核制度，找出一条会导致扭曲行为的规则。</div></div><div class="action-step"><div class="action-step-label">行动3</div><div class="action-step-text">找出你自己工作中一件「比较优势低」的事，考虑能否外包或交接。</div></div>
+    </div>
+  </section>
+
+  <!-- 概念闪卡 -->
+  <section class="content-section reveal" id="glossary">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🃏</span>
+      核心概念闪卡
+    </h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">点击卡片翻转查看释义</p>
+    <div class="flashcard-grid">
+      
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">稀缺性</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">资源有限而欲望无限，是一切经济问题的起点。</div>
+            <div class="flashcard-example">例：一天只有24小时，所以必须选择。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">机会成本</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">为得到某物而放弃的其他最佳选择的价值。</div>
+            <div class="flashcard-example">例：读研的成本包括放弃的两年工资。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">沉没成本</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">已发生且无法收回的成本，不应影响未来决策。</div>
+            <div class="flashcard-example">例：电影难看也应离场，票钱已经花了。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">边际效用递减</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">消费量增加时，每单位带来的额外满足递减。</div>
+            <div class="flashcard-example">例：第二杯奶茶不如第一杯好喝。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">需求定律</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">其他条件不变时，价格上升，需求量下降。</div>
+            <div class="flashcard-example">例：涨价后销量下滑。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">供给定律</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">其他条件不变时，价格上升，供给量上升。</div>
+            <div class="flashcard-example">例：猪价上涨，养殖户扩产。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">均衡价格</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">供给量等于需求量时的价格，市场自发趋向该点。</div>
+            <div class="flashcard-example">例：菜市场的实时价格。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">需求价格弹性</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">需求量变动百分比除以价格变动百分比。</div>
+            <div class="flashcard-example">例：粮食弹性小，奢侈品弹性大。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">消费者剩余</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">买者愿意支付的最高价格减去实际支付价格。</div>
+            <div class="flashcard-example">例：愿出100元却只花60元，剩余40元。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">生产者剩余</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">卖者实际得到的价格减去其成本。</div>
+            <div class="flashcard-example">例：成本50元卖80元，剩余30元。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">外部性</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">一个人的行为对旁观者福利的无补偿影响。</div>
+            <div class="flashcard-example">例：工厂排污损害下游居民。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">公共物品</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">既无排他性又无竞争性的物品。</div>
+            <div class="flashcard-example">例：国防、路灯、公共卫生。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">比较优势</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">以更低的机会成本生产某物的能力。</div>
+            <div class="flashcard-example">例：律师雇助理打字。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">看不见的手</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">价格作为信号，引导分散决策者实现资源有效配置。</div>
+            <div class="flashcard-example">例：涨价自然抑制需求、吸引供给。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">市场失灵</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">市场自身无法有效配置资源的情形。</div>
+            <div class="flashcard-example">例：污染、垄断、公共品供给不足。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">通货膨胀</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">经济中总体价格水平的上升。</div>
+            <div class="flashcard-example">例：同样100元买到的东西变少。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 自测题 -->
+  <section class="content-section reveal" id="quiz">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">✅</span>
+      知识自测
+    </h2>
+    <div class="quiz-list">
+      
+      <div class="quiz-item" data-qindex="0">
+        <div class="quiz-question">
+          <span class="quiz-qnum">Q1.</span>
+          <span>你已花200元买了演唱会门票，到场后发现演出很差。此时最理性的决策依据是？</span>
+        </div>
+        <div class="quiz-options">
+          
+            <div class="quiz-option" onclick="checkAnswer(this, 0, 1)">
+              <span class="quiz-option-key">A</span>
+              <span>因为花了200元，必须看完才不亏</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 1, 1)">
+              <span class="quiz-option-key">B</span>
+              <span>比较接下来两小时的其他用途价值，再决定是否离开</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 2, 1)">
+              <span class="quiz-option-key">C</span>
+              <span>看周围人是否离场再决定</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 3, 1)">
+              <span class="quiz-option-key">D</span>
+              <span>计算200元占月收入的比例</span>
+            </div>
+        </div>
+        <div class="quiz-explanation">
+          <strong>解析：</strong>200元是沉没成本，已经无法收回，不应影响决策。正确依据是边际比较：留下的边际收益 vs 离开去做别的事的边际收益。这正是「沉没成本不应影响决策」的经典应用。
+        </div>
+      </div>
+      <div class="quiz-item" data-qindex="1">
+        <div class="quiz-question">
+          <span class="quiz-qnum">Q2.</span>
+          <span>某公司平均成本每件80元，现有一批闲置产能，客户愿以60元/件下单1000件。多生产一件的真实成本为35元。按边际思维应当？</span>
+        </div>
+        <div class="quiz-options">
+          
+            <div class="quiz-option" onclick="checkAnswer(this, 0, 1)">
+              <span class="quiz-option-key">A</span>
+              <span>拒绝，因为60元低于平均成本80元</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 1, 1)">
+              <span class="quiz-option-key">B</span>
+              <span>接受，因为边际收益60元大于边际成本35元</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 2, 1)">
+              <span class="quiz-option-key">C</span>
+              <span>接受，因为能摊薄固定成本</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 3, 1)">
+              <span class="quiz-option-key">D</span>
+              <span>无法判断，需要看同行报价</span>
+            </div>
+        </div>
+        <div class="quiz-explanation">
+          <strong>解析：</strong>决策发生在边际上。固定成本已经发生，不因是否接单而改变。边际收益60元大于边际成本35元，每件净增25元，应从边际角度接受（前提是不影响其他高价订单）。
+        </div>
+      </div>
+      <div class="quiz-item" data-qindex="2">
+        <div class="quiz-question">
+          <span class="quiz-qnum">Q3.</span>
+          <span>粮食丰收后农民总收入下降，最直接的原因是？</span>
+        </div>
+        <div class="quiz-options">
+          
+            <div class="quiz-option" onclick="checkAnswer(this, 0, 1)">
+              <span class="quiz-option-key">A</span>
+              <span>农民议价能力弱</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 1, 1)">
+              <span class="quiz-option-key">B</span>
+              <span>粮食需求价格弹性小于1</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 2, 1)">
+              <span class="quiz-option-key">C</span>
+              <span>政府调控价格</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 3, 1)">
+              <span class="quiz-option-key">D</span>
+              <span>运输成本上升</span>
+            </div>
+        </div>
+        <div class="quiz-explanation">
+          <strong>解析：</strong>需求缺乏弹性时，供给增加导致价格大幅下跌，而需求量增加有限，价格跌幅超过销量增幅，总收入下降。这就是「谷贱伤农」的机制。
+        </div>
+      </div>
+      <div class="quiz-item" data-qindex="3">
+        <div class="quiz-question">
+          <span class="quiz-qnum">Q4.</span>
+          <span>一位时薪2000元的律师打字速度是助理的2倍，助理时薪100元。最合理的分工是？</span>
+        </div>
+        <div class="quiz-options">
+          
+            <div class="quiz-option" onclick="checkAnswer(this, 0, 1)">
+              <span class="quiz-option-key">A</span>
+              <span>律师自己打字，因为他效率更高</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 1, 1)">
+              <span class="quiz-option-key">B</span>
+              <span>助理打字，因为律师打字的机会成本更高</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 2, 1)">
+              <span class="quiz-option-key">C</span>
+              <span>两人各打一半，公平分担</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 3, 1)">
+              <span class="quiz-option-key">D</span>
+              <span>购买更快的打印机</span>
+            </div>
+        </div>
+        <div class="quiz-explanation">
+          <strong>解析：</strong>这是比较优势而非绝对优势的问题。律师打字一小时的机会成本是2000元，助理是100元。即使律师绝对效率更高，让助理打字、律师专注办案的总产出更高。
+        </div>
+      </div>
+      <div class="quiz-item" data-qindex="4">
+        <div class="quiz-question">
+          <span class="quiz-qnum">Q5.</span>
+          <span>公司只考核客服的「平均通话时长」，最可能出现的结果是？</span>
+        </div>
+        <div class="quiz-options">
+          
+            <div class="quiz-option" onclick="checkAnswer(this, 0, 1)">
+              <span class="quiz-option-key">A</span>
+              <span>服务质量显著提升</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 1, 1)">
+              <span class="quiz-option-key">B</span>
+              <span>客服草草结束通话以缩短时长</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 2, 1)">
+              <span class="quiz-option-key">C</span>
+              <span>客户满意度自然上升</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 3, 1)">
+              <span class="quiz-option-key">D</span>
+              <span>通话量减少</span>
+            </div>
+        </div>
+        <div class="quiz-explanation">
+          <strong>解析：</strong>激励决定行为。只考核时长，员工会优化时长这个指标本身，而非服务质量。这是激励结构导致的指标扭曲——你考核什么，就得到被扭曲的那个版本。
+        </div>
+      </div>
+      <div class="quiz-item" data-qindex="5">
+        <div class="quiz-question">
+          <span class="quiz-qnum">Q6.</span>
+          <span>政府对污染企业征收排污税，其经济学本质是？</span>
+        </div>
+        <div class="quiz-options">
+          
+            <div class="quiz-option" onclick="checkAnswer(this, 0, 1)">
+              <span class="quiz-option-key">A</span>
+              <span>增加财政收入</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 1, 1)">
+              <span class="quiz-option-key">B</span>
+              <span>把负外部性成本内部化</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 2, 1)">
+              <span class="quiz-option-key">C</span>
+              <span>限制行业发展</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 3, 1)">
+              <span class="quiz-option-key">D</span>
+              <span>补贴下游居民</span>
+            </div>
+        </div>
+        <div class="quiz-explanation">
+          <strong>解析：</strong>污染是负外部性：成本由社会承担，企业不付代价，导致产出高于社会最优。征税使企业边际私人成本上升至边际社会成本，从而把外部成本内部化，产量回落到社会最优水平。
+        </div>
+      </div>
+    </div>
+    <div class="quiz-score">你的得分：<strong id="quizScore">0</strong> / 6</div>
+  </section>
+
+  <!-- 思考题 -->
+  <section class="content-section reveal" id="questions">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🧠</span>
+      思维实验 / 思考题
+    </h2>
+    
+      <div class="think-card">
+        <div class="think-question">
+          <div class="think-num">1</div>
+          <div class="think-text">回想你最近一个月做过的最重要的一个决定。它的机会成本是什么？你当时有没有真正把这项成本算进去？</div>
+        </div>
+        <div class="think-hint">不要只算钱。列出你因此放弃的时间、关系、注意力和替代方案。</div>
+        <div class="note-area">
+          <div class="note-label">✏️ 写下你的思考</div>
+          <textarea class="note-input" placeholder="在这里记录你的想法..." data-qid="q0"></textarea>
+          <div class="note-status">✓ 已自动保存</div>
+        </div>
+      </div>
+      <div class="think-card">
+        <div class="think-question">
+          <div class="think-num">2</div>
+          <div class="think-text">你所在的团队或公司，当前的考核指标会诱导出什么「被扭曲的行为」？如果让你重新设计，你会改哪一条？</div>
+        </div>
+        <div class="think-hint">从「如果我想钻空子，我会怎么做」这个角度切入，最容易发现问题。</div>
+        <div class="note-area">
+          <div class="note-label">✏️ 写下你的思考</div>
+          <textarea class="note-input" placeholder="在这里记录你的想法..." data-qid="q1"></textarea>
+          <div class="note-status">✓ 已自动保存</div>
+        </div>
+      </div>
+      <div class="think-card">
+        <div class="think-question">
+          <div class="think-num">3</div>
+          <div class="think-text">在你自己的工作中，哪件事其实是你「绝对优势」但「比较优势」很低的？它可以被谁接走？</div>
+        </div>
+        <div class="think-hint">找出那些你做得比同事好、但机会成本极高的事务性工作。</div>
+        <div class="note-area">
+          <div class="note-label">✏️ 写下你的思考</div>
+          <textarea class="note-input" placeholder="在这里记录你的想法..." data-qid="q2"></textarea>
+          <div class="note-status">✓ 已自动保存</div>
+        </div>
+      </div>
+  </section>
+
+  <!-- 底部导航 -->
+  <nav class="book-nav">
+    <button class="book-nav-btn disabled" onclick="return false">
+      ← 上一本
+    </button>
+    <div class="book-nav-info">第 1 天 / 共 100 天</div>
+    <button class="book-nav-btn " onclick="window.location.href='book_2_宏观经济学.html'">
+      下一本 →
+    </button>
+  </nav>
+
+</main>
+
+<script>
+// 手风琴展开
+function toggleInsight(el) {
+  const item = el.parentElement;
+  item.classList.toggle('open');
+}
+
+// 滚动到指定区域
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    const navHeight = 60;
+    const top = el.offsetTop - navHeight;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+  // 更新活动状态
+  document.querySelectorAll('.section-nav-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// 自测题评分
+let correctCount = 0;
+let answered = new Set();
+
+function checkAnswer(el, selected, correct) {
+  const quizItem = el.closest('.quiz-item');
+  const qIndex = quizItem.dataset.qindex;
+  
+  if (answered.has(qIndex)) return;
+  answered.add(qIndex);
+  
+  const options = quizItem.querySelectorAll('.quiz-option');
+  const explanation = quizItem.querySelector('.quiz-explanation');
+  
+  options.forEach(opt => opt.classList.add('disabled'));
+  
+  if (selected === correct) {
+    el.classList.add('correct');
+    correctCount++;
+  } else {
+    el.classList.add('wrong');
+    options[correct].classList.add('correct');
+  }
+  
+  explanation.classList.add('show');
+  document.getElementById('quizScore').textContent = correctCount;
+}
+
+// 音频播放模拟（导读文字滚动）
+let isPlaying = false;
+let audioTimer = null;
+let currentParagraph = 0;
+const guideParagraphs = document.querySelectorAll('.guide-paragraph');
+const totalDuration = 480; // 8分钟 = 480秒
+let currentTime = 0;
+
+function toggleAudio() {
+  const playIcon = document.getElementById('playIcon');
+  const waveBars = document.querySelectorAll('.wave-bar');
+  
+  if (isPlaying) {
+    // 暂停
+    isPlaying = false;
+    playIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+    waveBars.forEach(b => b.classList.remove('playing'));
+    clearInterval(audioTimer);
+  } else {
+    // 播放
+    isPlaying = true;
+    playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+    waveBars.forEach(b => b.classList.add('playing'));
+    
+    audioTimer = setInterval(() => {
+      currentTime++;
+      const progress = (currentTime / totalDuration) * 100;
+      document.getElementById('audioProgressFill').style.width = progress + '%';
+      
+      const mins = Math.floor(currentTime / 60);
+      const secs = currentTime % 60;
+      document.getElementById('audioCurrentTime').textContent = mins + ':' + (secs < 10 ? '0' + secs : secs);
+      
+      // 段落切换
+      const paraDuration = totalDuration / guideParagraphs.length;
+      const newPara = Math.floor(currentTime / paraDuration);
+      if (newPara !== currentParagraph && newPara < guideParagraphs.length) {
+        guideParagraphs[currentParagraph].classList.remove('active');
+        currentParagraph = newPara;
+        guideParagraphs[currentParagraph].classList.add('active');
+        guideParagraphs[currentParagraph].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      
+      if (currentTime >= totalDuration) {
+        toggleAudio();
+        currentTime = 0;
+      }
+    }, 1000);
+  }
+}
+
+// 笔记自动保存（localStorage）
+const noteInputs = document.querySelectorAll('.note-input');
+noteInputs.forEach(input => {
+  const key = '100books_day1_' + input.dataset.qid;
+  const saved = localStorage.getItem(key);
+  if (saved) input.value = saved;
+  
+  input.addEventListener('input', () => {
+    localStorage.setItem(key, input.value);
+    const status = input.nextElementSibling;
+    status.classList.add('show');
+    setTimeout(() => status.classList.remove('show'), 1500);
+  });
+});
+
+// 滚动动画
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+revealElements.forEach(el => revealObserver.observe(el));
+
+// 滚动时更新导航按钮激活状态
+window.addEventListener('scroll', () => {
+  const sections = ['overview', 'audio', 'chapters', 'insights', 'cases', 'tools', 'glossary', 'quiz', 'questions'];
+  const navHeight = 80;
+  let currentSection = sections[0];
+  
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - navHeight <= window.scrollY) {
+      currentSection = id;
+    }
+  }
+  
+  document.querySelectorAll('.section-nav-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('onclick')?.includes(currentSection));
+  });
+});
+</script>
+
+</body>
+</html>

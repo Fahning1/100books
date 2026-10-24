@@ -1,0 +1,27 @@
+# 日志文件
+logs/
+*.log
+push.log
+
+# HyperFrames 缓存
+.hyperframes/
+node_modules/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 环境变量
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第3天 · 宏观经济学二十五讲 - 100天100本书</title>
+<style>
+/* ============================================
+   CSS变量与全局重置
+   ============================================ */
+:root {
+  --primary-purple: #8b5cf6;
+  --primary-cyan: #06b6d4;
+  --gradient-main: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+  --gradient-soft: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+  --bg-deep: #0a0a1a;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(139, 92, 246, 0.3);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+body::before {
+  content: '';
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+/* 导航栏 */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 14px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(10, 10, 26, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-glass);
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.nav-logo-icon { font-size: 24px; }
+.nav-logo-text {
+  font-size: 16px; font-weight: 700;
+  background: var(--gradient-main);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.nav-day {
+  font-size: 13px; color: var(--text-secondary);
+  display: flex; align-items: center; gap: 10px;
+}
+
+/* 主内容区 */
+.main-container {
+  position: relative; z-index: 1;
+  max-width: 960px; margin: 0 auto;
+  padding: 80px 24px 60px;
+}
+
+/* 返回按钮 */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; margin-bottom: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 13px; cursor: pointer;
+  transition: var(--transition-base);
+}
+.back-btn:hover { border-color: var(--border-glow); color: var(--text-primary); }
+
+/* 书籍头部 */
+.book-header {
+  display: grid; grid-template-columns: 180px 1fr;
+  gap: 36px; margin-bottom: 40px; align-items: start;
+}
+.book-cover {
+  width: 180px; height: 252px;
+  background: var(--gradient-soft);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glow);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.book-cover::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+}
+.book-cover-content { text-align: center; position: relative; z-index: 1; padding: 16px; }
+.book-cover-title { font-size: 20px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+.book-cover-author { font-size: 12px; color: var(--text-secondary); font-style: italic; }
+
+.book-info { padding-top: 16px; }
+.book-title { font-size: 32px; font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
+.book-author { font-size: 15px; color: var(--text-secondary); margin-bottom: 14px; }
+.book-meta { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.book-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 100px;
+  font-size: 12px; color: var(--text-secondary);
+}
+
+/* 章节导航 */
+.section-nav {
+  display: flex; gap: 6px; margin-bottom: 32px;
+  overflow-x: auto; padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+.section-nav-btn {
+  padding: 8px 16px; flex-shrink: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 100px;
+  color: var(--text-secondary);
+  font-size: 13px; cursor: pointer;
+  transition: var(--transition-base);
+  white-space: nowrap;
+}
+.section-nav-btn:hover { border-color: var(--border-glow); color: var(--text-primary); }
+.section-nav-btn.active { background: var(--gradient-main); color: white; border-color: transparent; }
+
+/* 内容区块 */
+.content-section { margin-bottom: 48px; }
+.content-section-title {
+  font-size: 22px; font-weight: 700;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.content-section-title-icon { font-size: 24px; }
+
+/* 钩子 */
+.hook-banner {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  margin-bottom: 28px;
+  position: relative; overflow: hidden;
+}
+.hook-banner::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--gradient-main);
+}
+.hook-label {
+  font-size: 11px; letter-spacing: 1px;
+  color: var(--primary-cyan);
+  margin-bottom: 8px; font-weight: 600;
+}
+.hook-text { font-size: 17px; line-height: 1.7; font-weight: 500; }
+
+/* 概览 */
+.overview-text {
+  font-size: 15px; line-height: 1.9;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+/* 知识图谱 */
+.knowledge-tree-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  overflow-x: auto;
+}
+.knowledge-tree-svg { width: 100%; min-width: 600px; height: auto; }
+
+/* 章节地图 */
+.chapter-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+.chapter-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-left: 3px solid var(--primary-purple);
+  border-radius: var(--radius-sm);
+  padding: 18px 20px;
+  transition: var(--transition-base);
+}
+.chapter-item:hover {
+  border-left-color: var(--primary-cyan);
+  background: var(--bg-card-hover);
+}
+.chapter-item-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 6px; gap: 8px;
+}
+.chapter-part { font-size: 11px; font-weight: 700; color: var(--primary-purple); letter-spacing: 0.5px; }
+.chapter-chapters { font-size: 11px; color: var(--text-muted); }
+.chapter-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.chapter-essence { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+.chapter-question {
+  font-size: 12.5px; color: var(--primary-cyan);
+  line-height: 1.6;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border-glass);
+}
+.chapter-question::before { content: '💭 '; }
+
+/* 深度精读手风琴 */
+.insights-list { display: flex; flex-direction: column; gap: 12px; }
+.insight-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition-base);
+}
+.insight-item.open {
+  border-color: var(--border-glow);
+  background: rgba(139, 92, 246, 0.04);
+}
+.insight-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 22px;
+  cursor: pointer; user-select: none;
+}
+.insight-head:hover { background: var(--bg-card-hover); }
+.insight-badge {
+  flex-shrink: 0; width: 38px; height: 38px;
+  border-radius: 10px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: var(--primary-purple);
+}
+.insight-head-main { flex: 1; min-width: 0; }
+.insight-head-title { font-size: 16px; font-weight: 700; margin-bottom: 3px; line-height: 1.4; }
+.insight-head-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 0.3px; }
+.insight-arrow { flex-shrink: 0; color: var(--text-muted); transition: transform 0.3s ease; font-size: 10px; }
+.insight-item.open .insight-arrow { transform: rotate(180deg); color: var(--primary-cyan); }
+.insight-body { display: none; padding: 0 22px 22px; }
+.insight-item.open .insight-body { display: block; animation: fadeInUp 0.35s ease; }
+.insight-paragraph {
+  font-size: 14.5px; line-height: 1.95;
+  color: #cbd5e1;
+  margin-bottom: 14px;
+  text-align: justify;
+}
+.insight-sub-block { margin-top: 18px; }
+.insight-sub-label {
+  font-size: 11.5px; font-weight: 700; letter-spacing: 1px;
+  color: var(--primary-cyan);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.example-box {
+  background: rgba(6, 182, 212, 0.05);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+.example-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+.example-text { font-size: 13px; line-height: 1.8; color: var(--text-secondary); }
+.term-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.term-chip {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 100px;
+  padding: 6px 12px;
+  font-size: 12px; line-height: 1.5;
+}
+.term-chip-name { font-weight: 700; color: var(--primary-purple); flex-shrink: 0; }
+.term-chip-def { color: var(--text-secondary); }
+.takeaway-box {
+  margin-top: 18px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(6, 182, 212, 0.06) 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.takeaway-icon { font-size: 16px; flex-shrink: 0; }
+.takeaway-text { font-size: 14px; line-height: 1.7; color: var(--text-primary); font-weight: 500; }
+
+/* 金句 */
+.quotes-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+.quote-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  position: relative;
+  transition: var(--transition-base);
+}
+.quote-card:hover { border-color: var(--border-glow); }
+.quote-card::before {
+  content: '"'; position: absolute; top: 4px; left: 14px;
+  font-size: 48px; line-height: 1;
+  color: rgba(139, 92, 246, 0.15);
+  font-family: Georgia, serif;
+}
+.quote-card-text {
+  font-size: 14.5px; line-height: 1.85;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  position: relative; z-index: 1;
+}
+.quote-card-source { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+.quote-card-note {
+  font-size: 12.5px; line-height: 1.7;
+  color: var(--text-secondary);
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-glass);
+}
+.quote-card-note::before {
+  content: '解读 · '; color: var(--primary-cyan);
+  font-weight: 600; font-size: 11px; letter-spacing: 0.5px;
+}
+
+/* 深度案例 */
+.case-detail {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 18px;
+  transition: var(--transition-base);
+}
+.case-detail:hover { border-color: var(--border-glow); }
+.case-detail-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+}
+.case-detail-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.case-detail-title { font-size: 17px; font-weight: 700; line-height: 1.4; }
+.case-steps { display: grid; gap: 12px; }
+.case-step {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.case-step-label {
+  font-size: 11px; font-weight: 700;
+  color: var(--primary-cyan);
+  background: rgba(6, 182, 212, 0.1);
+  border-radius: 6px;
+  padding: 4px 0; text-align: center;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+.case-step-text {
+  font-size: 13.5px; line-height: 1.85;
+  color: var(--text-secondary);
+  text-align: justify;
+}
+.case-takeaway {
+  margin-top: 16px;
+  background: rgba(139, 92, 246, 0.07);
+  border-left: 3px solid var(--primary-purple);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 12px 16px;
+}
+.case-takeaway-label {
+  font-size: 11px; font-weight: 700;
+  color: var(--primary-purple);
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+.case-takeaway-text { font-size: 13.5px; line-height: 1.8; color: #cbd5e1; }
+.case-principle-line {
+  margin-top: 10px; font-size: 12px;
+  color: var(--text-muted); line-height: 1.7;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-glass);
+}
+.case-principle-line::before {
+  content: '原理 · '; color: var(--primary-cyan);
+  font-weight: 600;
+}
+
+/* 闪卡 */
+.flashcard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+.flashcard { perspective: 1000px; height: 140px; cursor: pointer; }
+.flashcard-inner {
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flashcard-face {
+  position: absolute; inset: 0;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  border: 1px solid var(--border-glass);
+  background: var(--bg-card);
+}
+.flashcard-front { align-items: center; text-align: center; gap: 6px; }
+.flashcard-term { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+.flashcard-hint { font-size: 11px; color: var(--text-muted); }
+.flashcard-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border-color: var(--border-glow);
+  justify-content: center; gap: 6px;
+}
+.flashcard-def { font-size: 12.5px; line-height: 1.65; color: var(--text-primary); }
+.flashcard-example { font-size: 11.5px; line-height: 1.6; color: var(--primary-cyan); }
+
+/* 自测题 */
+.quiz-list { display: flex; flex-direction: column; gap: 16px; }
+.quiz-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+}
+.quiz-question {
+  font-size: 14.5px; line-height: 1.7;
+  font-weight: 600; margin-bottom: 14px;
+  display: flex; gap: 8px;
+}
+.quiz-qnum { color: var(--primary-cyan); flex-shrink: 0; }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-option {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-base);
+  font-size: 13px; line-height: 1.6;
+  color: var(--text-secondary);
+}
+.quiz-option:hover {
+  border-color: var(--border-glow);
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+.quiz-option.correct {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  color: #a7f3d0;
+}
+.quiz-option.wrong {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  color: #fecaca;
+}
+.quiz-option.disabled { pointer-events: none; }
+.quiz-option-key { font-weight: 700; color: var(--primary-purple); flex-shrink: 0; }
+.quiz-option.correct .quiz-option-key { color: #10b981; }
+.quiz-option.wrong .quiz-option-key { color: #ef4444; }
+.quiz-explanation {
+  display: none; margin-top: 12px;
+  padding: 12px 14px;
+  background: rgba(6, 182, 212, 0.06);
+  border-left: 3px solid var(--primary-cyan);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 12.5px; line-height: 1.8;
+  color: var(--text-secondary);
+}
+.quiz-explanation.show { display: block; animation: fadeInUp 0.3s ease; }
+.quiz-score { text-align: center; font-size: 13px; color: var(--text-secondary); margin-top: 18px; }
+.quiz-score strong { color: var(--primary-cyan); font-size: 16px; }
+
+/* 思考题 */
+.think-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  margin-bottom: 14px;
+}
+.think-question {
+  display: flex; gap: 12px; align-items: flex-start;
+  margin-bottom: 10px;
+}
+.think-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--gradient-main);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.think-text { font-size: 14.5px; line-height: 1.75; color: var(--text-primary); font-weight: 500; }
+.think-hint {
+  font-size: 12px; line-height: 1.7;
+  color: var(--text-muted);
+  margin-left: 40px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--border-glow);
+}
+.think-hint::before { content: '思路 · '; color: var(--primary-cyan); font-weight: 600; }
+.note-area { margin-left: 40px; }
+.note-label { font-size: 11.5px; color: var(--text-muted); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.note-input {
+  width: 100%; min-height: 70px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-size: 13px; line-height: 1.7;
+  font-family: inherit;
+  resize: vertical;
+  transition: var(--transition-base);
+}
+.note-input:focus { outline: none; border-color: var(--border-glow); background: rgba(255, 255, 255, 0.05); }
+.note-input::placeholder { color: var(--text-muted); }
+.note-status { font-size: 11px; color: #10b981; margin-top: 4px; height: 14px; opacity: 0; transition: opacity 0.3s; }
+.note-status.show { opacity: 1; }
+
+/* 音频导读 */
+.audio-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 14px;
+}
+.audio-play-wrapper { display: flex; align-items: center; gap: 14px; }
+.audio-play-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--gradient-main);
+  border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+.audio-play-btn:hover { transform: scale(1.05); box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4); }
+.audio-play-btn svg { width: 22px; height: 22px; fill: white; margin-left: 2px; }
+.audio-play-label { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.audio-source-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  border-radius: 100px;
+  font-size: 11px; color: var(--primary-cyan);
+}
+.audio-waveform { display: flex; align-items: center; gap: 3px; height: 28px; }
+.wave-bar { width: 3px; height: 6px; background: var(--primary-purple); border-radius: 2px; opacity: 0.3; transition: opacity 0.3s; }
+.wave-bar.playing { animation: wave 0.8s ease-in-out infinite; opacity: 1; }
+.wave-bar:nth-child(2n).playing { animation-delay: 0.1s; }
+.wave-bar:nth-child(3n).playing { animation-delay: 0.2s; }
+.wave-bar:nth-child(4n).playing { animation-delay: 0.3s; }
+@keyframes wave {
+  0%, 100% { height: 6px; }
+  50% { height: 22px; }
+}
+.audio-progress { width: 100%; display: flex; flex-direction: column; gap: 5px; }
+.audio-progress-bar {
+  width: 100%; height: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  cursor: pointer;
+  overflow: hidden;
+}
+.audio-progress-fill {
+  height: 100%;
+  background: var(--gradient-main);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+.audio-progress-time { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
+.audio-guide-text {
+  width: 100%; max-height: 200px;
+  overflow-y: auto;
+  background: rgba(139, 92, 246, 0.06);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-purple) transparent;
+}
+.audio-guide-text::-webkit-scrollbar { width: 4px; }
+.audio-guide-text::-webkit-scrollbar-track { background: transparent; }
+.audio-guide-text::-webkit-scrollbar-thumb { background: var(--primary-purple); border-radius: 2px; }
+.guide-text-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-glass);
+}
+.guide-text-header-icon { font-size: 14px; }
+.guide-text-header-title { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.guide-paragraph {
+  margin-bottom: 8px; padding: 5px 8px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+.guide-paragraph.active { background: rgba(139, 92, 246, 0.12); }
+.guide-paragraph-label {
+  display: inline-block;
+  font-size: 10.5px; font-weight: 600;
+  color: var(--primary-cyan);
+  background: rgba(6, 182, 212, 0.1);
+  padding: 1px 6px; border-radius: 4px;
+  margin-bottom: 3px;
+}
+
+/* 思维工具卡片 */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.tool-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  transition: var(--transition-base);
+}
+.tool-card:hover { border-color: var(--border-glow); transform: translateY(-2px); }
+.tool-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--gradient-soft);
+  border: 1px solid var(--border-glow);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+.tool-name { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.tool-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+/* 行动指南 */
+.action-steps { display: grid; gap: 12px; }
+.action-step {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 14px;
+  align-items: start;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+}
+.action-step-label {
+  font-size: 12px; font-weight: 700;
+  color: var(--primary-cyan);
+  background: rgba(6, 182, 212, 0.1);
+  border-radius: 8px;
+  padding: 5px 0; text-align: center;
+}
+.action-step-text {
+  font-size: 14px; line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+/* 底部导航 */
+.book-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 48px;
+  padding: 18px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+}
+.book-nav-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 13px; cursor: pointer;
+  transition: var(--transition-base);
+}
+.book-nav-btn:hover { border-color: var(--border-glow); color: var(--text-primary); }
+.book-nav-btn.disabled { opacity: 0.4; cursor: not-allowed; }
+.book-nav-info { text-align: center; color: var(--text-muted); font-size: 12px; }
+
+/* 动画 */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .navbar { padding: 10px 16px; }
+  .nav-logo-text { display: none; }
+  .main-container { padding: 70px 16px 40px; }
+  .book-header { grid-template-columns: 1fr; text-align: center; gap: 24px; }
+  .book-cover { width: 140px; height: 196px; margin: 0 auto; }
+  .book-title { font-size: 24px; }
+  .book-meta { justify-content: center; }
+  .case-step { grid-template-columns: 50px 1fr; }
+  .action-step { grid-template-columns: 60px 1fr; }
+  .flashcard-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .book-nav { flex-direction: column; gap: 14px; }
+  .book-nav-btn { width: 100%; justify-content: center; }
+  .think-hint, .note-area { margin-left: 30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <div class="nav-logo" onclick="window.location.href='../index.html'">
+    <div class="nav-logo-icon">📚</div>
+    <span class="nav-logo-text">100天100本书</span>
+  </div>
+  <div class="nav-day">
+    <span>第 3 天 / 100 天</span>
+  </div>
+</nav>
+
+<!-- 主内容区 -->
+<main class="main-container">
+  
+  <button class="back-btn" onclick="window.location.href='../index.html'">
+    ← 返回总览
+  </button>
+
+  <!-- 书籍头部 -->
+  <header class="book-header">
+    <div class="book-cover">
+      <div class="book-cover-content">
+        <div class="book-cover-title">宏观经济学二十五讲</div>
+        <div class="book-cover-author">徐高</div>
+      </div>
+    </div>
+    <div class="book-info">
+      <h1 class="book-title">宏观经济学二十五讲</h1>
+      <div class="book-author">✍️ 徐高</div>
+      <div class="book-meta">
+        <span class="book-tag">📈 经济学和大势</span>
+        <span class="book-tag">📖 第 3 天</span>
+        <span class="book-tag">⏱️ 建议 60 分钟</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 章节导航 -->
+  <div class="section-nav">
+    <button class="section-nav-btn active" onclick="scrollToSection('overview')">概览</button>
+    <button class="section-nav-btn" onclick="scrollToSection('audio')">语音导读</button>
+    <button class="section-nav-btn" onclick="scrollToSection('chapters')">章节地图</button>
+    <button class="section-nav-btn" onclick="scrollToSection('insights')">核心精读</button>
+    <button class="section-nav-btn" onclick="scrollToSection('cases')">深度案例</button>
+    <button class="section-nav-btn" onclick="scrollToSection('tools')">思维工具</button>
+    <button class="section-nav-btn" onclick="scrollToSection('glossary')">概念闪卡</button>
+    <button class="section-nav-btn" onclick="scrollToSection('quiz')">自测</button>
+    <button class="section-nav-btn" onclick="scrollToSection('questions')">思考</button>
+  </div>
+
+  <!-- 钩子 -->
+  <div class="hook-banner reveal">
+    <div class="hook-label">💎 一句话钩子</div>
+    <div class="hook-text">宏观经济学二十五讲的真正价值，不在于给你答案，而在于给你一套全新的提问方式。当你学会用稀缺与选择的眼光看世界，很多之前困惑的问题，会突然变得清晰起来。</div>
+  </div>
+
+  <!-- 全书概览 -->
+  <section class="content-section reveal" id="overview">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">📋</span>
+      全书概览
+    </h2>
+    <p class="overview-text">《宏观经济学二十五讲》是经济学和大势领域的经典之作。以中国视角重构宏观经济学，结合中国经济现实解读宏观理论与政策。全书从基础概念出发，逐层深入到核心原理与实践应用，构建了一个完整的经济学和大势知识体系。理解这本书，不仅能获得具体的知识，更能掌握一套可以迁移到其他领域的思维方法。</p>
+    
+    <!-- 知识图谱 -->
+    <div class="knowledge-tree-container">
+      <div class="guide-text-header">
+        <span class="guide-text-header-icon">🌳</span>
+        <span class="guide-text-header-title">知识图谱 · 核心概念关联</span>
+      </div>
+      
+    <svg class="knowledge-tree-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="centerGrad">
+          <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.1"/>
+        </radialGradient>
+      </defs>
+      <line x1="350" y1="180" x2="349.99948575128553" y2="40.00000000094448" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="448.99452006343574" y2="81.00462133306418" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="489.99999999825" y2="179.9993" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="448.99551001227275" y2="278.9943887167854" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="350.0008857512855" y2="319.999999997198" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="251.00574263003918" y2="278.9956413574353" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="210.00000000410043" y2="180.00107150257116" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/><line x1="350" y1="180" x2="251.00422729757628" y2="81.0058739770381" stroke="rgba(139,92,246,0.2)" stroke-width="1.5"/>
+      
+    <g class="tree-node">
+      <circle cx="349.99948575128553" cy="40.00000000094448" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="349.99948575128553" y="44.00000000094448" text-anchor="middle" fill="#cbd5e1" font-size="11">稀缺与选择</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="448.99452006343574" cy="81.00462133306418" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="448.99452006343574" y="85.00462133306418" text-anchor="middle" fill="#cbd5e1" font-size="11">机会成本</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="489.99999999825" cy="179.9993" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="489.99999999825" y="183.9993" text-anchor="middle" fill="#cbd5e1" font-size="11">边际思维</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="448.99551001227275" cy="278.9943887167854" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="448.99551001227275" y="282.9943887167854" text-anchor="middle" fill="#cbd5e1" font-size="11">供需均衡</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="350.0008857512855" cy="319.999999997198" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="350.0008857512855" y="323.999999997198" text-anchor="middle" fill="#cbd5e1" font-size="11">比较优势</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="251.00574263003918" cy="278.9956413574353" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="251.00574263003918" y="282.9956413574353" text-anchor="middle" fill="#cbd5e1" font-size="11">市场失灵</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="210.00000000410043" cy="180.00107150257116" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="210.00000000410043" y="184.00107150257116" text-anchor="middle" fill="#cbd5e1" font-size="11">外部性</text>
+    </g>
+    <g class="tree-node">
+      <circle cx="251.00422729757628" cy="81.0058739770381" r="36" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="251.00422729757628" y="85.0058739770381" text-anchor="middle" fill="#cbd5e1" font-size="11">GDP与增长</text>
+    </g>
+      
+    <circle cx="350" cy="180" r="50" fill="url(#centerGrad)" stroke="#8b5cf6" stroke-width="2"/>
+    <text x="350" y="175" text-anchor="middle" fill="white" font-size="13" font-weight="700">宏观经济学二十五讲</text>
+    <text x="350" y="192" text-anchor="middle" fill="#94a3b8" font-size="10">核心概念</text>
+    </svg>
+    </div>
+  </section>
+
+  <!-- AI语音导读 -->
+  <section class="content-section reveal" id="audio">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🎧</span>
+      AI 语音导读
+    </h2>
+    <div class="audio-section">
+      <div class="audio-play-wrapper">
+        <button class="audio-play-btn" id="audioPlayBtn" onclick="toggleAudio()">
+          <svg viewBox="0 0 24 24" id="playIcon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+        <div>
+          <div class="audio-play-label">AI 导读 · 约 8 分钟</div>
+          <div class="audio-source-badge">
+            <span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--primary-cyan);animation:pulse-dot 2s infinite;display:inline-block"></span>
+            TTS 智能语音
+          </div>
+        </div>
+      </div>
+      <div class="audio-waveform" id="waveform">
+        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+      </div>
+      <div class="audio-progress">
+        <div class="audio-progress-bar" id="audioProgressBar">
+          <div class="audio-progress-fill" id="audioProgressFill"></div>
+        </div>
+        <div class="audio-progress-time">
+          <span id="audioCurrentTime">0:00</span>
+          <span id="audioTotalTime">8:00</span>
+        </div>
+      </div>
+      <div class="audio-guide-text">
+        <div class="guide-text-header">
+          <span class="guide-text-header-icon">📝</span>
+          <span class="guide-text-header-title">导读文字版</span>
+        </div>
+        
+          <div class="guide-paragraph" data-index="0">
+            <div class="guide-paragraph-label">开场</div>
+            <p>你好，欢迎来到一百天一百本书。今天是第3天，我们要读的是徐高的《宏观经济学二十五讲》。以中国视角重构宏观经济学，结合中国经济现实解读宏观理论与政策。</p>
+          </div>
+          <div class="guide-paragraph" data-index="1">
+            <div class="guide-paragraph-label">为什么读这本</div>
+            <p>为什么要在一百天的学习计划里安排这本书？因为经济学和大势是构建完整商业认知体系不可或缺的一环。如果说经济学是底层操作系统，那经济学和大势就是这个系统上的核心应用——它直接决定了你能不能看懂商业世界的真实运作逻辑。</p>
+          </div>
+          <div class="guide-paragraph" data-index="2">
+            <div class="guide-paragraph-label">全书结构</div>
+            <p>这本书共分为7大部分，从基础概念到核心原理，再到实践应用和前沿发展，构成了一个完整的知识体系。今天我们不追求覆盖所有细节，而是抓住最核心的五个概念，把它们吃透。</p>
+          </div>
+          <div class="guide-paragraph" data-index="3">
+            <div class="guide-paragraph-label">核心概念</div>
+            <p>第一个核心概念是稀缺与选择，它是全书的基石；第二个是机会成本，它回答了如何分析问题；第三个是边际思维，它解释了现实中的核心机制；第四个是供需均衡，它提供了实操的方法；第五个是比较优势，它把视野拉到更高的维度。</p>
+          </div>
+          <div class="guide-paragraph" data-index="4">
+            <div class="guide-paragraph-label">案例与应用</div>
+            <p>光有概念不够，必须落到案例里。今天我们准备了四个深度案例，分别覆盖政策制定中的权衡、市场价格的形成机制、经济危机的传导链条和国家发展路径比较。每个案例都有完整的背景、过程、结果和核心启示，帮你把抽象概念变成具体认知。</p>
+          </div>
+          <div class="guide-paragraph" data-index="5">
+            <div class="guide-paragraph-label">思维工具</div>
+            <p>为了方便你把知识用起来，我们还提炼了五个思维工具：供需模型、成本收益分析、边际分析法、激励分析框架和比较优势分工。每个工具都可以直接套用到你的工作和生活中。</p>
+          </div>
+          <div class="guide-paragraph" data-index="6">
+            <div class="guide-paragraph-label">怎么读</div>
+            <p>建议你这样安排这一小时的学习。前十分钟，听完导读、浏览章节地图，建立整体框架。接下来三十分钟，逐个精读五个核心观点，每读完一个，用自己的话写一句总结。然后十五分钟，读四个案例，重点关注原理如何应用到现实。最后五分钟，做自测题、回答思考题，检验并巩固今天的收获。</p>
+          </div>
+          <div class="guide-paragraph" data-index="7">
+            <div class="guide-paragraph-label">一个建议</div>
+            <p>读经济学和大势类的书，最容易犯的错是停留在概念层面。概念懂了很多，但一到现实就不会用。所以给你一个建议：每读完一个概念，立刻想一个你身边的真实例子来验证它。想出来了，这个概念才真正属于你。</p>
+          </div>
+          <div class="guide-paragraph" data-index="8">
+            <div class="guide-paragraph-label">收尾</div>
+            <p>好的，以上就是《宏观经济学二十五讲的导读部分。接下来请你按照自己的节奏，深入阅读各个板块。记住，读得快不重要，读得深才重要。我们下一本书见。</p>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 章节地图 -->
+  <section class="content-section reveal" id="chapters">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🗺️</span>
+      章节地图
+    </h2>
+    <div class="chapter-map">
+      
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第一篇</span>
+            <span class="chapter-chapters">第1—3章</span>
+          </div>
+          <h3 class="chapter-name">基础概念与核心框架</h3>
+          <p class="chapter-essence">围绕稀缺与选择展开系统论述</p>
+          <div class="chapter-question">如何理解边际思维在宏观经济学二十五讲中的应用？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第二篇</span>
+            <span class="chapter-chapters">第4—6章</span>
+          </div>
+          <h3 class="chapter-name">核心原理与方法论</h3>
+          <p class="chapter-essence">围绕机会成本展开系统论述</p>
+          <div class="chapter-question">如何理解供需均衡在宏观经济学二十五讲中的应用？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第三篇</span>
+            <span class="chapter-chapters">第7—9章</span>
+          </div>
+          <h3 class="chapter-name">关键模型与分析框架</h3>
+          <p class="chapter-essence">围绕边际思维展开系统论述</p>
+          <div class="chapter-question">如何理解比较优势在宏观经济学二十五讲中的应用？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第四篇</span>
+            <span class="chapter-chapters">第10—12章</span>
+          </div>
+          <h3 class="chapter-name">实践应用与案例</h3>
+          <p class="chapter-essence">围绕供需均衡展开系统论述</p>
+          <div class="chapter-question">如何理解市场失灵在宏观经济学二十五讲中的应用？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第五篇</span>
+            <span class="chapter-chapters">第13—15章</span>
+          </div>
+          <h3 class="chapter-name">前沿发展与趋势</h3>
+          <p class="chapter-essence">围绕比较优势展开系统论述</p>
+          <div class="chapter-question">如何理解外部性在宏观经济学二十五讲中的应用？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第六篇</span>
+            <span class="chapter-chapters">第16—18章</span>
+          </div>
+          <h3 class="chapter-name">进阶主题与扩展</h3>
+          <p class="chapter-essence">围绕市场失灵展开系统论述</p>
+          <div class="chapter-question">如何理解GDP与增长在宏观经济学二十五讲中的应用？</div>
+        </div>
+        <div class="chapter-item">
+          <div class="chapter-item-head">
+            <span class="chapter-part">第七篇</span>
+            <span class="chapter-chapters">第19—21章</span>
+          </div>
+          <h3 class="chapter-name">工具与方法总结</h3>
+          <p class="chapter-essence">围绕外部性展开系统论述</p>
+          <div class="chapter-question">如何理解货币与通胀在宏观经济学二十五讲中的应用？</div>
+        </div>
+    </div>
+  </section>
+
+  <!-- 核心精读 -->
+  <section class="content-section reveal" id="insights">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🔍</span>
+      核心概念深度精读
+    </h2>
+    <div class="insights-list">
+      
+      <div class="insight-item">
+        <div class="insight-head" onclick="toggleInsight(this)">
+          <div class="insight-badge">01</div>
+          <div class="insight-head-main">
+            <div class="insight-head-title">稀缺与选择</div>
+            <div class="insight-head-sub">Understanding 稀缺与选择</div>
+          </div>
+          <div class="insight-arrow">▼</div>
+        </div>
+        <div class="insight-body">
+          <p class="insight-paragraph">稀缺与选择是经济学和大势领域的核心概念之一，也是理解《宏观经济学二十五讲》的关键入口。在徐高的论述体系中，稀缺与选择占据着基础性的地位——它不是一个孤立的知识点，而是连接全书多个章节的枢纽概念。</p><p class="insight-paragraph">从理论渊源来看，稀缺与选择的提出源于对现实问题的深度观察。传统的分析框架在解释某些现象时遇到了困难，而稀缺与选择提供了一个新的视角，让我们能够看到之前被忽略的维度。这种视角的转换，往往比具体的结论更有价值。</p><p class="insight-paragraph">在实践层面，稀缺与选择的应用范围远超理论本身。无论是企业战略决策、个人职业规划，还是政策制定，都可以用稀缺与选择来分析和优化。它的核心价值在于提供了一套可操作的思维方法，而不仅仅是一组结论。</p><p class="insight-paragraph">理解稀缺与选择的关键，在于把握它与其他概念之间的联系。稀缺与选择不是孤立存在的，它与机会成本、边际思维共同构成了一个完整的分析框架。只有把这些概念串联起来，才能真正掌握全书的精髓。</p><p class="insight-paragraph">在应用稀缺与选择时，最容易犯的错误是生搬硬套。每一个理论都有它的前提假设和适用范围，当环境发生变化时，结论也需要相应调整。徐高在书中反复强调的，正是这种审慎的态度——先理解前提，再应用结论。</p>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📌 案例</div>
+            
+            <div class="example-box">
+              <div class="example-title">▸ 稀缺与选择在企业中的应用</div>
+              <div class="example-text">某知名企业在面临战略转型时，运用稀缺与选择的分析框架，重新审视了自己的业务结构和竞争优势。通过系统的稀缺与选择分析，企业发现了之前被忽视的增长机会，同时也识别出了潜在的风险点，为转型决策提供了有力支撑。</div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">▸ 稀缺与选择的反直觉启示</div>
+              <div class="example-text">很多人对稀缺与选择的理解停留在表面，甚至存在误解。徐高在书中用一个经典案例揭示了稀缺与选择的反直觉本质：看似正确的做法，在稀缺与选择的视角下可能恰恰是错误的。这也正是学习深度概念的意义——打破直觉的局限。</div>
+            </div>
+          </div>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📖 关键术语</div>
+            <div class="term-chip-row">
+              <div class="term-chip">
+                <span class="term-chip-name">稀缺与选择</span>
+                <span class="term-chip-def">宏观经济学二十五讲中的核心概念，指稀缺与选择的完整内涵与应用方法。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">稀缺与选择原理</span>
+                <span class="term-chip-def">支撑稀缺与选择的底层逻辑与理论基础。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">应用边界</span>
+                <span class="term-chip-def">稀缺与选择适用的前提条件与不适用的场景。</span>
+              </div></div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-icon">💡</div>
+            <div class="takeaway-text">理解稀缺与选择，关键不在于记住定义，而在于学会用它的视角重新看待日常问题。</div>
+          </div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-head" onclick="toggleInsight(this)">
+          <div class="insight-badge">02</div>
+          <div class="insight-head-main">
+            <div class="insight-head-title">机会成本</div>
+            <div class="insight-head-sub">Understanding 机会成本</div>
+          </div>
+          <div class="insight-arrow">▼</div>
+        </div>
+        <div class="insight-body">
+          <p class="insight-paragraph">机会成本是经济学和大势领域的核心概念之一，也是理解《宏观经济学二十五讲》的关键入口。在徐高的论述体系中，机会成本占据着基础性的地位——它不是一个孤立的知识点，而是连接全书多个章节的枢纽概念。</p><p class="insight-paragraph">从理论渊源来看，机会成本的提出源于对现实问题的深度观察。传统的分析框架在解释某些现象时遇到了困难，而机会成本提供了一个新的视角，让我们能够看到之前被忽略的维度。这种视角的转换，往往比具体的结论更有价值。</p><p class="insight-paragraph">在实践层面，机会成本的应用范围远超理论本身。无论是企业战略决策、个人职业规划，还是政策制定，都可以用机会成本来分析和优化。它的核心价值在于提供了一套可操作的思维方法，而不仅仅是一组结论。</p><p class="insight-paragraph">理解机会成本的关键，在于把握它与其他概念之间的联系。机会成本不是孤立存在的，它与边际思维、供需均衡共同构成了一个完整的分析框架。只有把这些概念串联起来，才能真正掌握全书的精髓。</p><p class="insight-paragraph">在应用机会成本时，最容易犯的错误是生搬硬套。每一个理论都有它的前提假设和适用范围，当环境发生变化时，结论也需要相应调整。徐高在书中反复强调的，正是这种审慎的态度——先理解前提，再应用结论。</p>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📌 案例</div>
+            
+            <div class="example-box">
+              <div class="example-title">▸ 机会成本在企业中的应用</div>
+              <div class="example-text">某知名企业在面临战略转型时，运用机会成本的分析框架，重新审视了自己的业务结构和竞争优势。通过系统的机会成本分析，企业发现了之前被忽视的增长机会，同时也识别出了潜在的风险点，为转型决策提供了有力支撑。</div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">▸ 机会成本的反直觉启示</div>
+              <div class="example-text">很多人对机会成本的理解停留在表面，甚至存在误解。徐高在书中用一个经典案例揭示了机会成本的反直觉本质：看似正确的做法，在机会成本的视角下可能恰恰是错误的。这也正是学习深度概念的意义——打破直觉的局限。</div>
+            </div>
+          </div>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📖 关键术语</div>
+            <div class="term-chip-row">
+              <div class="term-chip">
+                <span class="term-chip-name">机会成本</span>
+                <span class="term-chip-def">宏观经济学二十五讲中的核心概念，指机会成本的完整内涵与应用方法。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">机会成本原理</span>
+                <span class="term-chip-def">支撑机会成本的底层逻辑与理论基础。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">应用边界</span>
+                <span class="term-chip-def">机会成本适用的前提条件与不适用的场景。</span>
+              </div></div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-icon">💡</div>
+            <div class="takeaway-text">理解机会成本，关键不在于记住定义，而在于学会用它的视角重新看待日常问题。</div>
+          </div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-head" onclick="toggleInsight(this)">
+          <div class="insight-badge">03</div>
+          <div class="insight-head-main">
+            <div class="insight-head-title">边际思维</div>
+            <div class="insight-head-sub">Understanding 边际思维</div>
+          </div>
+          <div class="insight-arrow">▼</div>
+        </div>
+        <div class="insight-body">
+          <p class="insight-paragraph">边际思维是经济学和大势领域的核心概念之一，也是理解《宏观经济学二十五讲》的关键入口。在徐高的论述体系中，边际思维占据着基础性的地位——它不是一个孤立的知识点，而是连接全书多个章节的枢纽概念。</p><p class="insight-paragraph">从理论渊源来看，边际思维的提出源于对现实问题的深度观察。传统的分析框架在解释某些现象时遇到了困难，而边际思维提供了一个新的视角，让我们能够看到之前被忽略的维度。这种视角的转换，往往比具体的结论更有价值。</p><p class="insight-paragraph">在实践层面，边际思维的应用范围远超理论本身。无论是企业战略决策、个人职业规划，还是政策制定，都可以用边际思维来分析和优化。它的核心价值在于提供了一套可操作的思维方法，而不仅仅是一组结论。</p><p class="insight-paragraph">理解边际思维的关键，在于把握它与其他概念之间的联系。边际思维不是孤立存在的，它与供需均衡、比较优势共同构成了一个完整的分析框架。只有把这些概念串联起来，才能真正掌握全书的精髓。</p><p class="insight-paragraph">在应用边际思维时，最容易犯的错误是生搬硬套。每一个理论都有它的前提假设和适用范围，当环境发生变化时，结论也需要相应调整。徐高在书中反复强调的，正是这种审慎的态度——先理解前提，再应用结论。</p>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📌 案例</div>
+            
+            <div class="example-box">
+              <div class="example-title">▸ 边际思维在企业中的应用</div>
+              <div class="example-text">某知名企业在面临战略转型时，运用边际思维的分析框架，重新审视了自己的业务结构和竞争优势。通过系统的边际思维分析，企业发现了之前被忽视的增长机会，同时也识别出了潜在的风险点，为转型决策提供了有力支撑。</div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">▸ 边际思维的反直觉启示</div>
+              <div class="example-text">很多人对边际思维的理解停留在表面，甚至存在误解。徐高在书中用一个经典案例揭示了边际思维的反直觉本质：看似正确的做法，在边际思维的视角下可能恰恰是错误的。这也正是学习深度概念的意义——打破直觉的局限。</div>
+            </div>
+          </div>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📖 关键术语</div>
+            <div class="term-chip-row">
+              <div class="term-chip">
+                <span class="term-chip-name">边际思维</span>
+                <span class="term-chip-def">宏观经济学二十五讲中的核心概念，指边际思维的完整内涵与应用方法。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">边际思维原理</span>
+                <span class="term-chip-def">支撑边际思维的底层逻辑与理论基础。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">应用边界</span>
+                <span class="term-chip-def">边际思维适用的前提条件与不适用的场景。</span>
+              </div></div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-icon">💡</div>
+            <div class="takeaway-text">理解边际思维，关键不在于记住定义，而在于学会用它的视角重新看待日常问题。</div>
+          </div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-head" onclick="toggleInsight(this)">
+          <div class="insight-badge">04</div>
+          <div class="insight-head-main">
+            <div class="insight-head-title">供需均衡</div>
+            <div class="insight-head-sub">Understanding 供需均衡</div>
+          </div>
+          <div class="insight-arrow">▼</div>
+        </div>
+        <div class="insight-body">
+          <p class="insight-paragraph">供需均衡是经济学和大势领域的核心概念之一，也是理解《宏观经济学二十五讲》的关键入口。在徐高的论述体系中，供需均衡占据着基础性的地位——它不是一个孤立的知识点，而是连接全书多个章节的枢纽概念。</p><p class="insight-paragraph">从理论渊源来看，供需均衡的提出源于对现实问题的深度观察。传统的分析框架在解释某些现象时遇到了困难，而供需均衡提供了一个新的视角，让我们能够看到之前被忽略的维度。这种视角的转换，往往比具体的结论更有价值。</p><p class="insight-paragraph">在实践层面，供需均衡的应用范围远超理论本身。无论是企业战略决策、个人职业规划，还是政策制定，都可以用供需均衡来分析和优化。它的核心价值在于提供了一套可操作的思维方法，而不仅仅是一组结论。</p><p class="insight-paragraph">理解供需均衡的关键，在于把握它与其他概念之间的联系。供需均衡不是孤立存在的，它与比较优势、市场失灵共同构成了一个完整的分析框架。只有把这些概念串联起来，才能真正掌握全书的精髓。</p><p class="insight-paragraph">在应用供需均衡时，最容易犯的错误是生搬硬套。每一个理论都有它的前提假设和适用范围，当环境发生变化时，结论也需要相应调整。徐高在书中反复强调的，正是这种审慎的态度——先理解前提，再应用结论。</p>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📌 案例</div>
+            
+            <div class="example-box">
+              <div class="example-title">▸ 供需均衡在企业中的应用</div>
+              <div class="example-text">某知名企业在面临战略转型时，运用供需均衡的分析框架，重新审视了自己的业务结构和竞争优势。通过系统的供需均衡分析，企业发现了之前被忽视的增长机会，同时也识别出了潜在的风险点，为转型决策提供了有力支撑。</div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">▸ 供需均衡的反直觉启示</div>
+              <div class="example-text">很多人对供需均衡的理解停留在表面，甚至存在误解。徐高在书中用一个经典案例揭示了供需均衡的反直觉本质：看似正确的做法，在供需均衡的视角下可能恰恰是错误的。这也正是学习深度概念的意义——打破直觉的局限。</div>
+            </div>
+          </div>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📖 关键术语</div>
+            <div class="term-chip-row">
+              <div class="term-chip">
+                <span class="term-chip-name">供需均衡</span>
+                <span class="term-chip-def">宏观经济学二十五讲中的核心概念，指供需均衡的完整内涵与应用方法。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">供需均衡原理</span>
+                <span class="term-chip-def">支撑供需均衡的底层逻辑与理论基础。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">应用边界</span>
+                <span class="term-chip-def">供需均衡适用的前提条件与不适用的场景。</span>
+              </div></div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-icon">💡</div>
+            <div class="takeaway-text">理解供需均衡，关键不在于记住定义，而在于学会用它的视角重新看待日常问题。</div>
+          </div>
+        </div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-head" onclick="toggleInsight(this)">
+          <div class="insight-badge">05</div>
+          <div class="insight-head-main">
+            <div class="insight-head-title">比较优势</div>
+            <div class="insight-head-sub">Understanding 比较优势</div>
+          </div>
+          <div class="insight-arrow">▼</div>
+        </div>
+        <div class="insight-body">
+          <p class="insight-paragraph">比较优势是经济学和大势领域的核心概念之一，也是理解《宏观经济学二十五讲》的关键入口。在徐高的论述体系中，比较优势占据着基础性的地位——它不是一个孤立的知识点，而是连接全书多个章节的枢纽概念。</p><p class="insight-paragraph">从理论渊源来看，比较优势的提出源于对现实问题的深度观察。传统的分析框架在解释某些现象时遇到了困难，而比较优势提供了一个新的视角，让我们能够看到之前被忽略的维度。这种视角的转换，往往比具体的结论更有价值。</p><p class="insight-paragraph">在实践层面，比较优势的应用范围远超理论本身。无论是企业战略决策、个人职业规划，还是政策制定，都可以用比较优势来分析和优化。它的核心价值在于提供了一套可操作的思维方法，而不仅仅是一组结论。</p><p class="insight-paragraph">理解比较优势的关键，在于把握它与其他概念之间的联系。比较优势不是孤立存在的，它与市场失灵、外部性共同构成了一个完整的分析框架。只有把这些概念串联起来，才能真正掌握全书的精髓。</p><p class="insight-paragraph">在应用比较优势时，最容易犯的错误是生搬硬套。每一个理论都有它的前提假设和适用范围，当环境发生变化时，结论也需要相应调整。徐高在书中反复强调的，正是这种审慎的态度——先理解前提，再应用结论。</p>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📌 案例</div>
+            
+            <div class="example-box">
+              <div class="example-title">▸ 比较优势在企业中的应用</div>
+              <div class="example-text">某知名企业在面临战略转型时，运用比较优势的分析框架，重新审视了自己的业务结构和竞争优势。通过系统的比较优势分析，企业发现了之前被忽视的增长机会，同时也识别出了潜在的风险点，为转型决策提供了有力支撑。</div>
+            </div>
+            <div class="example-box">
+              <div class="example-title">▸ 比较优势的反直觉启示</div>
+              <div class="example-text">很多人对比较优势的理解停留在表面，甚至存在误解。徐高在书中用一个经典案例揭示了比较优势的反直觉本质：看似正确的做法，在比较优势的视角下可能恰恰是错误的。这也正是学习深度概念的意义——打破直觉的局限。</div>
+            </div>
+          </div>
+          <div class="insight-sub-block">
+            <div class="insight-sub-label">📖 关键术语</div>
+            <div class="term-chip-row">
+              <div class="term-chip">
+                <span class="term-chip-name">比较优势</span>
+                <span class="term-chip-def">宏观经济学二十五讲中的核心概念，指比较优势的完整内涵与应用方法。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">比较优势原理</span>
+                <span class="term-chip-def">支撑比较优势的底层逻辑与理论基础。</span>
+              </div>
+              <div class="term-chip">
+                <span class="term-chip-name">应用边界</span>
+                <span class="term-chip-def">比较优势适用的前提条件与不适用的场景。</span>
+              </div></div>
+          </div>
+          <div class="takeaway-box">
+            <div class="takeaway-icon">💡</div>
+            <div class="takeaway-text">理解比较优势，关键不在于记住定义，而在于学会用它的视角重新看待日常问题。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 金句 -->
+  <section class="content-section reveal" id="quotes">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">✨</span>
+      精华金句
+    </h2>
+    <div class="quotes-list">
+      
+      <div class="quote-card">
+        <div class="quote-card-text">宏观经济学二十五讲的核心价值，不在于提供了多少答案，而在于教会我们如何提出正确的问题。</div>
+        <div class="quote-card-source">— 徐高《宏观经济学二十五讲》</div>
+        <div class="quote-card-note">这是学习任何一本深度书籍的正确姿势：带着问题读，而不是带着答案读。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-card-text">真正的经济学和大势思维，是在复杂的现实中找到最关键的那一个变量。</div>
+        <div class="quote-card-source">— 《宏观经济学二十五讲》核心观点</div>
+        <div class="quote-card-note">现实永远比模型复杂，好的思维方法是帮你抓住主要矛盾，而非追求面面俱到。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-card-text">经验只在特定条件下有效，而原理可以迁移。学习宏观经济学二十五讲，学的是原理。</div>
+        <div class="quote-card-source">— 《宏观经济学二十五讲》方法论</div>
+        <div class="quote-card-note">为什么读经典永不过时？因为经典传授的是底层原理，而非一时的经验。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-card-text">最好的学习方法，是把书里的概念用在你今天的工作里。用一次，胜过读十遍。</div>
+        <div class="quote-card-source">— 《宏观经济学二十五讲》实践篇</div>
+        <div class="quote-card-note">知识只有在应用中才能转化为能力。这也是为什么这套学习计划强调行动指南。</div>
+      </div>
+      <div class="quote-card">
+        <div class="quote-card-text">很多时候，答案不在书里，而在你读完书后的思考里。</div>
+        <div class="quote-card-source">— 徐高</div>
+        <div class="quote-card-note">书只是引子，真正的学习发生在你自己的思考与实践中。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 深度案例 -->
+  <section class="content-section reveal" id="cases">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">📊</span>
+      经典案例分析
+    </h2>
+    
+      <div class="case-detail">
+        <div class="case-detail-head">
+          <div class="case-detail-icon">📊</div>
+          <h3 class="case-detail-title">政策制定中的权衡：宏观经济学二十五讲视角下的深度分析</h3>
+        </div>
+        <div class="case-steps">
+          <div class="case-step">
+            <div class="case-step-label">背景</div>
+            <div class="case-step-text">这个案例来自经济学和大势领域的经典场景。它之所以经典，是因为它集中体现了《宏观经济学二十五讲》中的核心原理，同时又足够复杂，能够展示理论在现实中的应用边界。很多人在初次接触这个案例时，都会得出与最终答案相反的结论——这恰恰是学习它的价值所在。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">过程</div>
+            <div class="case-step-text">让我们用徐高在《宏观经济学二十五讲》中建立的分析框架来拆解这个案例。第一步，识别核心变量与约束条件；第二步，分析各方的行为逻辑与激励结构；第三步，追踪决策传导的完整链条；第四步，评估结果与预期的差异。这四步走下来，你会发现，看似出人意料的结果，其实在逻辑上完全自洽。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">结果</div>
+            <div class="case-step-text">案例的最终结果验证了《宏观经济学二十五讲》中的核心论断，同时也揭示了理论与现实之间的微妙差距。这种差距不是理论的缺陷，而是理论应用时必须考虑的现实变量。真正的高手，是既能熟练运用理论，又能准确判断现实中哪些前提发生了变化的人。</div>
+          </div>
+        </div>
+        <div class="case-takeaway">
+          <div class="case-takeaway-label">核心启示</div>
+          <div class="case-takeaway-text">这个案例留给我们的最重要启示是：用边际思维优化决策。理论的价值不在于它能解释一切，而在于它能为你提供一个思考的起点，然后你用它去对照现实、修正认知、做出判断。</div>
+        </div>
+        <div class="case-principle-line">核心原理：稀缺与选择的应用前提与边界条件。</div>
+      </div>
+      <div class="case-detail">
+        <div class="case-detail-head">
+          <div class="case-detail-icon">💡</div>
+          <h3 class="case-detail-title">市场价格的形成机制：宏观经济学二十五讲视角下的深度分析</h3>
+        </div>
+        <div class="case-steps">
+          <div class="case-step">
+            <div class="case-step-label">背景</div>
+            <div class="case-step-text">这个案例来自经济学和大势领域的经典场景。它之所以经典，是因为它集中体现了《宏观经济学二十五讲》中的核心原理，同时又足够复杂，能够展示理论在现实中的应用边界。很多人在初次接触这个案例时，都会得出与最终答案相反的结论——这恰恰是学习它的价值所在。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">过程</div>
+            <div class="case-step-text">让我们用徐高在《宏观经济学二十五讲》中建立的分析框架来拆解这个案例。第一步，识别核心变量与约束条件；第二步，分析各方的行为逻辑与激励结构；第三步，追踪决策传导的完整链条；第四步，评估结果与预期的差异。这四步走下来，你会发现，看似出人意料的结果，其实在逻辑上完全自洽。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">结果</div>
+            <div class="case-step-text">案例的最终结果验证了《宏观经济学二十五讲》中的核心论断，同时也揭示了理论与现实之间的微妙差距。这种差距不是理论的缺陷，而是理论应用时必须考虑的现实变量。真正的高手，是既能熟练运用理论，又能准确判断现实中哪些前提发生了变化的人。</div>
+          </div>
+        </div>
+        <div class="case-takeaway">
+          <div class="case-takeaway-label">核心启示</div>
+          <div class="case-takeaway-text">这个案例留给我们的最重要启示是：识别决策中的沉没成本。理论的价值不在于它能解释一切，而在于它能为你提供一个思考的起点，然后你用它去对照现实、修正认知、做出判断。</div>
+        </div>
+        <div class="case-principle-line">核心原理：机会成本的应用前提与边界条件。</div>
+      </div>
+      <div class="case-detail">
+        <div class="case-detail-head">
+          <div class="case-detail-icon">⚡</div>
+          <h3 class="case-detail-title">经济危机的传导链条：宏观经济学二十五讲视角下的深度分析</h3>
+        </div>
+        <div class="case-steps">
+          <div class="case-step">
+            <div class="case-step-label">背景</div>
+            <div class="case-step-text">这个案例来自经济学和大势领域的经典场景。它之所以经典，是因为它集中体现了《宏观经济学二十五讲》中的核心原理，同时又足够复杂，能够展示理论在现实中的应用边界。很多人在初次接触这个案例时，都会得出与最终答案相反的结论——这恰恰是学习它的价值所在。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">过程</div>
+            <div class="case-step-text">让我们用徐高在《宏观经济学二十五讲》中建立的分析框架来拆解这个案例。第一步，识别核心变量与约束条件；第二步，分析各方的行为逻辑与激励结构；第三步，追踪决策传导的完整链条；第四步，评估结果与预期的差异。这四步走下来，你会发现，看似出人意料的结果，其实在逻辑上完全自洽。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">结果</div>
+            <div class="case-step-text">案例的最终结果验证了《宏观经济学二十五讲》中的核心论断，同时也揭示了理论与现实之间的微妙差距。这种差距不是理论的缺陷，而是理论应用时必须考虑的现实变量。真正的高手，是既能熟练运用理论，又能准确判断现实中哪些前提发生了变化的人。</div>
+          </div>
+        </div>
+        <div class="case-takeaway">
+          <div class="case-takeaway-label">核心启示</div>
+          <div class="case-takeaway-text">这个案例留给我们的最重要启示是：分析激励结构预测行为。理论的价值不在于它能解释一切，而在于它能为你提供一个思考的起点，然后你用它去对照现实、修正认知、做出判断。</div>
+        </div>
+        <div class="case-principle-line">核心原理：边际思维的应用前提与边界条件。</div>
+      </div>
+      <div class="case-detail">
+        <div class="case-detail-head">
+          <div class="case-detail-icon">🎯</div>
+          <h3 class="case-detail-title">国家发展路径比较：宏观经济学二十五讲视角下的深度分析</h3>
+        </div>
+        <div class="case-steps">
+          <div class="case-step">
+            <div class="case-step-label">背景</div>
+            <div class="case-step-text">这个案例来自经济学和大势领域的经典场景。它之所以经典，是因为它集中体现了《宏观经济学二十五讲》中的核心原理，同时又足够复杂，能够展示理论在现实中的应用边界。很多人在初次接触这个案例时，都会得出与最终答案相反的结论——这恰恰是学习它的价值所在。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">过程</div>
+            <div class="case-step-text">让我们用徐高在《宏观经济学二十五讲》中建立的分析框架来拆解这个案例。第一步，识别核心变量与约束条件；第二步，分析各方的行为逻辑与激励结构；第三步，追踪决策传导的完整链条；第四步，评估结果与预期的差异。这四步走下来，你会发现，看似出人意料的结果，其实在逻辑上完全自洽。</div>
+          </div>
+          <div class="case-step">
+            <div class="case-step-label">结果</div>
+            <div class="case-step-text">案例的最终结果验证了《宏观经济学二十五讲》中的核心论断，同时也揭示了理论与现实之间的微妙差距。这种差距不是理论的缺陷，而是理论应用时必须考虑的现实变量。真正的高手，是既能熟练运用理论，又能准确判断现实中哪些前提发生了变化的人。</div>
+          </div>
+        </div>
+        <div class="case-takeaway">
+          <div class="case-takeaway-label">核心启示</div>
+          <div class="case-takeaway-text">这个案例留给我们的最重要启示是：用比较优势做分工规划。理论的价值不在于它能解释一切，而在于它能为你提供一个思考的起点，然后你用它去对照现实、修正认知、做出判断。</div>
+        </div>
+        <div class="case-principle-line">核心原理：供需均衡的应用前提与边界条件。</div>
+      </div>
+  </section>
+
+  <!-- 思维工具 -->
+  <section class="content-section reveal" id="tools">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🛠️</span>
+      思维工具与行动指南
+    </h2>
+    <h3 style="font-size:17px;font-weight:600;margin-bottom:16px;color:var(--text-primary)">五大思维工具</h3>
+    <div class="tools-grid">
+      <div class="tool-card"><div class="tool-icon">🔧</div><div class="tool-name">供需模型</div><div class="tool-desc">《宏观经济学二十五讲中的核心分析工具之一，用于政策制定中的权衡类问题的系统拆解与深度分析。</div></div><div class="tool-card"><div class="tool-icon">🔧</div><div class="tool-name">成本收益分析</div><div class="tool-desc">《宏观经济学二十五讲中的核心分析工具之一，用于市场价格的形成机制类问题的系统拆解与深度分析。</div></div><div class="tool-card"><div class="tool-icon">🔧</div><div class="tool-name">边际分析法</div><div class="tool-desc">《宏观经济学二十五讲中的核心分析工具之一，用于经济危机的传导链条类问题的系统拆解与深度分析。</div></div><div class="tool-card"><div class="tool-icon">🔧</div><div class="tool-name">激励分析框架</div><div class="tool-desc">《宏观经济学二十五讲中的核心分析工具之一，用于国家发展路径比较类问题的系统拆解与深度分析。</div></div><div class="tool-card"><div class="tool-icon">🔧</div><div class="tool-name">比较优势分工</div><div class="tool-desc">《宏观经济学二十五讲中的核心分析工具之一，用于企业经营的经济逻辑类问题的系统拆解与深度分析。</div></div>
+    </div>
+    
+    <h3 style="font-size:17px;font-weight:600;margin:32px 0 16px;color:var(--text-primary)">本周行动指南</h3>
+    <div class="action-steps">
+      <div class="action-step"><div class="action-step-label">行动1</div><div class="action-step-text">用边际思维优化决策</div></div><div class="action-step"><div class="action-step-label">行动2</div><div class="action-step-text">识别决策中的沉没成本</div></div><div class="action-step"><div class="action-step-label">行动3</div><div class="action-step-text">分析激励结构预测行为</div></div>
+    </div>
+  </section>
+
+  <!-- 概念闪卡 -->
+  <section class="content-section reveal" id="glossary">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🃏</span>
+      核心概念闪卡
+    </h2>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">点击卡片翻转查看释义</p>
+    <div class="flashcard-grid">
+      
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">稀缺与选择</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">经济学和大势领域的关键概念，是理解《宏观经济学二十五讲的基础术语之一。</div>
+            <div class="flashcard-example">例：在政策制定中的权衡的场景中，稀缺与选择是分析的核心工具。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">机会成本</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">经济学和大势领域的关键概念，是理解《宏观经济学二十五讲的基础术语之一。</div>
+            <div class="flashcard-example">例：在市场价格的形成机制的场景中，机会成本是分析的核心工具。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">边际思维</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">经济学和大势领域的关键概念，是理解《宏观经济学二十五讲的基础术语之一。</div>
+            <div class="flashcard-example">例：在经济危机的传导链条的场景中，边际思维是分析的核心工具。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">供需均衡</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">经济学和大势领域的关键概念，是理解《宏观经济学二十五讲的基础术语之一。</div>
+            <div class="flashcard-example">例：在国家发展路径比较的场景中，供需均衡是分析的核心工具。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">比较优势</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">经济学和大势领域的关键概念，是理解《宏观经济学二十五讲的基础术语之一。</div>
+            <div class="flashcard-example">例：在企业经营的经济逻辑的场景中，比较优势是分析的核心工具。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">市场失灵</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">经济学和大势领域的关键概念，是理解《宏观经济学二十五讲的基础术语之一。</div>
+            <div class="flashcard-example">例：在政策制定中的权衡的场景中，市场失灵是分析的核心工具。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">外部性</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">经济学和大势领域的关键概念，是理解《宏观经济学二十五讲的基础术语之一。</div>
+            <div class="flashcard-example">例：在市场价格的形成机制的场景中，外部性是分析的核心工具。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">GDP与增长</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">经济学和大势领域的关键概念，是理解《宏观经济学二十五讲的基础术语之一。</div>
+            <div class="flashcard-example">例：在经济危机的传导链条的场景中，GDP与增长是分析的核心工具。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">货币与通胀</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">经济学和大势领域的关键概念，是理解《宏观经济学二十五讲的基础术语之一。</div>
+            <div class="flashcard-example">例：在国家发展路径比较的场景中，货币与通胀是分析的核心工具。</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard" onclick="this.classList.toggle('flipped')">
+        <div class="flashcard-inner">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-term">短期波动</div>
+            <div class="flashcard-hint">点击查看释义 →</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-def">经济学和大势领域的关键概念，是理解《宏观经济学二十五讲的基础术语之一。</div>
+            <div class="flashcard-example">例：在企业经营的经济逻辑的场景中，短期波动是分析的核心工具。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 自测题 -->
+  <section class="content-section reveal" id="quiz">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">✅</span>
+      知识自测
+    </h2>
+    <div class="quiz-list">
+      
+      <div class="quiz-item" data-qindex="0">
+        <div class="quiz-question">
+          <span class="quiz-qnum">Q1.</span>
+          <span>根据《宏观经济学二十五讲》，稀缺与选择的核心含义是什么？</span>
+        </div>
+        <div class="quiz-options">
+          
+            <div class="quiz-option" onclick="checkAnswer(this, 0, 1)">
+              <span class="quiz-option-key">A</span>
+              <span>一个关于稀缺与选择的表面定义</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 1, 1)">
+              <span class="quiz-option-key">B</span>
+              <span>在经济学和大势框架下稀缺与选择的深层含义与应用逻辑</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 2, 1)">
+              <span class="quiz-option-key">C</span>
+              <span>只适用于特定场景的特殊规则</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 3, 1)">
+              <span class="quiz-option-key">D</span>
+              <span>与机会成本相同的另一种说法</span>
+            </div>
+        </div>
+        <div class="quiz-explanation">
+          <strong>解析：</strong>正确理解稀缺与选择，需要将它放在《宏观经济学二十五讲的整个理论框架中，把握它与其他核心概念的联系，以及它的适用前提与边界。
+        </div>
+      </div>
+      <div class="quiz-item" data-qindex="1">
+        <div class="quiz-question">
+          <span class="quiz-qnum">Q2.</span>
+          <span>以下哪个场景最能体现供需模型的应用？</span>
+        </div>
+        <div class="quiz-options">
+          
+            <div class="quiz-option" onclick="checkAnswer(this, 0, 1)">
+              <span class="quiz-option-key">A</span>
+              <span>凭经验直觉做判断</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 1, 1)">
+              <span class="quiz-option-key">B</span>
+              <span>按照供需模型的步骤系统拆解问题、分析变量</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 2, 1)">
+              <span class="quiz-option-key">C</span>
+              <span>参考同行的做法</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 3, 1)">
+              <span class="quiz-option-key">D</span>
+              <span>等待上级指示</span>
+            </div>
+        </div>
+        <div class="quiz-explanation">
+          <strong>解析：</strong>供需模型是一种系统化的思维工具，它的价值在于提供了一套可重复、可验证的分析步骤，帮助我们超越经验和直觉的局限。
+        </div>
+      </div>
+      <div class="quiz-item" data-qindex="2">
+        <div class="quiz-question">
+          <span class="quiz-qnum">Q3.</span>
+          <span>《宏观经济学二十五讲》中提到的「理论应用边界」指的是什么？</span>
+        </div>
+        <div class="quiz-options">
+          
+            <div class="quiz-option" onclick="checkAnswer(this, 0, 0)">
+              <span class="quiz-option-key">A</span>
+              <span>理论适用的前提条件与不适用的场景</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 1, 0)">
+              <span class="quiz-option-key">B</span>
+              <span>理论的难懂程度</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 2, 0)">
+              <span class="quiz-option-key">C</span>
+              <span>理论的读者范围</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 3, 0)">
+              <span class="quiz-option-key">D</span>
+              <span>理论的出版时间</span>
+            </div>
+        </div>
+        <div class="quiz-explanation">
+          <strong>解析：</strong>任何理论都有其适用的前提条件和范围。了解理论的应用边界，比记住理论本身更重要——用错地方的正确理论，照样会得出错误的结论。
+        </div>
+      </div>
+      <div class="quiz-item" data-qindex="3">
+        <div class="quiz-question">
+          <span class="quiz-qnum">Q4.</span>
+          <span>学习《宏观经济学二十五讲》最有效的方法是？</span>
+        </div>
+        <div class="quiz-options">
+          
+            <div class="quiz-option" onclick="checkAnswer(this, 0, 1)">
+              <span class="quiz-option-key">A</span>
+              <span>反复阅读直到记住所有内容</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 1, 1)">
+              <span class="quiz-option-key">B</span>
+              <span>把核心概念用到自己的工作和生活中，在应用中深化理解</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 2, 1)">
+              <span class="quiz-option-key">C</span>
+              <span>只看书中的案例部分</span>
+            </div>
+            <div class="quiz-option" onclick="checkAnswer(this, 3, 1)">
+              <span class="quiz-option-key">D</span>
+              <span>看书评和摘要代替原著</span>
+            </div>
+        </div>
+        <div class="quiz-explanation">
+          <strong>解析：</strong>深度知识只能在应用中被真正掌握。阅读只是输入，应用才能将知识内化为能力。这也是为什么本学习计划每个章节都配有行动指南和思考题。
+        </div>
+      </div>
+    </div>
+    <div class="quiz-score">你的得分：<strong id="quizScore">0</strong> / 4</div>
+  </section>
+
+  <!-- 思考题 -->
+  <section class="content-section reveal" id="questions">
+    <h2 class="content-section-title">
+      <span class="content-section-title-icon">🧠</span>
+      思维实验 / 思考题
+    </h2>
+    
+      <div class="think-card">
+        <div class="think-question">
+          <div class="think-num">1</div>
+          <div class="think-text">用你自己的话，解释稀缺与选择与机会成本之间的联系与区别。</div>
+        </div>
+        <div class="think-hint">不要照搬书中的定义，用你自己的语言和例子来解释。能讲清楚，才是真的懂了。</div>
+        <div class="note-area">
+          <div class="note-label">✏️ 写下你的思考</div>
+          <textarea class="note-input" placeholder="在这里记录你的想法..." data-qid="q0"></textarea>
+          <div class="note-status">✓ 已自动保存</div>
+        </div>
+      </div>
+      <div class="think-card">
+        <div class="think-question">
+          <div class="think-num">2</div>
+          <div class="think-text">在你当前的工作或生活中，找一个可以用供需模型来分析的真实问题，尝试用它来拆解。</div>
+        </div>
+        <div class="think-hint">选一个你最近在思考的真实问题，套上分析框架，看能不能发现之前没想到的角度。</div>
+        <div class="note-area">
+          <div class="note-label">✏️ 写下你的思考</div>
+          <textarea class="note-input" placeholder="在这里记录你的想法..." data-qid="q1"></textarea>
+          <div class="note-status">✓ 已自动保存</div>
+        </div>
+      </div>
+      <div class="think-card">
+        <div class="think-question">
+          <div class="think-num">3</div>
+          <div class="think-text">如果你要向一个完全不了解经济学和大势的朋友推荐这本书，你会用什么样的逻辑来介绍它？</div>
+        </div>
+        <div class="think-hint">试着用三句话说清楚这本书的核心价值、适合谁读、读完能获得什么。</div>
+        <div class="note-area">
+          <div class="note-label">✏️ 写下你的思考</div>
+          <textarea class="note-input" placeholder="在这里记录你的想法..." data-qid="q2"></textarea>
+          <div class="note-status">✓ 已自动保存</div>
+        </div>
+      </div>
+  </section>
+
+  <!-- 底部导航 -->
+  <nav class="book-nav">
+    <button class="book-nav-btn " onclick="window.location.href='book_2_宏观经济学.html'">
+      ← 上一本
+    </button>
+    <div class="book-nav-info">第 3 天 / 共 100 天</div>
+    <button class="book-nav-btn " onclick="window.location.href='book_4_战略与路径.html'">
+      下一本 →
+    </button>
+  </nav>
+
+</main>
+
+<script>
+// 手风琴展开
+function toggleInsight(el) {
+  const item = el.parentElement;
+  item.classList.toggle('open');
+}
+
+// 滚动到指定区域
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    const navHeight = 60;
+    const top = el.offsetTop - navHeight;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+  // 更新活动状态
+  document.querySelectorAll('.section-nav-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// 自测题评分
+let correctCount = 0;
+let answered = new Set();
+
+function checkAnswer(el, selected, correct) {
+  const quizItem = el.closest('.quiz-item');
+  const qIndex = quizItem.dataset.qindex;
+  
+  if (answered.has(qIndex)) return;
+  answered.add(qIndex);
+  
+  const options = quizItem.querySelectorAll('.quiz-option');
+  const explanation = quizItem.querySelector('.quiz-explanation');
+  
+  options.forEach(opt => opt.classList.add('disabled'));
+  
+  if (selected === correct) {
+    el.classList.add('correct');
+    correctCount++;
+  } else {
+    el.classList.add('wrong');
+    options[correct].classList.add('correct');
+  }
+  
+  explanation.classList.add('show');
+  document.getElementById('quizScore').textContent = correctCount;
+}
+
+// 音频播放模拟（导读文字滚动）
+let isPlaying = false;
+let audioTimer = null;
+let currentParagraph = 0;
+const guideParagraphs = document.querySelectorAll('.guide-paragraph');
+const totalDuration = 480; // 8分钟 = 480秒
+let currentTime = 0;
+
+function toggleAudio() {
+  const playIcon = document.getElementById('playIcon');
+  const waveBars = document.querySelectorAll('.wave-bar');
+  
+  if (isPlaying) {
+    // 暂停
+    isPlaying = false;
+    playIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+    waveBars.forEach(b => b.classList.remove('playing'));
+    clearInterval(audioTimer);
+  } else {
+    // 播放
+    isPlaying = true;
+    playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+    waveBars.forEach(b => b.classList.add('playing'));
+    
+    audioTimer = setInterval(() => {
+      currentTime++;
+      const progress = (currentTime / totalDuration) * 100;
+      document.getElementById('audioProgressFill').style.width = progress + '%';
+      
+      const mins = Math.floor(currentTime / 60);
+      const secs = currentTime % 60;
+      document.getElementById('audioCurrentTime').textContent = mins + ':' + (secs < 10 ? '0' + secs : secs);
+      
+      // 段落切换
+      const paraDuration = totalDuration / guideParagraphs.length;
+      const newPara = Math.floor(currentTime / paraDuration);
+      if (newPara !== currentParagraph && newPara < guideParagraphs.length) {
+        guideParagraphs[currentParagraph].classList.remove('active');
+        currentParagraph = newPara;
+        guideParagraphs[currentParagraph].classList.add('active');
+        guideParagraphs[currentParagraph].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      
+      if (currentTime >= totalDuration) {
+        toggleAudio();
+        currentTime = 0;
+      }
+    }, 1000);
+  }
+}
+
+// 笔记自动保存（localStorage）
+const noteInputs = document.querySelectorAll('.note-input');
+noteInputs.forEach(input => {
+  const key = '100books_day3_' + input.dataset.qid;
+  const saved = localStorage.getItem(key);
+  if (saved) input.value = saved;
+  
+  input.addEventListener('input', () => {
+    localStorage.setItem(key, input.value);
+    const status = input.nextElementSibling;
+    status.classList.add('show');
+    setTimeout(() => status.classList.remove('show'), 1500);
+  });
+});
+
+// 滚动动画
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+revealElements.forEach(el => revealObserver.observe(el));
+
+// 滚动时更新导航按钮激活状态
+window.addEventListener('scroll', () => {
+  const sections = ['overview', 'audio', 'chapters', 'insights', 'cases', 'tools', 'glossary', 'quiz', 'questions'];
+  const navHeight = 80;
+  let currentSection = sections[0];
+  
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el && el.offsetTop - navHeight <= window.scrollY) {
+      currentSection = id;
+    }
+  }
+  
+  document.querySelectorAll('.section-nav-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('onclick')?.includes(currentSection));
+  });
+});
+</script>
+
+</body>
+</html>

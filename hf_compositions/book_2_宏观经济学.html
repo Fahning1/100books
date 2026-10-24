@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-fps="30">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2天 · 宏观经济学</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1280px; height: 720px; overflow: hidden;
+  font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #0a0a1a; color: #f1f5f9;
+}
+.composition { position: relative; width: 100%; height: 100%; }
+.scene {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+}
+.scene.active { opacity: 1; pointer-events: auto; }
+.bg-gradient {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: 
+    radial-gradient(ellipse at 30% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 70%, rgba(6, 182, 212, 0.12) 0%, transparent 50%);
+}
+
+/* 开场 */
+.intro-scene .intro-content { text-align: center; position: relative; z-index: 1; }
+.intro-icon { font-size: 56px; display: block; margin-bottom: 16px; }
+.intro-day { font-size: 18px; color: #06b6d4; letter-spacing: 4px; margin-bottom: 20px; font-weight: 500; }
+.intro-title {
+  font-size: 64px; font-weight: 800;
+  background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 14px; letter-spacing: 2px;
+}
+.intro-author { font-size: 22px; color: #94a3b8; margin-bottom: 22px; }
+.intro-category {
+  display: inline-block; padding: 10px 28px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(6, 182, 212, 0.15) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  border-radius: 100px; font-size: 16px; color: #06b6d4; font-weight: 500;
+}
+
+/* 概念场景 */
+.concept-container { text-align: center; position: relative; z-index: 1; max-width: 850px; padding: 0 60px; }
+.concept-number {
+  font-size: 100px; font-weight: 800;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(6, 182, 212, 0.15) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  line-height: 1; position: absolute; top: -50px; left: 50%; transform: translateX(-50%); z-index: 0;
+}
+.concept-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; position: relative; z-index: 1; }
+.concept-subtitle { font-size: 18px; color: #94a3b8; margin-bottom: 28px; position: relative; z-index: 1; }
+.concept-takeaway {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 14px; font-size: 17px; line-height: 1.6; max-width: 650px;
+  position: relative; z-index: 1;
+}
+.tk-icon { font-size: 20px; }
+.tk-text { color: #e2e8f0; font-weight: 500; }
+
+/* 浮动装饰 */
+.floating-shapes { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.shape { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.35; }
+.shape.s1 { width: 180px; height: 180px; background: #8b5cf6; top: 12%; left: 12%; }
+.shape.s2 { width: 140px; height: 140px; background: #06b6d4; bottom: 22%; right: 16%; }
+
+/* 案例场景 */
+.case-scene .case-content { max-width: 850px; padding: 0 60px; position: relative; z-index: 1; }
+.case-label { font-size: 14px; color: #06b6d4; letter-spacing: 3px; margin-bottom: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.case-label-icon { font-size: 22px; }
+.case-title { font-size: 32px; font-weight: 700; margin-bottom: 22px; line-height: 1.3; }
+.case-tk-box {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(6, 182, 212, 0.06) 100%);
+  border-left: 4px solid #8b5cf6;
+  border-radius: 0 12px 12px 0;
+  padding: 22px 26px; margin-top: 18px;
+}
+.case-tk-label { font-size: 12px; font-weight: 700; color: #8b5cf6; letter-spacing: 2px; margin-bottom: 6px; }
+.case-tk-text { font-size: 17px; line-height: 1.8; color: #e2e8f0; }
+
+/* 结尾场景 */
+.outro-scene .outro-content { text-align: center; position: relative; z-index: 1; max-width: 750px; padding: 0 60px; }
+.outro-quote {
+  font-size: 28px; line-height: 1.6; font-weight: 500;
+  margin-bottom: 28px; color: #f1f5f9; font-style: italic;
+}
+.outro-cta { font-size: 20px; color: #94a3b8; margin-bottom: 14px; }
+.outro-brand {
+  font-size: 18px; font-weight: 700;
+  background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-top: 20px;
+}
+.outro-progress { font-size: 15px; color: #64748b; margin-top: 6px; }
+
+/* 进度条 */
+.progress-bar {
+  position: absolute; bottom: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+  width: 0%; z-index: 100;
+}
+</style>
+</head>
+<body>
+
+<div class="composition" data-composition-id="book-2" data-duration="105">
+
+<div class="bg-gradient"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- 开场场景 -->
+<div class="scene intro-scene active" data-start="0" data-duration="10">
+  <div class="intro-content">
+    <span class="intro-icon">📈</span>
+    <div class="intro-day">第 2 天 · 100天100本书</div>
+    <h1 class="intro-title">宏观经济学</h1>
+    <div class="intro-author">— 曼昆 —</div>
+    <div class="intro-category">经济学和大势</div>
+  </div>
+  <div class="floating-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+  </div>
+</div>
+
+
+<div class="scene concept-scene scene-1" data-start="10" data-duration="10">
+  <div class="concept-container">
+    <div class="concept-number">01</div>
+    <h2 class="concept-title">稀缺与选择</h2>
+    <p class="concept-subtitle">Understanding 稀缺与选择</p>
+    <div class="concept-takeaway">
+      <span class="tk-icon">💡</span>
+      <span class="tk-text">理解稀缺与选择，关键不在于记住定义，而在于学会用它的视角重新看待日常问题。</span>
+    </div>
+  </div>
+  <div class="floating-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+  </div>
+</div>
+<div class="scene concept-scene scene-2" data-start="20" data-duration="10">
+  <div class="concept-container">
+    <div class="concept-number">02</div>
+    <h2 class="concept-title">机会成本</h2>
+    <p class="concept-subtitle">Understanding 机会成本</p>
+    <div class="concept-takeaway">
+      <span class="tk-icon">💡</span>
+      <span class="tk-text">理解机会成本，关键不在于记住定义，而在于学会用它的视角重新看待日常问题。</span>
+    </div>
+  </div>
+  <div class="floating-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+  </div>
+</div>
+<div class="scene concept-scene scene-3" data-start="30" data-duration="10">
+  <div class="concept-container">
+    <div class="concept-number">03</div>
+    <h2 class="concept-title">边际思维</h2>
+    <p class="concept-subtitle">Understanding 边际思维</p>
+    <div class="concept-takeaway">
+      <span class="tk-icon">💡</span>
+      <span class="tk-text">理解边际思维，关键不在于记住定义，而在于学会用它的视角重新看待日常问题。</span>
+    </div>
+  </div>
+  <div class="floating-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+  </div>
+</div>
+<div class="scene concept-scene scene-4" data-start="40" data-duration="10">
+  <div class="concept-container">
+    <div class="concept-number">04</div>
+    <h2 class="concept-title">供需均衡</h2>
+    <p class="concept-subtitle">Understanding 供需均衡</p>
+    <div class="concept-takeaway">
+      <span class="tk-icon">💡</span>
+      <span class="tk-text">理解供需均衡，关键不在于记住定义，而在于学会用它的视角重新看待日常问题。</span>
+    </div>
+  </div>
+  <div class="floating-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+  </div>
+</div>
+<div class="scene concept-scene scene-5" data-start="50" data-duration="10">
+  <div class="concept-container">
+    <div class="concept-number">05</div>
+    <h2 class="concept-title">比较优势</h2>
+    <p class="concept-subtitle">Understanding 比较优势</p>
+    <div class="concept-takeaway">
+      <span class="tk-icon">💡</span>
+      <span class="tk-text">理解比较优势，关键不在于记住定义，而在于学会用它的视角重新看待日常问题。</span>
+    </div>
+  </div>
+  <div class="floating-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+  </div>
+</div>
+
+<!-- 案例场景 -->
+<div class="scene case-scene" data-start="60" data-duration="30">
+  <div class="case-content">
+    <div class="case-label">
+      <span class="case-label-icon">📊</span>
+      经典案例分析
+    </div>
+    <h2 class="case-title">政策制定中的权衡：宏观经济学视角下的深度分析</h2>
+    <div class="case-tk-box">
+      <div class="case-tk-label">核心启示</div>
+      <div class="case-tk-text">这个案例留给我们的最重要启示是：用边际思维优化决策。理论的价值不在于它能解释一切，而在于它能为你提供一个思考的起点，然后你用它去对照现实、修正认知、做出判断。</div>
+    </div>
+  </div>
+  <div class="floating-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+  </div>
+</div>
+
+<!-- 结尾场景 -->
+<div class="scene outro-scene" data-start="90" data-duration="15">
+  <div class="outro-content">
+    <div class="outro-quote">宏观经济学的核心价值，不在于提供了多少答案，而在于教会我们如何提出正确的问题。</div>
+    <div class="outro-cta">每天一小时，构建完整商业知识体系</div>
+    <div class="outro-brand">📚 100天100本书 · AI递归学习计划</div>
+    <div class="outro-progress">第 2 / 100 天</div>
+  </div>
+  <div class="floating-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+  </div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+  const tl = gsap.timeline();
+  const totalDuration = 105;
+  
+  // 开场动画
+  tl.from('.intro-scene .intro-icon', { scale: 0, opacity: 0, duration: 0.5, ease: "back.out(1.7)" }, 0)
+    .from('.intro-scene .intro-day', { y: 20, opacity: 0, duration: 0.4 }, 0.2)
+    .from('.intro-scene .intro-title', { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, 0.4)
+    .from('.intro-scene .intro-author', { y: 20, opacity: 0, duration: 0.4 }, 0.8)
+    .from('.intro-scene .intro-category', { y: 20, opacity: 0, duration: 0.4 }, 1.0);
+  
+  
+  tl.from('.scene-1 .concept-number', { scale: 0, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, 10)
+    .from('.scene-1 .concept-title', { y: 30, opacity: 0, duration: 0.5, ease: "power2.out" }, 10+0.2)
+    .from('.scene-1 .concept-subtitle', { y: 20, opacity: 0, duration: 0.4 }, 10+0.4)
+    .from('.scene-1 .concept-takeaway', { y: 20, opacity: 0, duration: 0.5 }, 10+0.6);
+
+  tl.from('.scene-2 .concept-number', { scale: 0, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, 20)
+    .from('.scene-2 .concept-title', { y: 30, opacity: 0, duration: 0.5, ease: "power2.out" }, 20+0.2)
+    .from('.scene-2 .concept-subtitle', { y: 20, opacity: 0, duration: 0.4 }, 20+0.4)
+    .from('.scene-2 .concept-takeaway', { y: 20, opacity: 0, duration: 0.5 }, 20+0.6);
+
+  tl.from('.scene-3 .concept-number', { scale: 0, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, 30)
+    .from('.scene-3 .concept-title', { y: 30, opacity: 0, duration: 0.5, ease: "power2.out" }, 30+0.2)
+    .from('.scene-3 .concept-subtitle', { y: 20, opacity: 0, duration: 0.4 }, 30+0.4)
+    .from('.scene-3 .concept-takeaway', { y: 20, opacity: 0, duration: 0.5 }, 30+0.6);
+
+  tl.from('.scene-4 .concept-number', { scale: 0, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, 40)
+    .from('.scene-4 .concept-title', { y: 30, opacity: 0, duration: 0.5, ease: "power2.out" }, 40+0.2)
+    .from('.scene-4 .concept-subtitle', { y: 20, opacity: 0, duration: 0.4 }, 40+0.4)
+    .from('.scene-4 .concept-takeaway', { y: 20, opacity: 0, duration: 0.5 }, 40+0.6);
+
+  tl.from('.scene-5 .concept-number', { scale: 0, opacity: 0, duration: 0.6, ease: "back.out(1.7)" }, 50)
+    .from('.scene-5 .concept-title', { y: 30, opacity: 0, duration: 0.5, ease: "power2.out" }, 50+0.2)
+    .from('.scene-5 .concept-subtitle', { y: 20, opacity: 0, duration: 0.4 }, 50+0.4)
+    .from('.scene-5 .concept-takeaway', { y: 20, opacity: 0, duration: 0.5 }, 50+0.6);
+
+  
+  // 案例入场
+  tl.from('.case-scene .case-label', { x: -30, opacity: 0, duration: 0.5 }, 60)
+    .from('.case-scene .case-title', { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, 60+0.2)
+    .from('.case-scene .case-tk-box', { x: 30, opacity: 0, duration: 0.5 }, 60+0.5);
+  
+  // 结尾入场
+  tl.from('.outro-scene .outro-quote', { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, 90)
+    .from('.outro-scene .outro-cta', { y: 20, opacity: 0, duration: 0.5 }, 90+0.3)
+    .from('.outro-scene .outro-brand', { y: 20, opacity: 0, duration: 0.5 }, 90+0.5)
+    .from('.outro-scene .outro-progress', { y: 10, opacity: 0, duration: 0.4 }, 90+0.7);
+</script>
+
+</body>
+</html>
